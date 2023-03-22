@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C08FA4F229CB9404002CA6AF /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F129CB9404002CA6AF /* PersistenceController.swift */; };
+		C08FA4F529CB9418002CA6AF /* Exercise.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F329CB9418002CA6AF /* Exercise.xcdatamodeld */; };
+		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
+		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
+		C08FA4FF29CB9F24002CA6AF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FE29CB9F24002CA6AF /* SettingsView.swift */; };
+		C08FA50129CB9F3B002CA6AF /* ExercisesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA50029CB9F3B002CA6AF /* ExercisesView.swift */; };
 		C0CB957B29C6445A0099974B /* CalisthenicsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */; };
 		C0CB957D29C6445A0099974B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB957C29C6445A0099974B /* ContentView.swift */; };
 		C0CB957F29C6445B0099974B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB957E29C6445B0099974B /* Assets.xcassets */; };
@@ -14,6 +20,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C08FA4F129CB9404002CA6AF /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		C08FA4F429CB9418002CA6AF /* Exercise.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Exercise.xcdatamodel; sourceTree = "<group>"; };
+		C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calisthenics.entitlements; sourceTree = "<group>"; };
+		C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepertoireView.swift; sourceTree = "<group>"; };
+		C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
+		C08FA4FE29CB9F24002CA6AF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C08FA50029CB9F3B002CA6AF /* ExercisesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisesView.swift; sourceTree = "<group>"; };
 		C0CB957729C6445A0099974B /* Calisthenics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calisthenics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsApp.swift; sourceTree = "<group>"; };
 		C0CB957C29C6445A0099974B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -32,6 +45,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C08FA4F929CB957A002CA6AF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C0CB957C29C6445A0099974B /* ContentView.swift */,
+				C08FA50029CB9F3B002CA6AF /* ExercisesView.swift */,
+				C08FA4FE29CB9F24002CA6AF /* SettingsView.swift */,
+				C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */,
+				C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C0CB956E29C6445A0099974B = {
 			isa = PBXGroup;
 			children = (
@@ -51,8 +76,11 @@
 		C0CB957929C6445A0099974B /* Calisthenics */ = {
 			isa = PBXGroup;
 			children = (
+				C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */,
 				C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */,
-				C0CB957C29C6445A0099974B /* ContentView.swift */,
+				C08FA4F129CB9404002CA6AF /* PersistenceController.swift */,
+				C08FA4F929CB957A002CA6AF /* Views */,
+				C08FA4F329CB9418002CA6AF /* Exercise.xcdatamodeld */,
 				C0CB957E29C6445B0099974B /* Assets.xcassets */,
 				C0CB958029C6445B0099974B /* Preview Content */,
 			);
@@ -137,7 +165,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C08FA4FF29CB9F24002CA6AF /* SettingsView.swift in Sources */,
+				C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */,
+				C08FA4F229CB9404002CA6AF /* PersistenceController.swift in Sources */,
+				C08FA4F529CB9418002CA6AF /* Exercise.xcdatamodeld in Sources */,
+				C08FA50129CB9F3B002CA6AF /* ExercisesView.swift in Sources */,
 				C0CB957D29C6445A0099974B /* ContentView.swift in Sources */,
+				C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */,
 				C0CB957B29C6445A0099974B /* CalisthenicsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -264,6 +298,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Preview Content\"";
@@ -293,6 +328,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Preview Content\"";
@@ -339,6 +375,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C08FA4F329CB9418002CA6AF /* Exercise.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C08FA4F429CB9418002CA6AF /* Exercise.xcdatamodel */,
+			);
+			currentVersion = C08FA4F429CB9418002CA6AF /* Exercise.xcdatamodel */;
+			path = Exercise.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C0CB956F29C6445A0099974B /* Project object */;
 }
