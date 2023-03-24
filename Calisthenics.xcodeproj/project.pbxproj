@@ -13,6 +13,7 @@
 		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
 		C08FA4FF29CB9F24002CA6AF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FE29CB9F24002CA6AF /* SettingsView.swift */; };
 		C08FA50129CB9F3B002CA6AF /* ExercisesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA50029CB9F3B002CA6AF /* ExercisesView.swift */; };
+		C08FA50329CE4952002CA6AF /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA50229CE4952002CA6AF /* Stopwatch.swift */; };
 		C0CB957B29C6445A0099974B /* CalisthenicsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */; };
 		C0CB957D29C6445A0099974B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB957C29C6445A0099974B /* ContentView.swift */; };
 		C0CB957F29C6445B0099974B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB957E29C6445B0099974B /* Assets.xcassets */; };
@@ -27,6 +28,7 @@
 		C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
 		C08FA4FE29CB9F24002CA6AF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C08FA50029CB9F3B002CA6AF /* ExercisesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisesView.swift; sourceTree = "<group>"; };
+		C08FA50229CE4952002CA6AF /* Stopwatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Stopwatch.swift; path = "../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/Calisthenics/Calisthenics/Stopwatch.swift"; sourceTree = "<group>"; };
 		C0CB957729C6445A0099974B /* Calisthenics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calisthenics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsApp.swift; sourceTree = "<group>"; };
 		C0CB957C29C6445A0099974B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */,
 				C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */,
 				C08FA4F129CB9404002CA6AF /* PersistenceController.swift */,
+				C08FA50229CE4952002CA6AF /* Stopwatch.swift */,
 				C08FA4F929CB957A002CA6AF /* Views */,
 				C08FA4F329CB9418002CA6AF /* ExerciseLog.xcdatamodeld */,
 				C0CB957E29C6445B0099974B /* Assets.xcassets */,
@@ -169,6 +172,7 @@
 				C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */,
 				C08FA4F229CB9404002CA6AF /* PersistenceController.swift in Sources */,
 				C08FA4F529CB9418002CA6AF /* ExerciseLog.xcdatamodeld in Sources */,
+				C08FA50329CE4952002CA6AF /* Stopwatch.swift in Sources */,
 				C08FA50129CB9F3B002CA6AF /* ExercisesView.swift in Sources */,
 				C0CB957D29C6445A0099974B /* ContentView.swift in Sources */,
 				C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */,

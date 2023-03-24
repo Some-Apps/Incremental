@@ -10,6 +10,9 @@ import SwiftUI
 struct SettingsView: View {
     let moc = PersistenceController.shared.container.viewContext
     @FetchRequest(sortDescriptors: []) var logs: FetchedResults<Log>
+    @Environment(\.editMode) private var editMode
+    @State private var isEditing = false
+
     
     var todayMinutes: Double {
         let numberOfDecimalPlaces = 2
@@ -36,9 +39,18 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                     }
                 }
+                .onDelete(perform: deleteTasks)
             }
         }
     }
+    
+    private func deleteTasks(offsets: IndexSet) {
+            withAnimation {
+                offsets.map { logs[$0] }.forEach(moc.delete)
+                try? moc.save()
+            }
+        }
+    
 }
 
 struct SettingsView_Previews: PreviewProvider {

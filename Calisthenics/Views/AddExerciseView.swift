@@ -17,12 +17,12 @@ struct AddExerciseView: View {
     @State private var selectedTitle = ""
     @State private var selectedGoal = "Improve"
     @State private var selectedUnits = "Reps"
-    @State private var selectedCurrentReps = ""
-    @State private var selectedCurrentDuration = ""
+    @State private var selectedCurrentReps = 0.0
+    @State private var selectedCurrentDuration = 0.0
     
     var body: some View {
         VStack {
-            Form {
+            List {
                 Section {
                     TextField("Title", text: $selectedTitle)
                     Picker("Goal", selection: $selectedGoal) {
@@ -36,9 +36,9 @@ struct AddExerciseView: View {
                         }
                     }
                     if selectedUnits == "Reps" {
-                        TextField("Reps", text: $selectedCurrentReps)
+                        DoubleTextField("Reps", value: $selectedCurrentReps)
                     } else if selectedUnits == "Duration" {
-                        TextField("Seconds", text: $selectedCurrentDuration)
+                        DoubleTextField("Duration", value: $selectedCurrentDuration)
                     }
                 }
                 Section {
@@ -50,6 +50,8 @@ struct AddExerciseView: View {
                         newExercise.units = selectedUnits
                         newExercise.currentReps = selectedCurrentReps
                         newExercise.currentDuration = selectedCurrentDuration
+                        newExercise.positiveRate = 0.5
+                        newExercise.negativeRate = 1
                         try? moc.save()
                         dismiss()
                     }
@@ -62,5 +64,22 @@ struct AddExerciseView: View {
 struct AddExerciseView_Previews: PreviewProvider {
     static var previews: some View {
         AddExerciseView()
+    }
+}
+
+struct DoubleTextField: View {
+    let label: String
+    @Binding var value: Double
+    private let formatter = NumberFormatter()
+
+    init(_ label: String, value: Binding<Double>) {
+        self.label = label
+        self._value = value
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+    }
+
+    var body: some View {
+        TextField("Enter value", value: $value, formatter: formatter)
     }
 }

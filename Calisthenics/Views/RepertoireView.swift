@@ -13,12 +13,35 @@ struct RepertoireView: View {
     
     @State private var showingAdd = false
     
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+    ]
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                List {
-                    ForEach(exercises, id: \.self) { exercise in
-                        Text(exercise.title!)
+            LazyVGrid(columns: columns) {
+                ForEach(exercises, id: \.self) { exercise in
+                    NavigationLink(destination: EmptyView()) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 25)
+                                .aspectRatio(1.5, contentMode: .fit)
+                                .foregroundColor(exercise.goal == "Improve" ? .blue : .green)
+                            Text(exercise.title ?? "Unknown")
+                                .foregroundColor(.primary)
+                                .padding()
+                        }
+                    }
+                    .padding()
+                    .contextMenu {
+                        Button("Delete", role: .destructive) {
+                            moc.delete(exercise)
+                            do {
+                                try moc.save()
+                            } catch {
+                                // handle the core data error
+                            }
+                        }
                     }
                 }
             }
