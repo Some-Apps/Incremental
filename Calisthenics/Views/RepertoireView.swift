@@ -17,7 +17,7 @@ struct RepertoireView: View {
         NavigationStack {
             VStack {
                 List {
-                    ForEach(exercises, id: \.id) { exercise in
+                    ForEach(exercises, id: \.self) { exercise in
                         Text(exercise.title!)
                     }
                 }

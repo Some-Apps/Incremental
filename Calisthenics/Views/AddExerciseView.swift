@@ -44,6 +44,7 @@ struct AddExerciseView: View {
                 Section {
                     Button("Add Exercise") {
                         let newExercise = Exercise(context: moc)
+                        newExercise.id = UUID()
                         newExercise.title = selectedTitle
                         newExercise.goal = selectedGoal
                         newExercise.units = selectedUnits

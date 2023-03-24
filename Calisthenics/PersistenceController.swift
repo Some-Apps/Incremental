@@ -14,12 +14,12 @@ class PersistenceController {
     let container: NSPersistentContainer
 
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "Exercise")
+        container = NSPersistentContainer(name: "ExerciseLog") // Update the data model name here
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else {
             // Configure the persistent store to use the App Group's shared container
-            let storeURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.me.jareddanieljones.calisthenics")!.appendingPathComponent("Exercise.sqlite")
+            let storeURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.me.jareddanieljones.calisthenics")!.appendingPathComponent("ExerciseLog.sqlite") // Update the SQLite file name here
             container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: storeURL)]
         }
 
@@ -64,3 +64,4 @@ extension PersistenceController {
         }
     }
 }
+
