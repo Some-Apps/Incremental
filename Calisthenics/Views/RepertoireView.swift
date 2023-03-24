@@ -20,40 +20,43 @@ struct RepertoireView: View {
     
     var body: some View {
         NavigationStack {
-            LazyVGrid(columns: columns) {
-                ForEach(exercises, id: \.self) { exercise in
-                    NavigationLink(destination: EmptyView()) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 25)
-                                .aspectRatio(1.5, contentMode: .fit)
-                                .foregroundColor(exercise.goal == "Improve" ? .blue : .green)
-                            Text(exercise.title ?? "Unknown")
-                                .foregroundColor(.primary)
-                                .padding()
-                        }
-                    }
-                    .padding()
-                    .contextMenu {
-                        Button("Delete", role: .destructive) {
-                            moc.delete(exercise)
-                            do {
-                                try moc.save()
-                            } catch {
-                                // handle the core data error
+            ScrollView {
+                LazyVGrid(columns: columns) {
+                    ForEach(exercises, id: \.self) { exercise in
+                        NavigationLink(destination: EmptyView()) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 25)
+                                    .aspectRatio(1.5, contentMode: .fit)
+                                    .foregroundColor(exercise.goal == "Improve" ? .blue : .green)
+                                Text(exercise.title ?? "Unknown")
+                                    .foregroundColor(.primary)
+                                    .padding()
                             }
                         }
+                        .padding()
+    //                    .contextMenu {
+    //                        Button("Delete", role: .destructive) {
+    //                            moc.delete(exercise)
+    //                            do {
+    //                                try moc.save()
+    //                            } catch {
+    //                                // handle the core data error
+    //                            }
+    //                        }
+    //                    }
+                    }
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            showingAdd.toggle()
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showingAdd.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-            }
+            
         }
         .sheet(isPresented: $showingAdd) {
             AddExerciseView()

@@ -18,7 +18,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Second", systemImage: "2.circle")
                 }
-            SettingsView()
+            StatsView()
                 .tabItem {
                     Label("Third", systemImage: "3.circle")
                 }

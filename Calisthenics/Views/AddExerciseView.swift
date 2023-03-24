@@ -55,6 +55,7 @@ struct AddExerciseView: View {
                         try? moc.save()
                         dismiss()
                     }
+                    .disabled(selectedCurrentDuration == 0.0 && selectedCurrentReps == 0.0)
                 }
             }
         }

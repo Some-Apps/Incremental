@@ -13,7 +13,6 @@ struct ExercisesView: View {
     @AppStorage("randomExercise") var randomExercise = ""
     @FocusState private var textFieldIsFocused: Bool
     @State private var duration = ""
-    @StateObject private var stopwatch = Stopwatch()
     
     var exercise: Exercise {
         exercises.first(where: { $0.id?.uuidString == randomExercise }) ?? Exercise()
@@ -54,32 +53,7 @@ struct ExercisesView: View {
                         .disabled(duration == "" || Int(duration) == nil)
                     }
                 }
-                VStack {
-                    Text(stopwatch.displayTime)
-                        .font(.system(size: 48, design: .monospaced))
-                    
-                    HStack {
-                        Button(action: {
-                            stopwatch.toggle()
-                        }) {
-                            Text(stopwatch.isRunning ? "Stop" : "Start")
-                                .frame(minWidth: 80, minHeight: 40)
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
-                        }
-                        
-                        Button(action: {
-                            stopwatch.reset()
-                        }) {
-                            Text("Reset")
-                                .frame(minWidth: 80, minHeight: 40)
-                                .background(Color.gray)
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
-                        }
-                    }
-                }
+                StopwatchView()
                 .padding()
                 
             }

@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct SettingsView: View {
+struct StatsView: View {
     let moc = PersistenceController.shared.container.viewContext
-    @FetchRequest(sortDescriptors: []) var logs: FetchedResults<Log>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "timestamp", ascending: false)]) var logs: FetchedResults<Log>
     @Environment(\.editMode) private var editMode
     @State private var isEditing = false
 
@@ -30,17 +30,20 @@ struct SettingsView: View {
     var body: some View {
         VStack {
             Text(String(todayMinutes))
-            List {
-                ForEach(logs, id:\.id) { log in
-                    HStack {
-                        Text(log.exercise!)
-                        Spacer()
-                        Text("\(log.duration)")
-                            .foregroundColor(.secondary)
+//            ScrollView {
+                List {
+                    ForEach(logs, id:\.id) { log in
+                        HStack {
+                            Text(log.exercise!)
+                            Spacer()
+                            Text("\(log.duration)")
+                                .foregroundColor(.secondary)
+                        }
                     }
+                    .onDelete(perform: deleteTasks)
                 }
-                .onDelete(perform: deleteTasks)
-            }
+//            }
+            
         }
     }
     
@@ -55,6 +58,6 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        StatsView()
     }
 }
