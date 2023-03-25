@@ -10,49 +10,29 @@ import SwiftUI
 struct RepertoireView: View {
     let moc = PersistenceController.shared.container.viewContext
     @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<Exercise>
+    @Environment(\.editMode) private var editMode
     
     @State private var showingAdd = false
     
-    let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-    ]
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVGrid(columns: columns) {
-                    ForEach(exercises, id: \.self) { exercise in
-                        NavigationLink(destination: EmptyView()) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 25)
-                                    .aspectRatio(1.5, contentMode: .fit)
-                                    .foregroundColor(exercise.goal == "Improve" ? .blue : .green)
-                                Text(exercise.title ?? "Unknown")
-                                    .foregroundColor(.primary)
-                                    .padding()
-                            }
-                        }
-                        .padding()
-    //                    .contextMenu {
-    //                        Button("Delete", role: .destructive) {
-    //                            moc.delete(exercise)
-    //                            do {
-    //                                try moc.save()
-    //                            } catch {
-    //                                // handle the core data error
-    //                            }
-    //                        }
-    //                    }
+            
+            List {
+                ForEach(exercises, id: \.self) { exercise in
+                    NavigationLink(destination: EmptyView()) {
+                        Text(exercise.title ?? "Unknown")
                     }
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            showingAdd.toggle()
-                        } label: {
-                            Image(systemName: "plus")
-                        }
+                .onDelete(perform: deleteTasks)
+
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showingAdd.toggle()
+                    } label: {
+                        Image(systemName: "plus")
                     }
                 }
             }
@@ -62,6 +42,13 @@ struct RepertoireView: View {
             AddExerciseView()
         }
     }
+    
+    private func deleteTasks(offsets: IndexSet) {
+            withAnimation {
+                offsets.map { exercises[$0] }.forEach(moc.delete)
+                try? moc.save()
+            }
+        }
 }
 
 struct RepertoireView_Previews: PreviewProvider {

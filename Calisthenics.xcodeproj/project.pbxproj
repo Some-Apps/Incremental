@@ -13,9 +13,10 @@
 		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
 		C08FA4FF29CB9F24002CA6AF /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FE29CB9F24002CA6AF /* StatsView.swift */; };
 		C08FA50129CB9F3B002CA6AF /* CurrentExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA50029CB9F3B002CA6AF /* CurrentExerciseView.swift */; };
-		C08FA50329CE4952002CA6AF /* StopwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA50229CE4952002CA6AF /* StopwatchView.swift */; };
 		C0A9A4F529CF3FF8000CD191 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F129CB9404002CA6AF /* PersistenceController.swift */; };
 		C0A9A4F629CF4002000CD191 /* ExerciseLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F329CB9418002CA6AF /* ExerciseLog.xcdatamodeld */; };
+		C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A4F729CF461D000CD191 /* StopwatchViewModel.swift */; };
+		C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A4F929CF4623000CD191 /* StopwatchView.swift */; };
 		C0BDACA329CF3ECE006B19F9 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FA50A29CF33DF002CA6AF /* WidgetKit.framework */; };
 		C0BDACA429CF3ECE006B19F9 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FA50C29CF33DF002CA6AF /* SwiftUI.framework */; };
 		C0BDACA729CF3ECE006B19F9 /* CalisthenicsWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BDACA629CF3ECE006B19F9 /* CalisthenicsWidgetBundle.swift */; };
@@ -61,11 +62,12 @@
 		C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
 		C08FA4FE29CB9F24002CA6AF /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		C08FA50029CB9F3B002CA6AF /* CurrentExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentExerciseView.swift; sourceTree = "<group>"; };
-		C08FA50229CE4952002CA6AF /* StopwatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StopwatchView.swift; path = "../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/Calisthenics/Calisthenics/StopwatchView.swift"; sourceTree = "<group>"; };
 		C08FA50A29CF33DF002CA6AF /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C08FA50C29CF33DF002CA6AF /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C08FA52829CF3510002CA6AF /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		C08FA54D29CF39D0002CA6AF /* CalisthenicsWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CalisthenicsWidgetExtension.entitlements; sourceTree = "<group>"; };
+		C0A9A4F729CF461D000CD191 /* StopwatchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchViewModel.swift; sourceTree = "<group>"; };
+		C0A9A4F929CF4623000CD191 /* StopwatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchView.swift; sourceTree = "<group>"; };
 		C0BDACA229CF3ECE006B19F9 /* CalisthenicsWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CalisthenicsWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0BDACA629CF3ECE006B19F9 /* CalisthenicsWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsWidgetBundle.swift; sourceTree = "<group>"; };
 		C0BDACA829CF3ECE006B19F9 /* CalisthenicsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsWidget.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 		C08FA4F929CB957A002CA6AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C0A9A4F929CF4623000CD191 /* StopwatchView.swift */,
 				C0CB957C29C6445A0099974B /* ContentView.swift */,
 				C08FA50029CB9F3B002CA6AF /* CurrentExerciseView.swift */,
 				C08FA4FE29CB9F24002CA6AF /* StatsView.swift */,
@@ -157,7 +160,7 @@
 				C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */,
 				C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */,
 				C08FA4F129CB9404002CA6AF /* PersistenceController.swift */,
-				C08FA50229CE4952002CA6AF /* StopwatchView.swift */,
+				C0A9A4F729CF461D000CD191 /* StopwatchViewModel.swift */,
 				C08FA4F929CB957A002CA6AF /* Views */,
 				C08FA4F329CB9418002CA6AF /* ExerciseLog.xcdatamodeld */,
 				C0CB957E29C6445B0099974B /* Assets.xcassets */,
@@ -288,12 +291,13 @@
 			files = (
 				C08FA4FF29CB9F24002CA6AF /* StatsView.swift in Sources */,
 				C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */,
+				C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */,
 				C08FA4F229CB9404002CA6AF /* PersistenceController.swift in Sources */,
 				C08FA4F529CB9418002CA6AF /* ExerciseLog.xcdatamodeld in Sources */,
-				C08FA50329CE4952002CA6AF /* StopwatchView.swift in Sources */,
 				C08FA50129CB9F3B002CA6AF /* CurrentExerciseView.swift in Sources */,
 				C0CB957D29C6445A0099974B /* ContentView.swift in Sources */,
 				C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */,
+				C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */,
 				C0CB957B29C6445A0099974B /* CalisthenicsApp.swift in Sources */,
 				C0BDACB329CF3FBF006B19F9 /* CalisthenicsWidget.swift in Sources */,
 			);

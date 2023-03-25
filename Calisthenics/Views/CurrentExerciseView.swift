@@ -13,8 +13,8 @@ struct CurrentExerciseView: View {
     @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<Exercise>
     @AppStorage("randomExercise") var randomExercise = ""
     @FocusState private var textFieldIsFocused: Bool
-    @State private var duration = ""
-    
+    @StateObject var viewModel = StopwatchViewModel()
+
     var exercise: Exercise {
         exercises.first(where: { $0.id?.uuidString == randomExercise }) ?? Exercise()
     }
@@ -29,34 +29,32 @@ struct CurrentExerciseView: View {
             VStack {
                 List {
                     Section {
+                        Text(randomExercise)
                         Text(exercise.title!)
                         Text(String(Int(exercise.currentReps)))
-                        TextField("Duration", text: $duration)
-                            .keyboardType(.numberPad)
-                            .focused($textFieldIsFocused)
                     }
                     Section {
                         Button("Finished") {
                             createLog(finished: true)
                             generateRandomExercise()
-                            duration = ""
+                            viewModel.reset()
                             textFieldIsFocused.toggle()
                             WidgetCenter.shared.reloadAllTimelines()
                         }
-                        .disabled(duration == "" || Int(duration) == nil)
+                        .disabled(viewModel.seconds == 0)
                     }
                     Section {
                         Button("Could Not Finish") {
                             createLog(finished: false)
                             generateRandomExercise()
-                            duration = ""
+                            viewModel.reset()
                             textFieldIsFocused.toggle()
                             WidgetCenter.shared.reloadAllTimelines()
                         }
-                        .disabled(duration == "" || Int(duration) == nil)
+                        .disabled(viewModel.seconds == 0)
                     }
                 }
-                StopwatchView()
+                StopwatchView(viewModel: viewModel)
                 .padding()
                 
             }
@@ -66,7 +64,7 @@ struct CurrentExerciseView: View {
     func createLog(finished: Bool) {
         let newLog = Log(context: moc)
         newLog.id = UUID()
-        newLog.duration = Int16(duration)!
+        newLog.duration = Int16(exactly: viewModel.seconds)!
         newLog.exercise = exercise.title
         newLog.timestamp = Date()
         
@@ -101,8 +99,8 @@ struct CurrentExerciseView: View {
 
 }
 
-struct ExercisesView_Previews: PreviewProvider {
-    static var previews: some View {
-        CurrentExerciseView()
-    }
-}
+//struct ExercisesView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CurrentExerciseView()
+//    }
+//}

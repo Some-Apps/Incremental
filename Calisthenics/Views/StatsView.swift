@@ -11,12 +11,9 @@ struct StatsView: View {
     let moc = PersistenceController.shared.container.viewContext
     @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "timestamp", ascending: false)]) var logs: FetchedResults<Log>
     @Environment(\.editMode) private var editMode
-    @State private var isEditing = false
 
     
-    var todayMinutes: Double {
-        let numberOfDecimalPlaces = 2
-        let multiplier = pow(10.0, Double(numberOfDecimalPlaces))
+    var todayMinutes: String {
 
         var todaySeconds = 0
         for log in logs {
@@ -24,12 +21,16 @@ struct StatsView: View {
                 todaySeconds += Int(log.duration)
             }
         }
-        return ((Double(todaySeconds)/60.0) * multiplier).rounded() / multiplier
+        let minutes = todaySeconds / 60
+            let seconds = todaySeconds % 60
+            let formatedMinutes = String(format: "%01d:%02d", minutes, seconds)
+        
+        return formatedMinutes
     }
     
     var body: some View {
         VStack {
-            Text(String(todayMinutes))
+            Text(todayMinutes)
 //            ScrollView {
                 List {
                     ForEach(logs, id:\.id) { log in
