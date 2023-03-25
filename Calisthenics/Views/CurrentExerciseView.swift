@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import HealthKit
 import WidgetKit
 
 struct CurrentExerciseView: View {
@@ -29,7 +30,6 @@ struct CurrentExerciseView: View {
             VStack {
                 List {
                     Section {
-                        Text(randomExercise)
                         Text(exercise.title!)
                         Text(String(Int(exercise.currentReps)))
                     }
@@ -37,9 +37,17 @@ struct CurrentExerciseView: View {
                         Button("Finished") {
                             createLog(finished: true)
                             generateRandomExercise()
-                            viewModel.reset()
                             textFieldIsFocused.toggle()
                             WidgetCenter.shared.reloadAllTimelines()
+                            
+                            let exerciseType = HKWorkoutActivityType.functionalStrengthTraining
+                            let startDate = Date()
+                            let duration = TimeInterval(viewModel.seconds) // 30 minutes
+                            let endDate = startDate.addingTimeInterval(duration)
+                            
+                            saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
+                            viewModel.reset()
+
                         }
                         .disabled(viewModel.seconds == 0)
                     }
@@ -47,9 +55,17 @@ struct CurrentExerciseView: View {
                         Button("Could Not Finish") {
                             createLog(finished: false)
                             generateRandomExercise()
-                            viewModel.reset()
                             textFieldIsFocused.toggle()
                             WidgetCenter.shared.reloadAllTimelines()
+                            
+                            let exerciseType = HKWorkoutActivityType.functionalStrengthTraining
+                            let startDate = Date()
+                            let duration = TimeInterval(viewModel.seconds) // 30 minutes
+                            let endDate = startDate.addingTimeInterval(duration)
+                            
+                            saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
+                            viewModel.reset()
+
                         }
                         .disabled(viewModel.seconds == 0)
                     }
@@ -58,8 +74,48 @@ struct CurrentExerciseView: View {
                 .padding()
                 
             }
+            .onAppear {
+                requestAuthorization()
+            }
         }
     }
+    
+    func saveWorkout(exerciseType: HKWorkoutActivityType, startDate: Date, endDate: Date, duration: TimeInterval) {
+        let healthStore = HKHealthStore()
+        
+        let workout = HKWorkout(activityType: exerciseType,
+                                start: startDate,
+                                end: endDate,
+                                workoutEvents: nil,
+                                totalEnergyBurned: nil,
+                                totalDistance: nil,
+                                metadata: nil)
+        
+        healthStore.save(workout) { (success, error) in
+            if let error = error {
+                print("Error saving workout: \(error.localizedDescription)")
+            } else {
+                print("Successfully saved workout")
+            }
+        }
+    }
+
+
+
+    
+    func requestAuthorization() {
+        let healthStore = HKHealthStore()
+        let typesToShare: Set<HKSampleType> = [HKObjectType.workoutType()]
+        let typesToRead: Set<HKObjectType> = [HKObjectType.workoutType(), HKObjectType.quantityType(forIdentifier: .appleExerciseTime)!]
+
+        healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
+            if let error = error {
+                print("Error requesting authorization: \(error.localizedDescription)")
+            }
+        }
+    }
+
+
     
     func createLog(finished: Bool) {
         let newLog = Log(context: moc)
