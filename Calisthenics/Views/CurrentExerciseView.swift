@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
+import WidgetKit
 
-struct ExercisesView: View {
+struct CurrentExerciseView: View {
     let moc = PersistenceController.shared.container.viewContext
     @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<Exercise>
     @AppStorage("randomExercise") var randomExercise = ""
@@ -40,6 +41,7 @@ struct ExercisesView: View {
                             generateRandomExercise()
                             duration = ""
                             textFieldIsFocused.toggle()
+                            WidgetCenter.shared.reloadAllTimelines()
                         }
                         .disabled(duration == "" || Int(duration) == nil)
                     }
@@ -49,6 +51,7 @@ struct ExercisesView: View {
                             generateRandomExercise()
                             duration = ""
                             textFieldIsFocused.toggle()
+                            WidgetCenter.shared.reloadAllTimelines()
                         }
                         .disabled(duration == "" || Int(duration) == nil)
                     }
@@ -100,6 +103,6 @@ struct ExercisesView: View {
 
 struct ExercisesView_Previews: PreviewProvider {
     static var previews: some View {
-        ExercisesView()
+        CurrentExerciseView()
     }
 }

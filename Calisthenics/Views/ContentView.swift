@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            ExercisesView()
+            CurrentExerciseView()
                 .tabItem {
                     Label("First", systemImage: "1.circle")
                 }
