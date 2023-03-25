@@ -68,7 +68,7 @@ struct CalisthenicsWidgetEntryView : View {
         ZStack {
             ContainerRelativeShape()
                 .fill(.green.gradient)
-            Text(Int(entry.todayMinutes)! > 1 ? "\(entry.todayMinutes)\n minutes" : "\(entry.todayMinutes)\n minute")
+            Text(Int(entry.todayMinutes)! != 1 ? "\(entry.todayMinutes)\n minutes" : "\(entry.todayMinutes)\n minute")
                 .bold()
                 .font(.title)
                 .multilineTextAlignment(.center)

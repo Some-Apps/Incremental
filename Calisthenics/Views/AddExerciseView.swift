@@ -17,13 +17,14 @@ struct AddExerciseView: View {
     @State private var selectedTitle = ""
     @State private var selectedGoal = "Improve"
     @State private var selectedUnits = "Reps"
-    @State private var selectedCurrentReps = 0.0
-    @State private var selectedCurrentDuration = 0.0
+    @State private var selectedCurrentReps = ""
+    @State private var selectedCurrentDuration = ""
+    @State private var selectedNotes = ""
     
     var body: some View {
         VStack {
             List {
-                Section {
+                Section("General") {
                     TextField("Title", text: $selectedTitle)
                     Picker("Goal", selection: $selectedGoal) {
                         ForEach(goals, id: \.self) { goal in
@@ -35,11 +36,19 @@ struct AddExerciseView: View {
                             Text(unit)
                         }
                     }
+                    
+                }
+                Section("Starting Reps") {
                     if selectedUnits == "Reps" {
-                        DoubleTextField("Reps", value: $selectedCurrentReps)
+                        TextField("Reps", text: $selectedCurrentReps)
+                            .keyboardType(.numberPad)
                     } else if selectedUnits == "Duration" {
-                        DoubleTextField("Duration", value: $selectedCurrentDuration)
+                        TextField("Duration", text: $selectedCurrentDuration)
+                            .keyboardType(.numberPad)
                     }
+                }
+                Section("Notes") {
+                    TextEditor(text: $selectedNotes)
                 }
                 Section {
                     Button("Add Exercise") {
@@ -48,14 +57,14 @@ struct AddExerciseView: View {
                         newExercise.title = selectedTitle
                         newExercise.goal = selectedGoal
                         newExercise.units = selectedUnits
-                        newExercise.currentReps = selectedCurrentReps
-                        newExercise.currentDuration = selectedCurrentDuration
+                        newExercise.currentReps = selectedCurrentReps == "" ? 0.0 : Double(selectedCurrentReps)!
+                        newExercise.currentDuration = selectedCurrentDuration == "" ? 0.0 : Double(selectedCurrentDuration)!
                         newExercise.positiveRate = 0.5
                         newExercise.negativeRate = 1
                         try? moc.save()
                         dismiss()
                     }
-                    .disabled(selectedCurrentDuration == 0.0 && selectedCurrentReps == 0.0)
+//                    .disabled(selectedCurrentDuration == 0.0 && selectedCurrentReps == 0.0)
                 }
             }
         }
@@ -68,19 +77,19 @@ struct AddExerciseView_Previews: PreviewProvider {
     }
 }
 
-struct DoubleTextField: View {
-    let label: String
-    @Binding var value: Double
-    private let formatter = NumberFormatter()
-
-    init(_ label: String, value: Binding<Double>) {
-        self.label = label
-        self._value = value
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
-    }
-
-    var body: some View {
-        TextField("Enter value", value: $value, formatter: formatter)
-    }
-}
+//struct DoubleTextField: View {
+//    let label: String
+//    @Binding var value: String
+//    private let formatter = NumberFormatter()
+//
+//    init(_ label: String, value: Binding<Double>) {
+//        self.label = label
+//        self._value = value
+//        formatter.numberStyle = .decimal
+//        formatter.maximumFractionDigits = 2
+//    }
+//
+//    var body: some View {
+//        TextField("Enter value", value: $value, formatter: formatter)
+//    }
+//}

@@ -9,8 +9,9 @@ import SwiftUI
 
 struct RepertoireView: View {
     let moc = PersistenceController.shared.container.viewContext
-    @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<Exercise>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)]) var exercises: FetchedResults<Exercise>
     @Environment(\.editMode) private var editMode
+    @AppStorage("randomExercise") var randomExercise = ""
     
     @State private var showingAdd = false
     
@@ -20,12 +21,11 @@ struct RepertoireView: View {
             
             List {
                 ForEach(exercises, id: \.self) { exercise in
-                    NavigationLink(destination: EmptyView()) {
-                        Text(exercise.title ?? "Unknown")
+                    NavigationLink(destination: EditExerciseView(exercise: exercise)) {
+                        Text(exercise.title ?? "Unkown")
+                            .foregroundColor(exercise.id?.uuidString == randomExercise ? .secondary : .primary)
                     }
                 }
-                .onDelete(perform: deleteTasks)
-
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -42,17 +42,11 @@ struct RepertoireView: View {
             AddExerciseView()
         }
     }
-    
-    private func deleteTasks(offsets: IndexSet) {
-            withAnimation {
-                offsets.map { exercises[$0] }.forEach(moc.delete)
-                try? moc.save()
-            }
-        }
+
 }
 
-struct RepertoireView_Previews: PreviewProvider {
-    static var previews: some View {
-        RepertoireView()
-    }
-}
+//struct RepertoireView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RepertoireView()
+//    }
+//}

@@ -32,6 +32,9 @@ struct CurrentExerciseView: View {
                     Section {
                         Text(exercise.title!)
                         Text(String(Int(exercise.currentReps)))
+                        if exercise.notes != "" {
+                            Text(exercise.notes!)
+                        }
                     }
                     Section {
                         Button("Finished") {

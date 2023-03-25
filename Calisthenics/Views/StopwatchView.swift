@@ -9,6 +9,10 @@ import SwiftUI
 
 struct StopwatchView: View {
     @ObservedObject var viewModel: StopwatchViewModel
+    
+    var seconds: Int {
+        viewModel.seconds % 60
+    }
 
     var hours: Int {
         viewModel.seconds / 3600
@@ -29,7 +33,7 @@ struct StopwatchView: View {
                 Text(":")
                     .font(.system(size: 48))
                     .offset(y: -18)
-                StopwatchUnit(timeUnit: viewModel.seconds, timeUnitText: "SEC", color: .green)
+                StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .green)
             }
 
             HStack {
