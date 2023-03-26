@@ -19,6 +19,7 @@ struct EditExerciseView: View {
     @State private var selectedTitle: String
     @State private var selectedGoal: String
     @State private var selectedUnits: String
+    @State private var selectedMaintainReps: String
     @State private var selectedNotes: String
 
     init(exercise: Exercise) {
@@ -27,6 +28,7 @@ struct EditExerciseView: View {
         self._selectedTitle = State(initialValue: exercise.title ?? "")
         self._selectedGoal = State(initialValue: exercise.goal ?? "")
         self._selectedUnits = State(initialValue: exercise.units ?? "")
+        self._selectedMaintainReps = State(initialValue: String(Int(exercise.currentReps)))
         self._selectedNotes = State(initialValue: exercise.notes ?? "")
     }
 
@@ -47,6 +49,13 @@ struct EditExerciseView: View {
                         }
                     }
                 }
+                if selectedGoal == "Maintain" {
+                    Section("Maintain Reps") {
+                        TextField("Reps", text: $selectedMaintainReps)
+                            .keyboardType(.numberPad)
+                    }
+                        
+                }
                 Section("Notes") {
                     TextEditor(text: $selectedNotes)
                 }
@@ -56,7 +65,7 @@ struct EditExerciseView: View {
                     }
                 }
                 Section {
-                    Button("Delete") {
+                    Button("Delete", role: .destructive) {
                         delete()
                     }
                 }
@@ -69,6 +78,7 @@ struct EditExerciseView: View {
         exercise.goal = selectedGoal
         exercise.units = selectedUnits
         exercise.notes = selectedNotes
+        exercise.maintainReps = Double(selectedMaintainReps) ?? 0.0
         try? moc.save()
         dismiss()
     }

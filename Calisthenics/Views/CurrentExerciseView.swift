@@ -31,8 +31,12 @@ struct CurrentExerciseView: View {
                 List {
                     Section {
                         Text(exercise.title!)
-                        Text(String(Int(exercise.currentReps)))
-                        if exercise.notes != "" {
+                        if exercise.units == "Reps" {
+                            Text(String(Int(exercise.currentReps)))
+                        } else if exercise.units == "Duration" {
+                            Text(String(format: "%01d:%02d", Int(exercise.currentReps) / 60, Int(exercise.currentReps) % 60))
+                        }
+                        if (exercise.notes!.count > 0) {
                             Text(exercise.notes!)
                         }
                     }
@@ -128,13 +132,29 @@ struct CurrentExerciseView: View {
         newLog.timestamp = Date()
         
         if finished {
-            exercise.currentReps += exercise.positiveRate
-            exercise.positiveRate *= 1.1
-            exercise.negativeRate /= 1.1
-        } else {
-            exercise.currentReps -= exercise.negativeRate
-            exercise.positiveRate /= 1.1
-            exercise.negativeRate *= 1.1
+            if (exercise.goal == "Maintain") && (Int(exercise.currentReps) != Int(exercise.maintainReps)) {
+                if exercise.currentReps > exercise.maintainReps {
+                    exercise.currentReps = exercise.maintainReps
+                } else {
+                    exercise.currentReps += exercise.rate
+                    exercise.rate *= 1.1
+                }
+            } else {
+                exercise.currentReps += exercise.rate
+                exercise.rate *= 1.1
+            }
+        } else if !finished {
+            if exercise.goal == "Maintain" {
+                if exercise.currentReps > exercise.maintainReps {
+                    exercise.currentReps = exercise.maintainReps
+                }
+                exercise.currentReps -= exercise.rate
+                exercise.rate = 0.25
+            }
+            // go back to the last completed amount
+            exercise.currentReps -= exercise.rate
+            // reset positiveRate
+            exercise.rate = 0.25
         }
         try? moc.save()
     }

@@ -24,6 +24,7 @@ struct RepertoireView: View {
                     NavigationLink(destination: EditExerciseView(exercise: exercise)) {
                         Text(exercise.title ?? "Unkown")
                             .foregroundColor(exercise.id?.uuidString == randomExercise ? .secondary : .primary)
+                            .bold(exercise.goal == "Maintain" ? true : false)
                     }
                 }
             }

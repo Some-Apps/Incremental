@@ -18,8 +18,8 @@ struct AddExerciseView: View {
     @State private var selectedGoal = "Improve"
     @State private var selectedUnits = "Reps"
     @State private var selectedCurrentReps = ""
-    @State private var selectedCurrentDuration = ""
     @State private var selectedNotes = ""
+    @State private var selectedMaintainReps = ""
     
     var body: some View {
         VStack {
@@ -38,14 +38,15 @@ struct AddExerciseView: View {
                     }
                     
                 }
-                Section("Starting Reps") {
-                    if selectedUnits == "Reps" {
+                Section(selectedGoal == "Improve" ? "Starting" : "Maintain") {
+                    if selectedGoal == "Improve" {
                         TextField("Reps", text: $selectedCurrentReps)
                             .keyboardType(.numberPad)
-                    } else if selectedUnits == "Duration" {
-                        TextField("Duration", text: $selectedCurrentDuration)
+                    } else if selectedGoal == "Maintain" {
+                        TextField("Reps", text: $selectedMaintainReps)
                             .keyboardType(.numberPad)
                     }
+                    
                 }
                 Section("Notes") {
                     TextEditor(text: $selectedNotes)
@@ -57,10 +58,10 @@ struct AddExerciseView: View {
                         newExercise.title = selectedTitle
                         newExercise.goal = selectedGoal
                         newExercise.units = selectedUnits
-                        newExercise.currentReps = selectedCurrentReps == "" ? 0.0 : Double(selectedCurrentReps)!
-                        newExercise.currentDuration = selectedCurrentDuration == "" ? 0.0 : Double(selectedCurrentDuration)!
-                        newExercise.positiveRate = 0.5
-                        newExercise.negativeRate = 1
+                        newExercise.currentReps = Double(selectedCurrentReps) ?? 0.0
+                        newExercise.rate = 0.25
+                        newExercise.notes = selectedNotes
+                        newExercise.maintainReps = Double(selectedMaintainReps) ?? 0.0
                         try? moc.save()
                         dismiss()
                     }
