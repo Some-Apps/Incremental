@@ -21,6 +21,36 @@ struct AddExerciseView: View {
     @State private var selectedNotes = ""
     @State private var selectedMaintainReps = ""
     
+    
+    var customBinding: Binding<String> {
+        Binding<String>(
+            get: {
+                var formattedString = ""
+                let inputNumbers = Array(selectedCurrentReps).compactMap { Int(String($0)) }
+                
+                guard inputNumbers.count >= 2 else {
+                    return selectedCurrentReps
+                }
+                
+                for i in 0..<(inputNumbers.count - 1) {
+                    formattedString += String(format: "%02d", inputNumbers[i]) + ":"
+                }
+                
+                formattedString += String(format: "%02d", inputNumbers.last!)
+                return formattedString
+            },
+            set: { newValue in
+                if let lastChar = newValue.last,
+                   let lastNumber = Int(String(lastChar)),
+                   lastNumber >= 0, lastNumber <= 9 {
+                    selectedCurrentReps.append(lastChar)
+                }
+            }
+        )
+    }
+
+
+    
     var body: some View {
         VStack {
             List {
@@ -39,14 +69,8 @@ struct AddExerciseView: View {
                     
                 }
                 Section(selectedGoal == "Improve" ? "Starting" : "Maintain") {
-                    if selectedGoal == "Improve" {
-                        TextField("Reps", text: $selectedCurrentReps)
-                            .keyboardType(.numberPad)
-                    } else if selectedGoal == "Maintain" {
-                        TextField("Reps", text: $selectedMaintainReps)
-                            .keyboardType(.numberPad)
-                    }
-                    
+                    TextField("Reps", text: selectedGoal == "Improve" ? $selectedCurrentReps : $selectedMaintainReps)
+                        .keyboardType(.numberPad)
                 }
                 Section("Notes") {
                     TextEditor(text: $selectedNotes)
