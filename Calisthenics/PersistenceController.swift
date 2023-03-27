@@ -20,7 +20,13 @@ class PersistenceController {
         } else {
             // Configure the persistent store to use the App Group's shared container
             let storeURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.me.jareddanieljones.calisthenics")!.appendingPathComponent("ExerciseLog.sqlite") // Update the SQLite file name here
-            container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: storeURL)]
+            let storeDescription = NSPersistentStoreDescription(url: storeURL)
+            
+            // Enable lightweight migration
+            storeDescription.shouldMigrateStoreAutomatically = true
+            storeDescription.shouldInferMappingModelAutomatically = true
+            
+            container.persistentStoreDescriptions = [storeDescription]
         }
 
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -64,4 +70,3 @@ extension PersistenceController {
         }
     }
 }
-
