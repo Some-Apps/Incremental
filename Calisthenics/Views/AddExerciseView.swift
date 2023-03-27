@@ -77,22 +77,25 @@ struct AddExerciseView: View {
                 }
                 Section {
                     Button("Add Exercise") {
-                        let newExercise = Exercise(context: moc)
-                        newExercise.id = UUID()
-                        newExercise.title = selectedTitle
-                        newExercise.goal = selectedGoal
-                        newExercise.units = selectedUnits
-                        newExercise.currentReps = Double(selectedCurrentReps) ?? 0.0
-                        newExercise.rate = 0.25
-                        newExercise.notes = selectedNotes
-                        newExercise.maintainReps = Double(selectedMaintainReps) ?? 0.0
-                        try? moc.save()
+                        addExercise()
                         dismiss()
                     }
-//                    .disabled(selectedCurrentDuration == 0.0 && selectedCurrentReps == 0.0)
                 }
             }
         }
+    }
+    
+    func addExercise() {
+        let newExercise = Exercise(context: moc)
+        newExercise.id = UUID()
+        newExercise.title = selectedTitle
+        newExercise.goal = selectedGoal
+        newExercise.units = selectedUnits
+        newExercise.currentReps = Double(selectedCurrentReps) ?? 0.0
+        newExercise.rate = 0.25
+        newExercise.notes = selectedNotes
+        newExercise.maintainReps = Double(selectedMaintainReps) ?? 0.0
+        try? moc.save()
     }
 }
 
@@ -101,20 +104,3 @@ struct AddExerciseView_Previews: PreviewProvider {
         AddExerciseView()
     }
 }
-
-//struct DoubleTextField: View {
-//    let label: String
-//    @Binding var value: String
-//    private let formatter = NumberFormatter()
-//
-//    init(_ label: String, value: Binding<Double>) {
-//        self.label = label
-//        self._value = value
-//        formatter.numberStyle = .decimal
-//        formatter.maximumFractionDigits = 2
-//    }
-//
-//    var body: some View {
-//        TextField("Enter value", value: $value, formatter: formatter)
-//    }
-//}

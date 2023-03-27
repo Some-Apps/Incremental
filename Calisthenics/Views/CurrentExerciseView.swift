@@ -12,79 +12,82 @@ import WidgetKit
 struct CurrentExerciseView: View {
     let moc = PersistenceController.shared.container.viewContext
     @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<Exercise>
+    @FetchRequest(sortDescriptors: []) var stashedExercises: FetchedResults<StashExercise>
     @AppStorage("randomExercise") var randomExercise = ""
     @FocusState private var textFieldIsFocused: Bool
     @StateObject var viewModel = StopwatchViewModel()
-
+    var numStashed: Int {
+        stashedExercises.count
+    }
     var exercise: Exercise {
         exercises.first(where: { $0.id?.uuidString == randomExercise }) ?? Exercise()
     }
     
     var body: some View {
-        if randomExercise == "" {
-            Text("No exercices")
+        NavigationStack {
+            if randomExercise == "" {
+                Text("No exercices")
+                    .onAppear {
+                        generateRandomExercise()
+                    }
+            } else {
+                VStack {
+                    List {
+                        Section {
+                            Text(exercise.title!)
+                            if exercise.units == "Reps" {
+                                Text(String(Int(exercise.currentReps)))
+                            } else if exercise.units == "Duration" {
+                                Text(String(format: "%01d:%02d", Int(exercise.currentReps) / 60, Int(exercise.currentReps) % 60))
+                            }
+                            if (exercise.notes!.count > 0) {
+                                Text(exercise.notes!)
+                            }
+                        }
+                        Section {
+                            Button("Finished") {
+                                finishedOrNot(finished: true)
+                            }
+                            .disabled(viewModel.seconds == 0)
+                        }
+                        Section {
+                            Button("Could Not Finish") {
+                                finishedOrNot(finished: false)
+                            }
+                            .disabled(viewModel.seconds == 0)
+                        }
+                        Section {
+                            Button("Stash Exercise") {
+                                stashExercise()
+                                generateRandomExercise()
+                            }
+                            Text("\(numStashed) stashed exercises")
+                            NavigationLink("Complete Stashed Exercises", destination: StashedExerciseView())
+                        }
+                    }
+                    StopwatchView(viewModel: viewModel)
+                    .padding()
+                    
+                }
                 .onAppear {
-                    generateRandomExercise()
+                    requestAuthorization()
                 }
-        } else {
-            VStack {
-                List {
-                    Section {
-                        Text(exercise.title!)
-                        if exercise.units == "Reps" {
-                            Text(String(Int(exercise.currentReps)))
-                        } else if exercise.units == "Duration" {
-                            Text(String(format: "%01d:%02d", Int(exercise.currentReps) / 60, Int(exercise.currentReps) % 60))
-                        }
-                        if (exercise.notes!.count > 0) {
-                            Text(exercise.notes!)
-                        }
-                    }
-                    Section {
-                        Button("Finished") {
-                            createLog(finished: true)
-                            generateRandomExercise()
-                            textFieldIsFocused.toggle()
-                            WidgetCenter.shared.reloadAllTimelines()
-                            
-                            let exerciseType = HKWorkoutActivityType.functionalStrengthTraining
-                            let startDate = Date()
-                            let duration = TimeInterval(viewModel.seconds) // 30 minutes
-                            let endDate = startDate.addingTimeInterval(duration)
-                            
-                            saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
-                            viewModel.reset()
-
-                        }
-                        .disabled(viewModel.seconds == 0)
-                    }
-                    Section {
-                        Button("Could Not Finish") {
-                            createLog(finished: false)
-                            generateRandomExercise()
-                            textFieldIsFocused.toggle()
-                            WidgetCenter.shared.reloadAllTimelines()
-                            
-                            let exerciseType = HKWorkoutActivityType.functionalStrengthTraining
-                            let startDate = Date()
-                            let duration = TimeInterval(viewModel.seconds) // 30 minutes
-                            let endDate = startDate.addingTimeInterval(duration)
-                            
-                            saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
-                            viewModel.reset()
-
-                        }
-                        .disabled(viewModel.seconds == 0)
-                    }
-                }
-                StopwatchView(viewModel: viewModel)
-                .padding()
-                
-            }
-            .onAppear {
-                requestAuthorization()
             }
         }
+    }
+        
+    
+    func stashExercise() {
+        let newStashedExercise = StashExercise(context: moc)
+        newStashedExercise.currentReps = exercise.currentReps
+        newStashedExercise.units = exercise.units
+        newStashedExercise.maintainReps = exercise.maintainReps
+        newStashedExercise.notes = exercise.notes
+        newStashedExercise.title = exercise.title
+        newStashedExercise.goal = exercise.goal
+        newStashedExercise.id = exercise.id
+        newStashedExercise.rate = exercise.rate
+        try? moc.save()
     }
     
     func saveWorkout(exerciseType: HKWorkoutActivityType, startDate: Date, endDate: Date, duration: TimeInterval) {
@@ -106,9 +109,21 @@ struct CurrentExerciseView: View {
             }
         }
     }
-
-
-
+    
+    func finishedOrNot(finished: Bool) {
+        createLog(finished: finished)
+        generateRandomExercise()
+        textFieldIsFocused.toggle()
+        WidgetCenter.shared.reloadAllTimelines()
+        
+        let exerciseType = HKWorkoutActivityType.functionalStrengthTraining
+        let startDate = Date()
+        let duration = TimeInterval(viewModel.seconds) // 30 minutes
+        let endDate = startDate.addingTimeInterval(duration)
+        
+        saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
+        viewModel.reset()
+    }
     
     func requestAuthorization() {
         let healthStore = HKHealthStore()
@@ -122,8 +137,6 @@ struct CurrentExerciseView: View {
         }
     }
 
-
-    
     func createLog(finished: Bool) {
         let newLog = Log(context: moc)
         newLog.id = UUID()
