@@ -13,14 +13,14 @@ struct StashedExerciseView: View {
     let moc = PersistenceController.shared.container.viewContext
     @Environment(\.dismiss) var dismiss
     @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<StashExercise>
-    @AppStorage("randomExercise") var randomExercise = ""
+    @AppStorage("randomStashExercise") var randomStashExercise = ""
     @FocusState private var textFieldIsFocused: Bool
     @StateObject var viewModel = StopwatchViewModel()
     var numStashed: Int {
         exercises.count
     }
     var exercise: StashExercise {
-        exercises.first(where: { $0.id?.uuidString == randomExercise }) ?? StashExercise()
+        exercises.first(where: { $0.id?.uuidString == randomStashExercise }) ?? StashExercise()
     }
     
     var body: some View {
@@ -29,7 +29,7 @@ struct StashedExerciseView: View {
                 .onAppear {
                     dismiss()
                 }
-        } else if randomExercise == "" {
+        } else if randomStashExercise == "" {
             Text("No exercices")
                 .onAppear {
                     generateRandomExercise()
@@ -158,7 +158,7 @@ struct StashedExerciseView: View {
             
             if let uuidString = randomElement.id?.uuidString {
                 print("UUID string: \(uuidString)")
-                randomExercise = uuidString
+                randomStashExercise = uuidString
             } else {
                 print("UUID string is empty")
             }
