@@ -142,6 +142,7 @@ struct CurrentExerciseView: View {
         newLog.id = UUID()
         newLog.duration = Int16(exactly: viewModel.seconds)!
         newLog.exercise = exercise.title
+        newLog.reps = Int16(exactly: exercise.currentReps.rounded(.down))!
         newLog.timestamp = Date()
         
         if finished {
