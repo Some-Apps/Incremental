@@ -92,7 +92,7 @@ struct AddExerciseView: View {
         newExercise.goal = selectedGoal
         newExercise.units = selectedUnits
         newExercise.currentReps = Double(selectedCurrentReps) ?? 0.0
-        newExercise.rate = 0.25
+        newExercise.rate = 0.1
         newExercise.notes = selectedNotes
         newExercise.maintainReps = Double(selectedMaintainReps) ?? 0.0
         try? moc.save()

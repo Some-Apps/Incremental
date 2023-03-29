@@ -93,11 +93,11 @@ struct StashedExerciseView: View {
                     exercise.currentReps = exercise.maintainReps
                 } else {
                     exercise.currentReps += exercise.rate
-                    exercise.rate *= 1.1
+                    exercise.rate += 0.1
                 }
             } else {
                 exercise.currentReps += exercise.rate
-                exercise.rate *= 1.1
+                exercise.rate += 0.1
             }
         } else if !finished {
             if exercise.goal == "Maintain" {
@@ -105,12 +105,12 @@ struct StashedExerciseView: View {
                     exercise.currentReps = exercise.maintainReps
                 }
                 exercise.currentReps -= exercise.rate
-                exercise.rate = 0.25
+                exercise.rate = 0.1
             }
             // go back to the last completed amount
             exercise.currentReps -= exercise.rate
             // reset positiveRate
-            exercise.rate = 0.25
+            exercise.rate = 0.1
         }
         try? moc.save()
     }
