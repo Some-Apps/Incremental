@@ -19,7 +19,7 @@ struct StashedExerciseView: View {
     var numStashed: Int {
         exercises.count
     }
-    var exercise: StashExercise {
+    var someExercise: StashExercise {
         exercises.first(where: { $0.id?.uuidString == randomStashExercise }) ?? StashExercise()
     }
     
@@ -38,14 +38,14 @@ struct StashedExerciseView: View {
             VStack {
                 List {
                     Section {
-                        Text(exercise.title!)
-                        if exercise.units == "Reps" {
-                            Text(String(Int(exercise.currentReps)))
-                        } else if exercise.units == "Duration" {
-                            Text(String(format: "%01d:%02d", Int(exercise.currentReps) / 60, Int(exercise.currentReps) % 60))
+                        Text(someExercise.title ?? "didn't work")
+                        if someExercise.units == "Reps" {
+                            Text(String(Int(someExercise.currentReps)))
+                        } else if someExercise.units == "Duration" {
+                            Text(String(format: "%01d:%02d", Int(someExercise.currentReps) / 60, Int(someExercise.currentReps) % 60))
                         }
-                        if (exercise.notes!.count > 0) {
-                            Text(exercise.notes!)
+                        if (someExercise.notes!.count > 0) {
+                            Text(someExercise.notes!)
                         }
                     }
                     Section {
@@ -75,7 +75,7 @@ struct StashedExerciseView: View {
     }
     
     func removeStashedExercise() {
-        moc.delete(exercise)
+        moc.delete(someExercise)
         try? moc.save()
     }
     
@@ -83,34 +83,34 @@ struct StashedExerciseView: View {
         let newLog = Log(context: moc)
         newLog.id = UUID()
         newLog.duration = Int16(exactly: viewModel.seconds)!
-        newLog.exercise = exercise.title
-        newLog.reps = Int16(exactly: exercise.currentReps.rounded(.down))!
+        newLog.exercise = someExercise.title
+        newLog.reps = Int16(exactly: someExercise.currentReps.rounded(.down))!
         newLog.timestamp = Date()
         
         if finished {
-            if (exercise.goal == "Maintain") && (Int(exercise.currentReps) != Int(exercise.maintainReps)) {
-                if exercise.currentReps > exercise.maintainReps {
-                    exercise.currentReps = exercise.maintainReps
+            if (someExercise.goal == "Maintain") && (Int(someExercise.currentReps) != Int(someExercise.maintainReps)) {
+                if someExercise.currentReps > someExercise.maintainReps {
+                    someExercise.currentReps = someExercise.maintainReps
                 } else {
-                    exercise.currentReps += exercise.rate
-                    exercise.rate += 0.1
+                    someExercise.currentReps += someExercise.rate
+                    someExercise.rate += 0.1
                 }
             } else {
-                exercise.currentReps += exercise.rate
-                exercise.rate += 0.1
+                someExercise.currentReps += someExercise.rate
+                someExercise.rate += 0.1
             }
         } else if !finished {
-            if exercise.goal == "Maintain" {
-                if exercise.currentReps > exercise.maintainReps {
-                    exercise.currentReps = exercise.maintainReps
+            if someExercise.goal == "Maintain" {
+                if someExercise.currentReps > someExercise.maintainReps {
+                    someExercise.currentReps = someExercise.maintainReps
                 }
-                exercise.currentReps -= exercise.rate
-                exercise.rate = 0.1
+                someExercise.currentReps -= someExercise.rate
+                someExercise.rate = 0.1
             }
             // go back to the last completed amount
-            exercise.currentReps -= exercise.rate
+            someExercise.currentReps -= someExercise.rate
             // reset positiveRate
-            exercise.rate = 0.1
+            someExercise.rate = 0.1
         }
         try? moc.save()
     }
