@@ -40,21 +40,14 @@ struct StashedExerciseView: View {
                 List {
                     Section {
                         Text(someExercise.title ?? "didn't work")
-                            .onAppear {
-                                for i in exercises {
-                                    print(i.id)
-                                }
-                                print(randomStashExercise)
-                                print(someExercise.id)
-                            }
-//                        if someExercise.units == "Reps" {
-//                            Text(String(Int(someExercise.currentReps)))
-//                        } else if someExercise.units == "Duration" {
-//                            Text(String(format: "%01d:%02d", Int(someExercise.currentReps) / 60, Int(someExercise.currentReps) % 60))
-//                        }
-//                        if (someExercise.notes!.count > 0) {
-//                            Text(someExercise.notes!)
-//                        }
+                        if someExercise.units == "Reps" {
+                            Text(String(Int(someExercise.currentReps)))
+                        } else if someExercise.units == "Duration" {
+                            Text(String(format: "%01d:%02d", Int(someExercise.currentReps) / 60, Int(someExercise.currentReps) % 60))
+                        }
+                        if (someExercise.notes!.count > 0) {
+                            Text(someExercise.notes!)
+                        }
                     }
                     Section {
                         Button("Finished") {
