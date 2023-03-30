@@ -25,7 +25,7 @@ struct CurrentExerciseView: View {
     
     var body: some View {
         NavigationStack {
-            if randomExercise == "" {
+            if exercises.first(where: { $0.id?.uuidString == randomExercise }) == nil {
                 Text("No exercices")
                     .onAppear {
                         generateRandomExercise()

@@ -29,7 +29,8 @@ struct StashedExerciseView: View {
                 .onAppear {
                     dismiss()
                 }
-        } else if randomStashExercise == "" {
+        }
+        else if exercises.first(where: { $0.id?.uuidString == randomStashExercise }) == nil {
             Text("No exercices")
                 .onAppear {
                     generateRandomExercise()
@@ -39,14 +40,21 @@ struct StashedExerciseView: View {
                 List {
                     Section {
                         Text(someExercise.title ?? "didn't work")
-                        if someExercise.units == "Reps" {
-                            Text(String(Int(someExercise.currentReps)))
-                        } else if someExercise.units == "Duration" {
-                            Text(String(format: "%01d:%02d", Int(someExercise.currentReps) / 60, Int(someExercise.currentReps) % 60))
-                        }
-                        if (someExercise.notes!.count > 0) {
-                            Text(someExercise.notes!)
-                        }
+                            .onAppear {
+                                for i in exercises {
+                                    print(i.id)
+                                }
+                                print(randomStashExercise)
+                                print(someExercise.id)
+                            }
+//                        if someExercise.units == "Reps" {
+//                            Text(String(Int(someExercise.currentReps)))
+//                        } else if someExercise.units == "Duration" {
+//                            Text(String(format: "%01d:%02d", Int(someExercise.currentReps) / 60, Int(someExercise.currentReps) % 60))
+//                        }
+//                        if (someExercise.notes!.count > 0) {
+//                            Text(someExercise.notes!)
+//                        }
                     }
                     Section {
                         Button("Finished") {
@@ -68,7 +76,7 @@ struct StashedExerciseView: View {
                 }
                 StopwatchView(viewModel: viewModel)
                     .padding()
-                
+
             }
             .navigationTitle("Stashed Exercises")
         }
@@ -167,12 +175,4 @@ struct StashedExerciseView: View {
             print("No random exercise found")
         }
     }
-
 }
-
-
-//struct StashedExerciseView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        StashedExerciseView()
-//    }
-//}
