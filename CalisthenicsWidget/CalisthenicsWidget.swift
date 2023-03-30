@@ -83,8 +83,9 @@ struct CalisthenicsWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             CalisthenicsWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("some Calisthenics")
+        .description("Minutes exercised today")
+        .supportedFamilies([.systemSmall])
     }
 }
 
