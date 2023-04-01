@@ -5,8 +5,8 @@
 //  Created by Jared Jones on 3/22/23.
 //
 
+import Charts
 import SwiftUI
-
 
 struct StatsView: View {
     let moc = PersistenceController.shared.container.viewContext
@@ -47,6 +47,7 @@ struct StatsView: View {
 
     var body: some View {
         VStack {
+            // ADD CHART HERE
             List {
                 ForEach(sortedDates, id: \.self) { date in
                     let totalDuration = groupedLogs[date]?.totalDuration ?? 0
@@ -64,11 +65,6 @@ struct StatsView: View {
                 }
             }
         }
-//        .onAppear {
-//            if let todayLogs = groupedLogs[today]?.logs {
-//                expandedSections = [today]
-//            }
-//        }
     }
     
     private func deleteTasks(offsets: IndexSet, date: Date) {
@@ -128,8 +124,6 @@ struct LogRow: View {
         HStack {
             Text(log.exercise!)
             Spacer()
-//            Text(durationString(from: Int(log.duration)))
-//                .foregroundColor(.secondary)
             Text(String(log.reps))
                 .foregroundColor(.secondary)
         }
@@ -141,13 +135,3 @@ struct LogRow: View {
         return String(format: "%02d:%02d", minutes, seconds)
     }
 }
-
-
-
-
-
-//struct SettingsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        StatsView()
-//    }
-//}
