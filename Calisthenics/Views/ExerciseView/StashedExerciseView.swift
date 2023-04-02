@@ -87,6 +87,7 @@ struct StashedExerciseView: View {
         newLog.exercise = someExercise.title
         newLog.reps = Int16(exactly: someExercise.currentReps.rounded(.down))!
         newLog.timestamp = Date()
+        newLog.units = someExercise.units
         
         if finished {
             if (someExercise.goal == "Maintain") && (Int(someExercise.currentReps) != Int(someExercise.maintainReps)) {

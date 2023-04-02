@@ -144,6 +144,7 @@ struct CurrentExerciseView: View {
         newLog.exercise = exercise.title
         newLog.reps = Int16(exactly: exercise.currentReps.rounded(.down))!
         newLog.timestamp = Date()
+        newLog.units = exercise.units
         
         if finished {
             if (exercise.goal == "Maintain") && (Int(exercise.currentReps) != Int(exercise.maintainReps)) {

@@ -25,15 +25,11 @@ struct StopwatchView: View {
     var body: some View {
         VStack {
             HStack(spacing: 10) {
-                StopwatchUnit(timeUnit: hours, timeUnitText: "HR", color: .pink)
+                StopwatchUnit(timeUnit: minutes, timeUnitText: "MIN", color: .red)
                 Text(":")
                     .font(.system(size: 48))
                     .offset(y: -18)
-                StopwatchUnit(timeUnit: minutes, timeUnitText: "MIN", color: .blue)
-                Text(":")
-                    .font(.system(size: 48))
-                    .offset(y: -18)
-                StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .green)
+                StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue)
             }
 
             HStack {
