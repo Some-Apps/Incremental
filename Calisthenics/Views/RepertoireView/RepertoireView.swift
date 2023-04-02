@@ -12,13 +12,10 @@ struct RepertoireView: View {
     @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)]) var exercises: FetchedResults<Exercise>
     @Environment(\.editMode) private var editMode
     @AppStorage("randomExercise") var randomExercise = ""
-    
     @State private var showingAdd = false
-    
-    
+
     var body: some View {
         NavigationStack {
-            
             List {
                 ForEach(exercises, id: \.self) { exercise in
                     NavigationLink(destination: EditExerciseView(exercise: exercise)) {
@@ -43,11 +40,4 @@ struct RepertoireView: View {
             AddExerciseView()
         }
     }
-
 }
-
-//struct RepertoireView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RepertoireView()
-//    }
-//}

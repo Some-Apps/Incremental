@@ -159,6 +159,14 @@
 			path = RepertoireView;
 			sourceTree = "<group>";
 		};
+		C0A65C5D29D9DAB3001EAA5A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C0A9A4F729CF461D000CD191 /* StopwatchViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		C0BDACA529CF3ECE006B19F9 /* CalisthenicsWidget */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,7 +204,7 @@
 				C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */,
 				C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */,
 				C08FA4F129CB9404002CA6AF /* PersistenceController.swift */,
-				C0A9A4F729CF461D000CD191 /* StopwatchViewModel.swift */,
+				C0A65C5D29D9DAB3001EAA5A /* ViewModels */,
 				C08FA4F929CB957A002CA6AF /* Views */,
 				C08FA4F329CB9418002CA6AF /* ExerciseLog.xcdatamodeld */,
 				C0CB957E29C6445B0099974B /* Assets.xcassets */,
