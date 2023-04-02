@@ -54,11 +54,15 @@ struct EditExerciseView: View {
                         TextField("Reps", text: $selectedMaintainReps)
                             .keyboardType(.numberPad)
                     }
-                        
                 }
                 Section("Notes") {
                     TextEditor(text: $selectedNotes)
                 }
+                Section("View Only") {
+                    Text("Current Reps: \(String(format: "%.1f", exercise.currentReps))")
+                    Text("Rate: \(String(format: "%.1f", exercise.rate))")
+                }
+                .foregroundColor(.secondary)
                 Section {
                     Button("Save Changes") {
                         saveChanges()
