@@ -51,7 +51,7 @@ struct CurrentExerciseView: View {
                             .disabled(viewModel.seconds == 0)
                         }
                         Section {
-                            Button("Could Not Finish") {
+                            Button("Slow Down") {
                                 finishedOrNot(finished: false)
                             }
                             .disabled(viewModel.seconds == 0)
