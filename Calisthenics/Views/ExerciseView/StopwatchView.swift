@@ -61,6 +61,7 @@ struct StopwatchView: View {
                     }
                 }
             }
+            .preventSleep(isRunning: $viewModel.isRunning)
         }
     }
 }
