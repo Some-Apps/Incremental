@@ -23,36 +23,30 @@ struct StashedExerciseView: View {
     var numStashed: Int {
         exercises.count
     }
-    var someExercise: StashExercise {
-        exercises
-            .filter { $0.goal != "Inactive" }
-            .first(where: { $0.id?.uuidString == randomStashExercise }) ?? StashExercise()
+    var someExercise: StashExercise? {
+        let filteredExercises = exercises.filter { $0.goal != "Inactive" }
+        if let matchedExercise = filteredExercises.first(where: { $0.id?.uuidString == randomStashExercise }) {
+            return matchedExercise
+        } else {
+            generateRandomExercise()
+            return filteredExercises.first(where: { $0.id?.uuidString == randomStashExercise }) ?? nil
+        }
     }
+
     
     var body: some View {
-        if exercises.isEmpty {
-            Text("No exercices")
-                .onAppear {
-                    dismiss()
-                }
-        }
-        else if exercises.first(where: { $0.id?.uuidString == randomStashExercise }) == nil {
-            Text("No exercices")
-                .onAppear {
-                    generateRandomExercise()
-                }
-        } else {
+        if someExercise != nil {
             VStack {
                 List {
                     Section {
-                        Text(someExercise.title ?? "didn't work")
-                        if someExercise.units == "Reps" {
-                            Text(String(Int(someExercise.currentReps)))
-                        } else if someExercise.units == "Duration" {
-                            Text(String(format: "%01d:%02d", Int(someExercise.currentReps) / 60, Int(someExercise.currentReps) % 60))
+                        Text(someExercise!.title ?? "didn't work")
+                        if someExercise!.units == "Reps" {
+                            Text(String(Int(someExercise!.currentReps)))
+                        } else if someExercise!.units == "Duration" {
+                            Text(String(format: "%01d:%02d", Int(someExercise!.currentReps) / 60, Int(someExercise!.currentReps) % 60))
                         }
-                        if (someExercise.notes!.count > 0) {
-                            Text(someExercise.notes!)
+                        if (someExercise!.notes!.count > 0) {
+                            Text(someExercise!.notes!)
                         }
                     }
                     Section {
@@ -78,11 +72,21 @@ struct StashedExerciseView: View {
 
             }
             .navigationTitle("Stashed Exercises")
+        } else if exercises.isEmpty {
+            Text("No exercices")
+                .onAppear {
+                    dismiss()
+                }
+        } else {
+            Text("No exercices")
+                .onAppear {
+                    generateRandomExercise()
+                }
         }
     }
     
     func removeStashedExercise() {
-        moc.delete(someExercise)
+        moc.delete(someExercise!)
         try? moc.save()
     }
     
@@ -90,30 +94,30 @@ struct StashedExerciseView: View {
         let newLog = Log(context: moc)
         newLog.id = UUID()
         newLog.duration = Int16(exactly: viewModel.seconds)!
-        newLog.exercise = someExercise.title
-        newLog.reps = Int16(exactly: someExercise.currentReps.rounded(.down))!
+        newLog.exercise = someExercise!.title
+        newLog.reps = Int16(exactly: someExercise!.currentReps.rounded(.down))!
         newLog.timestamp = Date()
-        newLog.units = someExercise.units
+        newLog.units = someExercise!.units
         
         if finished {
-            if (someExercise.goal == "Maintain") && (Int(someExercise.currentReps) != Int(someExercise.maintainReps)) {
-                if someExercise.currentReps > someExercise.maintainReps {
-                    someExercise.currentReps = someExercise.maintainReps
+            if (someExercise!.goal == "Maintain") && (Int(someExercise!.currentReps) != Int(someExercise!.maintainReps)) {
+                if someExercise!.currentReps > someExercise!.maintainReps {
+                    someExercise!.currentReps = someExercise!.maintainReps
                 } else {
-                    someExercise.currentReps += positiveRate
+                    someExercise!.currentReps += positiveRate
                 }
             } else {
-                someExercise.currentReps += positiveRate
+                someExercise!.currentReps += positiveRate
             }
         } else if !finished {
-            if someExercise.goal == "Maintain" {
-                if someExercise.currentReps > someExercise.maintainReps {
-                    someExercise.currentReps = someExercise.maintainReps
+            if someExercise!.goal == "Maintain" {
+                if someExercise!.currentReps > someExercise!.maintainReps {
+                    someExercise!.currentReps = someExercise!.maintainReps
                 }
-                someExercise.currentReps += negativeRate
+                someExercise!.currentReps += negativeRate
             }
             // go back to the last completed amount
-            someExercise.currentReps += negativeRate
+            someExercise!.currentReps += negativeRate
         }
         try? moc.save()
     }

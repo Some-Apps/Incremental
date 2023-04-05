@@ -33,9 +33,7 @@ struct RepertoireView: View {
                     ForEach(activeExercises, id: \.self) { exercise in
                         NavigationLink(destination: EditExerciseView(exercise: exercise)) {
                             Text(exercise.title ?? "Unkown")
-                                .bold(exercise.goal == "Maintain" ? true : false)
                         }
-                        .disabled((exercise.id?.uuidString == randomExercise) || exercise.id?.uuidString == randomStashExercise)
                     }
                 }
                 Section("Inactive") {

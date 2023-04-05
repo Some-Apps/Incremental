@@ -23,31 +23,32 @@ struct CurrentExerciseView: View {
     var numStashed: Int {
         stashedExercises.count
     }
-    var exercise: Exercise {
-        exercises
-            .filter { $0.goal != "Inactive" }
-            .first(where: { $0.id?.uuidString == randomExercise }) ?? Exercise()
+    var exercise: Exercise? {
+        let filteredExercises = exercises.filter { $0.goal != "Inactive" }
+        if let matchedExercise = filteredExercises.first(where: { $0.id?.uuidString == randomExercise }) {
+            return matchedExercise
+        } else {
+            generateRandomExercise()
+            return filteredExercises.first(where: { $0.id?.uuidString == randomExercise }) ?? nil
+        }
     }
+
+
     
     var body: some View {
         NavigationStack {
-            if exercises.first(where: { $0.id?.uuidString == randomExercise }) == nil {
-                Text("No exercices")
-                    .onAppear {
-                        generateRandomExercise()
-                    }
-            } else {
+            if (exercise != nil) {
                 VStack {
                     List {
                         Section {
-                            Text(exercise.title!)
-                            if exercise.units == "Reps" {
-                                Text(String(Int(exercise.currentReps)))
-                            } else if exercise.units == "Duration" {
-                                Text(String(format: "%01d:%02d", Int(exercise.currentReps) / 60, Int(exercise.currentReps) % 60))
+                            Text(exercise!.title!)
+                            if exercise!.units == "Reps" {
+                                Text(String(Int(exercise!.currentReps)))
+                            } else if exercise!.units == "Duration" {
+                                Text(String(format: "%01d:%02d", Int(exercise!.currentReps) / 60, Int(exercise!.currentReps) % 60))
                             }
-                            if (exercise.notes!.count > 0) {
-                                Text(exercise.notes!)
+                            if (exercise!.notes!.count > 0) {
+                                Text(exercise!.notes!)
                             }
                         }
                         Section {
@@ -72,12 +73,17 @@ struct CurrentExerciseView: View {
                         }
                     }
                     StopwatchView(viewModel: viewModel)
-                    .padding()
+                        .padding()
                     
                 }
                 .onAppear {
                     requestAuthorization()
                 }
+            } else {
+                Text("No exercices")
+                    .onAppear {
+                        generateRandomExercise()
+                    }
             }
         }
     }
@@ -85,13 +91,13 @@ struct CurrentExerciseView: View {
     
     func stashExercise() {
         let newStashedExercise = StashExercise(context: moc)
-        newStashedExercise.currentReps = exercise.currentReps
-        newStashedExercise.units = exercise.units
-        newStashedExercise.maintainReps = exercise.maintainReps
-        newStashedExercise.notes = exercise.notes
-        newStashedExercise.title = exercise.title
-        newStashedExercise.goal = exercise.goal
-        newStashedExercise.id = exercise.id
+        newStashedExercise.currentReps = exercise!.currentReps
+        newStashedExercise.units = exercise!.units
+        newStashedExercise.maintainReps = exercise!.maintainReps
+        newStashedExercise.notes = exercise!.notes
+        newStashedExercise.title = exercise!.title
+        newStashedExercise.goal = exercise!.goal
+        newStashedExercise.id = exercise!.id
         try? moc.save()
     }
     
@@ -146,30 +152,30 @@ struct CurrentExerciseView: View {
         let newLog = Log(context: moc)
         newLog.id = UUID()
         newLog.duration = Int16(exactly: viewModel.seconds)!
-        newLog.exercise = exercise.title
-        newLog.reps = Int16(exactly: exercise.currentReps.rounded(.down))!
+        newLog.exercise = exercise!.title
+        newLog.reps = Int16(exactly: exercise!.currentReps.rounded(.down))!
         newLog.timestamp = Date()
-        newLog.units = exercise.units
+        newLog.units = exercise!.units
         
         if finished {
-            if (exercise.goal == "Maintain") && (Int(exercise.currentReps) != Int(exercise.maintainReps)) {
-                if exercise.currentReps > exercise.maintainReps {
-                    exercise.currentReps = exercise.maintainReps
+            if (exercise!.goal == "Maintain") && (Int(exercise!.currentReps) != Int(exercise!.maintainReps)) {
+                if exercise!.currentReps > exercise!.maintainReps {
+                    exercise!.currentReps = exercise!.maintainReps
                 } else {
-                    exercise.currentReps += positiveRate
+                    exercise!.currentReps += positiveRate
                 }
             } else {
-                exercise.currentReps += positiveRate
+                exercise!.currentReps += positiveRate
             }
         } else if !finished {
-            if exercise.goal == "Maintain" {
-                if exercise.currentReps > exercise.maintainReps {
-                    exercise.currentReps = exercise.maintainReps
+            if exercise!.goal == "Maintain" {
+                if exercise!.currentReps > exercise!.maintainReps {
+                    exercise!.currentReps = exercise!.maintainReps
                 }
-                exercise.currentReps += negativeRate
+                exercise!.currentReps += negativeRate
             }
             // go back to the last completed amount
-            exercise.currentReps += negativeRate
+            exercise!.currentReps += negativeRate
         }
         try? moc.save()
     }

@@ -88,14 +88,9 @@ struct EditExerciseView: View {
     
     private func delete() {
         var exercisesToDelete: [Exercise] = []
-        
-        if exercise.id?.uuidString != randomExercise {
-            exercisesToDelete.append(exercise)
-            dismiss()
-        } else {
-            print("Nope")
-        }
-        
+        exercisesToDelete.append(exercise)
+        dismiss()
+        print("Nope")
         exercisesToDelete.forEach(moc.delete)
         try? moc.save()
     }
