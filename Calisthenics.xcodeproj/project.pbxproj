@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C08CEB7A29DDBE310012C494 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08CEB7929DDBE310012C494 /* SettingsView.swift */; };
 		C08DCD6929CF8E1B00F26717 /* EditExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08DCD6829CF8E1B00F26717 /* EditExerciseView.swift */; };
 		C08FA4F229CB9404002CA6AF /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F129CB9404002CA6AF /* PersistenceController.swift */; };
 		C08FA4F529CB9418002CA6AF /* ExerciseLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F329CB9418002CA6AF /* ExerciseLog.xcdatamodeld */; };
@@ -60,6 +61,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C08CEB7929DDBE310012C494 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C08DCD6829CF8E1B00F26717 /* EditExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExerciseView.swift; sourceTree = "<group>"; };
 		C08FA4F129CB9404002CA6AF /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		C08FA4F429CB9418002CA6AF /* Exercise.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Exercise.xcdatamodel; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 			children = (
 				C08DCD6829CF8E1B00F26717 /* EditExerciseView.swift */,
 				C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */,
+				C08CEB7929DDBE310012C494 /* SettingsView.swift */,
 				C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */,
 			);
 			path = RepertoireView;
@@ -341,6 +344,7 @@
 				C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */,
 				C08FA4F229CB9404002CA6AF /* PersistenceController.swift in Sources */,
 				C08FA4F529CB9418002CA6AF /* ExerciseLog.xcdatamodeld in Sources */,
+				C08CEB7A29DDBE310012C494 /* SettingsView.swift in Sources */,
 				C08FA50129CB9F3B002CA6AF /* CurrentExerciseView.swift in Sources */,
 				C0C9DEB829D23C240085F64F /* StashedExerciseView.swift in Sources */,
 				C0CB957D29C6445A0099974B /* ContentView.swift in Sources */,

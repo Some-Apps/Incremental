@@ -13,7 +13,7 @@ struct EditExerciseView: View {
     @AppStorage("randomExercise") var randomExercise = ""
     let exercise: Exercise
 
-    let goals = ["Improve", "Maintain"]
+    let goals = ["Improve", "Maintain", "Inactive"]
     let units = ["Reps", "Duration"]
 
     @State private var selectedTitle: String
@@ -60,7 +60,6 @@ struct EditExerciseView: View {
                 }
                 Section("View Only") {
                     Text("Current Reps: \(String(format: "%.1f", exercise.currentReps))")
-                    Text("Rate: \(String(format: "%.1f", exercise.rate))")
                 }
                 .foregroundColor(.secondary)
                 Section {

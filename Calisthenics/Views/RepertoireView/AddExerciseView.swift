@@ -11,7 +11,7 @@ struct AddExerciseView: View {
     @Environment(\.dismiss) var dismiss
     let moc = PersistenceController.shared.container.viewContext
     
-    let goals = ["Improve", "Maintain"]
+    let goals = ["Improve", "Maintain", "Inactive"]
     let units = ["Reps", "Duration"]
     
     @State private var selectedTitle = ""
@@ -92,7 +92,6 @@ struct AddExerciseView: View {
         newExercise.goal = selectedGoal
         newExercise.units = selectedUnits
         newExercise.currentReps = Double(selectedCurrentReps) ?? 0.0
-        newExercise.rate = 0.1
         newExercise.notes = selectedNotes
         newExercise.maintainReps = Double(selectedMaintainReps) ?? 0.0
         try? moc.save()

@@ -9,34 +9,65 @@ import SwiftUI
 
 struct RepertoireView: View {
     let moc = PersistenceController.shared.container.viewContext
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)]) var exercises: FetchedResults<Exercise>
+    @FetchRequest(
+        entity: Exercise.entity(),
+        sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)],
+        predicate: NSPredicate(format: "goal != %@", "Inactive")
+    ) var activeExercises: FetchedResults<Exercise>
+
+    @FetchRequest(
+        entity: Exercise.entity(),
+        sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)],
+        predicate: NSPredicate(format: "goal == %@", "Inactive")
+    ) var inactiveExercises: FetchedResults<Exercise>
     @Environment(\.editMode) private var editMode
     @AppStorage("randomExercise") var randomExercise = ""
-    @State private var showingAdd = false
+    @AppStorage("randomStashExercise") var randomStashExercise = ""
+    @State private var showSettings = false
+    @State private var showAdd = false
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(exercises, id: \.self) { exercise in
-                    NavigationLink(destination: EditExerciseView(exercise: exercise)) {
-                        Text(exercise.title ?? "Unkown")
-                            .foregroundColor(exercise.id?.uuidString == randomExercise ? .secondary : .primary)
-                            .bold(exercise.goal == "Maintain" ? true : false)
+                Section("Active") {
+                    ForEach(activeExercises, id: \.self) { exercise in
+                        NavigationLink(destination: EditExerciseView(exercise: exercise)) {
+                            Text(exercise.title ?? "Unkown")
+                                .bold(exercise.goal == "Maintain" ? true : false)
+                        }
+                        .disabled((exercise.id?.uuidString == randomExercise) || exercise.id?.uuidString == randomStashExercise)
+                    }
+                }
+                Section("Inactive") {
+                    ForEach(inactiveExercises, id: \.self) { exercise in
+                        NavigationLink(destination: EditExerciseView(exercise: exercise)) {
+                            Text(exercise.title ?? "Unknown")
+                        }
                     }
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        showingAdd.toggle()
+                        showAdd.toggle()
                     } label: {
                         Image(systemName: "plus")
+                    }
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        showSettings.toggle()
+                    } label: {
+                        Image(systemName: "gearshape")
                     }
                 }
             }
             
         }
-        .sheet(isPresented: $showingAdd) {
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
+        .sheet(isPresented: $showAdd) {
             AddExerciseView()
         }
     }

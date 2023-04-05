@@ -14,13 +14,19 @@ struct CurrentExerciseView: View {
     @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<Exercise>
     @FetchRequest(sortDescriptors: []) var stashedExercises: FetchedResults<StashExercise>
     @AppStorage("randomExercise") var randomExercise = ""
+    @AppStorage("positiveLabel") var positiveLabel = "Finished"
+    @AppStorage("negativeLabel") var negativeLabel = "Could Not Finish"
+    @AppStorage("positiveRate") var positiveRate = 0.1
+    @AppStorage("negativeRate") var negativeRate = -0.1
     @FocusState private var textFieldIsFocused: Bool
     @StateObject var viewModel = StopwatchViewModel()
     var numStashed: Int {
         stashedExercises.count
     }
     var exercise: Exercise {
-        exercises.first(where: { $0.id?.uuidString == randomExercise }) ?? Exercise()
+        exercises
+            .filter { $0.goal != "Inactive" }
+            .first(where: { $0.id?.uuidString == randomExercise }) ?? Exercise()
     }
     
     var body: some View {
@@ -45,13 +51,13 @@ struct CurrentExerciseView: View {
                             }
                         }
                         Section {
-                            Button("Finished") {
+                            Button(positiveLabel) {
                                 finishedOrNot(finished: true)
                             }
                             .disabled(viewModel.seconds == 0)
                         }
                         Section {
-                            Button("Slow Down") {
+                            Button(negativeLabel) {
                                 finishedOrNot(finished: false)
                             }
                             .disabled(viewModel.seconds == 0)
@@ -86,7 +92,6 @@ struct CurrentExerciseView: View {
         newStashedExercise.title = exercise.title
         newStashedExercise.goal = exercise.goal
         newStashedExercise.id = exercise.id
-        newStashedExercise.rate = exercise.rate
         try? moc.save()
     }
     
@@ -151,38 +156,30 @@ struct CurrentExerciseView: View {
                 if exercise.currentReps > exercise.maintainReps {
                     exercise.currentReps = exercise.maintainReps
                 } else {
-                    exercise.currentReps += exercise.rate
-                    exercise.rate += 0.1
+                    exercise.currentReps += positiveRate
                 }
             } else {
-                exercise.currentReps += exercise.rate
-                exercise.rate += 0.1
+                exercise.currentReps += positiveRate
             }
         } else if !finished {
             if exercise.goal == "Maintain" {
                 if exercise.currentReps > exercise.maintainReps {
                     exercise.currentReps = exercise.maintainReps
                 }
-                exercise.currentReps -= exercise.rate
-                exercise.rate = 0.1
+                exercise.currentReps += negativeRate
             }
             // go back to the last completed amount
-            exercise.currentReps -= exercise.rate
-            // reset rate
-            exercise.rate = 0.1
+            exercise.currentReps += negativeRate
         }
         try? moc.save()
     }
     
     func generateRandomExercise() {
-        print("Exercises count: \(exercises.count)")
-        
         if let randomElement = exercises.randomElement() {
             print("Random exercise: \(randomElement)")
-            
             if let uuidString = randomElement.id?.uuidString {
-                print("UUID string: \(uuidString)")
                 randomExercise = uuidString
+                print("UUID string: \(uuidString)")
             } else {
                 print("UUID string is empty")
             }
@@ -192,9 +189,3 @@ struct CurrentExerciseView: View {
     }
 
 }
-
-//struct ExercisesView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CurrentExerciseView()
-//    }
-//}

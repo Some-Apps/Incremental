@@ -14,13 +14,19 @@ struct StashedExerciseView: View {
     @Environment(\.dismiss) var dismiss
     @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<StashExercise>
     @AppStorage("randomStashExercise") var randomStashExercise = ""
+    @AppStorage("positiveLabel") var positiveLabel = "Finished"
+    @AppStorage("negativeLabel") var negativeLabel = "Could Not Finish"
+    @AppStorage("positiveRate") var positiveRate = 0.1
+    @AppStorage("negativeRate") var negativeRate = -0.1
     @FocusState private var textFieldIsFocused: Bool
     @StateObject var viewModel = StopwatchViewModel()
     var numStashed: Int {
         exercises.count
     }
     var someExercise: StashExercise {
-        exercises.first(where: { $0.id?.uuidString == randomStashExercise }) ?? StashExercise()
+        exercises
+            .filter { $0.goal != "Inactive" }
+            .first(where: { $0.id?.uuidString == randomStashExercise }) ?? StashExercise()
     }
     
     var body: some View {
@@ -50,14 +56,14 @@ struct StashedExerciseView: View {
                         }
                     }
                     Section {
-                        Button("Finished") {
+                        Button(positiveLabel) {
                             finishedOrNot(finished: true)
                             removeStashedExercise()
                         }
                         .disabled(viewModel.seconds == 0)
                     }
                     Section {
-                        Button("Slow Down") {
+                        Button(negativeLabel) {
                             finishedOrNot(finished: false)
                             removeStashedExercise()
                         }
@@ -94,25 +100,20 @@ struct StashedExerciseView: View {
                 if someExercise.currentReps > someExercise.maintainReps {
                     someExercise.currentReps = someExercise.maintainReps
                 } else {
-                    someExercise.currentReps += someExercise.rate
-                    someExercise.rate += 0.1
+                    someExercise.currentReps += positiveRate
                 }
             } else {
-                someExercise.currentReps += someExercise.rate
-                someExercise.rate += 0.1
+                someExercise.currentReps += positiveRate
             }
         } else if !finished {
             if someExercise.goal == "Maintain" {
                 if someExercise.currentReps > someExercise.maintainReps {
                     someExercise.currentReps = someExercise.maintainReps
                 }
-                someExercise.currentReps -= someExercise.rate
-                someExercise.rate = 0.1
+                someExercise.currentReps += negativeRate
             }
             // go back to the last completed amount
-            someExercise.currentReps -= someExercise.rate
-            // reset positiveRate
-            someExercise.rate = 0.1
+            someExercise.currentReps += negativeRate
         }
         try? moc.save()
     }
