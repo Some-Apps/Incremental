@@ -74,8 +74,6 @@ struct StopwatchUnit: View {
     var timeUnitText: String
     var color: Color
 
-    /// Time unit expressed as String.
-    /// - Includes "0" as prefix if this is less than 10.
     var timeUnitStr: String {
         let timeUnitStr = String(timeUnit)
         return timeUnit < 10 ? "0" + timeUnitStr : timeUnitStr
@@ -105,11 +103,6 @@ struct StopwatchUnit: View {
     }
 }
 
-//struct Stopwatch_Previews: PreviewProvider {
-//    static var previews: some View {
-//        StopwatchView()
-//    }
-//}
 
 extension String {
     func substring(index: Int) -> String {
