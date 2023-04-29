@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RepertoireView: View {
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "timestamp", ascending: false)]) var logs: FetchedResults<Log>
     let moc = PersistenceController.shared.container.viewContext
     @FetchRequest(
         entity: Exercise.entity(),
@@ -25,9 +26,27 @@ struct RepertoireView: View {
     @AppStorage("randomStashExercise") var randomStashExercise = ""
     @State private var showSettings = false
     @State private var showAdd = false
+    
+    var activeExerciseLimit: Int {
+        let logsByDay = Dictionary(grouping: logs, by: { Calendar.current.startOfDay(for: $0.timestamp!) })
+        let totalSeconds = logsByDay.values.reduce(0) { (result, dailyLogs) -> Int in
+            result + dailyLogs.map { Int($0.duration) }.reduce(0, +)
+        }
+        let totalDays = logsByDay.count
+        let totalMinutes = totalSeconds / 60
+        let averageMinutes = totalDays > 0 ? totalMinutes / totalDays : 0
+        let unroundedLimit = Double(averageMinutes)/1.1
+        return Int(unroundedLimit)
+    }
+
+    
+    var activeExercisesCount: Int {
+        return activeExercises.count
+    }
 
     var body: some View {
         NavigationStack {
+            Text("\(activeExercisesCount)/\(activeExerciseLimit) Exercises")
             List {
                 Section("Active") {
                     ForEach(activeExercises, id: \.self) { exercise in
@@ -51,6 +70,7 @@ struct RepertoireView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
+                    .disabled(activeExercisesCount >= activeExerciseLimit)
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
