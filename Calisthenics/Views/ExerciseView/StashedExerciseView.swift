@@ -40,6 +40,7 @@ struct StashedExerciseView: View {
                 List {
                     Section {
                         Text(someExercise!.title ?? "didn't work")
+                            .bold()
                         if someExercise!.units == "Reps" {
                             Text(String(Int(someExercise!.currentReps)))
                         } else if someExercise!.units == "Duration" {
@@ -47,6 +48,7 @@ struct StashedExerciseView: View {
                         }
                         if (someExercise!.notes!.count > 0) {
                             Text(someExercise!.notes!)
+                                .italic()
                         }
                     }
                     Section {

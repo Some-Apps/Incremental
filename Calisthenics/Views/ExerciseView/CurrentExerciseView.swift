@@ -42,6 +42,7 @@ struct CurrentExerciseView: View {
                     List {
                         Section {
                             Text(exercise!.title!)
+                                .bold()
                             if exercise!.units == "Reps" {
                                 Text(String(Int(exercise!.currentReps)))
                             } else if exercise!.units == "Duration" {
@@ -49,6 +50,7 @@ struct CurrentExerciseView: View {
                             }
                             if (exercise!.notes!.count > 0) {
                                 Text(exercise!.notes!)
+                                    .italic()
                             }
                         }
                         Section {
