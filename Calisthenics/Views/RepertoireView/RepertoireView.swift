@@ -28,17 +28,17 @@ struct RepertoireView: View {
     @State private var showAdd = false
     
     var activeExerciseLimit: Int {
-        let logsByDay = Dictionary(grouping: logs, by: { Calendar.current.startOfDay(for: $0.timestamp!) })
+        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date())!
+        let recentLogs = logs.filter { $0.timestamp! >= thirtyDaysAgo }
+        let logsByDay = Dictionary(grouping: recentLogs, by: { Calendar.current.startOfDay(for: $0.timestamp!) })
         let totalSeconds = logsByDay.values.reduce(0) { (result, dailyLogs) -> Int in
             result + dailyLogs.map { Int($0.duration) }.reduce(0, +)
         }
-        let totalDays = logsByDay.count
         let totalMinutes = totalSeconds / 60
-        let averageMinutes = totalDays > 0 ? totalMinutes / totalDays : 0
-        let unroundedLimit = Double(averageMinutes)/1.1
+        let averageMinutes = totalMinutes / 30
+        let unroundedLimit = Double(averageMinutes) / 1.1
         return Int(unroundedLimit)
     }
-
     
     var activeExercisesCount: Int {
         return activeExercises.count
@@ -70,7 +70,7 @@ struct RepertoireView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
-                    .disabled(activeExercisesCount >= activeExerciseLimit)
+                    .disabled(activeExercisesCount >= activeExerciseLimit && activeExercisesCount != 0)
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
