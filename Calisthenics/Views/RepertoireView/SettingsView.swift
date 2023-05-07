@@ -15,22 +15,19 @@ struct SettingsView: View {
     @AppStorage("positiveNotes") var positiveNotes = "I was able to complete the exercise in one set"
     @AppStorage("negativeNotes") var negativeNotes = "I had to take a break to complete the exercise"
     
-    let positiveRange = Array(stride(from: 0.1, through: 1, by: 0.05))
-    let negativeRange = Array(stride(from: -0.1, through: -1, by: -0.05))
-    
     var body: some View {
         NavigationStack {
             Form {
                 Section(positiveLabel) {
                     TextField("Label", text: $positiveLabel)
-                    Stepper(value: $positiveRate, in: 0.1...1, step: 0.05) {
+                    Stepper(value: $positiveRate, in: 0...1, step: 0.01) {
                         Text("Value: \(positiveRate, specifier: "%.2f")")
                     }
 //                    TextEditor(text: $positiveNotes)
                 }
                 Section(negativeLabel) {
                     TextField("Label", text: $negativeLabel)
-                    Stepper(value: $negativeRate, in: -1...(-0.1), step: 0.05) {
+                    Stepper(value: $negativeRate, in: -1...(0), step: 0.01) {
                         Text("Value: \(negativeRate, specifier: "%.2f")")
                     }
 //                    TextEditor(text: $negativeNotes)

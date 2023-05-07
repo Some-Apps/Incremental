@@ -59,7 +59,7 @@ struct EditExerciseView: View {
                     TextEditor(text: $selectedNotes)
                 }
                 Section("View Only") {
-                    Text("Current Reps: \(String(format: "%.1f", exercise.currentReps))")
+                    Text("Current Reps: \(String(format: "%.2f", exercise.currentReps))")
                 }
                 .foregroundColor(.secondary)
                 Section {
