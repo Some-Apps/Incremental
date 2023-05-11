@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EditExerciseView: View {
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "timestamp", ascending: false)]) var logs: FetchedResults<Log>
     let moc = PersistenceController.shared.container.viewContext
     @Environment(\.dismiss) var dismiss
     @AppStorage("randomExercise") var randomExercise = ""
@@ -30,6 +31,12 @@ struct EditExerciseView: View {
         self._selectedUnits = State(initialValue: exercise.units ?? "")
         self._selectedMaintainReps = State(initialValue: String(Int(exercise.currentReps)))
         self._selectedNotes = State(initialValue: exercise.notes ?? "")
+    }
+    
+    var totalReps: Int {
+        let exerciseLogs = logs.filter { $0.exerciseTitle == exerciseTitle }
+        let totalReps = exerciseLogs.map { Int($0.reps) }.reduce(0, +)
+        return totalReps
     }
 
     
