@@ -12,8 +12,8 @@ struct SettingsView: View {
     @AppStorage("negativeLabel") var negativeLabel = "Could Not Finish"
     @AppStorage("positiveRate") var positiveRate = 0.1
     @AppStorage("negativeRate") var negativeRate = -0.1
-    @AppStorage("positiveNotes") var positiveNotes = "I was able to complete the exercise in one set"
-    @AppStorage("negativeNotes") var negativeNotes = "I had to take a break to complete the exercise"
+    @AppStorage("secondsPerExercisePerDay") var secondsPerExercisePerDay = 30
+
     
     var body: some View {
         NavigationStack {
@@ -31,6 +31,11 @@ struct SettingsView: View {
                         Text("Value: \(negativeRate, specifier: "%.2f")")
                     }
 //                    TextEditor(text: $negativeNotes)
+                }
+                Section {
+                    Stepper(value: $secondsPerExercisePerDay, in: 30...240, step: 1) {
+                        Text("Seconds/Exercise/Day: \(secondsPerExercisePerDay)")
+                    }
                 }
             }
         }

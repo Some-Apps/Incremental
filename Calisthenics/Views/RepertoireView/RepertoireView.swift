@@ -24,6 +24,7 @@ struct RepertoireView: View {
     @Environment(\.editMode) private var editMode
     @AppStorage("randomExercise") var randomExercise = ""
     @AppStorage("randomStashExercise") var randomStashExercise = ""
+    @AppStorage("secondsPerExercisePerDay") var secondsPerExercisePerDay = 30
     @State private var showSettings = false
     @State private var showAdd = false
     
@@ -34,10 +35,11 @@ struct RepertoireView: View {
         let totalSeconds = logsByDay.values.reduce(0) { (result, dailyLogs) -> Int in
             result + dailyLogs.map { Int($0.duration) }.reduce(0, +)
         }
-        let totalMinutes = totalSeconds / 60
-        let averageMinutes = totalMinutes / 30
-        let unroundedLimit = Double(averageMinutes) / 1.1
-        return Int(unroundedLimit)
+        let averageSeconds = totalSeconds / 30
+//        let totalMinutes = totalSeconds / 60
+//        let averageMinutes = totalMinutes / 30
+//        let unroundedLimit = Double(averageMinutes) / 1.1
+        return averageSeconds / secondsPerExercisePerDay
     }
     
     var activeExercisesCount: Int {
