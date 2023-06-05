@@ -11,6 +11,7 @@
 		C0360AE42A2E0CFA00E8CA37 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0360AE32A2E0CFA00E8CA37 /* Models.swift */; };
 		C0360AE62A2E0F8500E8CA37 /* CurrentExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0360AE52A2E0F8500E8CA37 /* CurrentExerciseView.swift */; };
 		C0360AE82A2E2BA800E8CA37 /* ExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0360AE72A2E2BA800E8CA37 /* ExerciseView.swift */; };
+		C04C438B2A2E830B00B48413 /* ExerciseCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04C438A2A2E830B00B48413 /* ExerciseCardView.swift */; };
 		C08FA4F229CB9404002CA6AF /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F129CB9404002CA6AF /* PersistenceController.swift */; };
 		C08FA4F529CB9418002CA6AF /* ExerciseLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F329CB9418002CA6AF /* ExerciseLog.xcdatamodeld */; };
 		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
@@ -62,6 +63,7 @@
 		C0360AE32A2E0CFA00E8CA37 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		C0360AE52A2E0F8500E8CA37 /* CurrentExerciseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentExerciseView.swift; sourceTree = "<group>"; };
 		C0360AE72A2E2BA800E8CA37 /* ExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseView.swift; sourceTree = "<group>"; };
+		C04C438A2A2E830B00B48413 /* ExerciseCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCardView.swift; sourceTree = "<group>"; };
 		C08FA4F129CB9404002CA6AF /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		C08FA4F429CB9418002CA6AF /* Exercise.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Exercise.xcdatamodel; sourceTree = "<group>"; };
 		C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calisthenics.entitlements; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 			children = (
 				C0A9A4F929CF4623000CD191 /* StopwatchView.swift */,
 				C0360AE52A2E0F8500E8CA37 /* CurrentExerciseView.swift */,
+				C04C438A2A2E830B00B48413 /* ExerciseCardView.swift */,
 			);
 			path = ExerciseView;
 			sourceTree = "<group>";
@@ -200,10 +203,10 @@
 				C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */,
 				C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */,
 				C08FA4F129CB9404002CA6AF /* PersistenceController.swift */,
-				C0A65C5D29D9DAB3001EAA5A /* ViewModels */,
-				C08FA4F929CB957A002CA6AF /* Views */,
 				C0360AE32A2E0CFA00E8CA37 /* Models.swift */,
 				C08FA4F329CB9418002CA6AF /* ExerciseLog.xcdatamodeld */,
+				C0A65C5D29D9DAB3001EAA5A /* ViewModels */,
+				C08FA4F929CB957A002CA6AF /* Views */,
 				C0CB957E29C6445B0099974B /* Assets.xcassets */,
 				C0CB958029C6445B0099974B /* Preview Content */,
 			);
@@ -341,6 +344,7 @@
 				C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */,
 				C0C78F8629DCBFF200F26A41 /* PreventSleep.swift in Sources */,
 				C0360AE82A2E2BA800E8CA37 /* ExerciseView.swift in Sources */,
+				C04C438B2A2E830B00B48413 /* ExerciseCardView.swift in Sources */,
 				C0360AE62A2E0F8500E8CA37 /* CurrentExerciseView.swift in Sources */,
 				C0CB957B29C6445A0099974B /* CalisthenicsApp.swift in Sources */,
 				C0BDACB329CF3FBF006B19F9 /* CalisthenicsWidget.swift in Sources */,
@@ -365,7 +369,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = CalisthenicsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisthenicsWidget/Info.plist;
@@ -376,7 +380,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.jareddanieljones.Calisthenics.CalisthenicsWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -393,7 +397,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = CalisthenicsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisthenicsWidget/Info.plist;
@@ -404,7 +408,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.jareddanieljones.Calisthenics.CalisthenicsWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

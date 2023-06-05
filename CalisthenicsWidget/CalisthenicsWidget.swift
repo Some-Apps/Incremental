@@ -13,11 +13,11 @@ struct Provider: TimelineProvider {
     let persistenceController = PersistenceController.shared
     
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), todayMinutes: "00:00")
+        SimpleEntry(date: Date(), todayMinutes: 0)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), todayMinutes: "00:00")
+        let entry = SimpleEntry(date: Date(), todayMinutes: 0)
         completion(entry)
     }
 
@@ -28,8 +28,7 @@ struct Provider: TimelineProvider {
         
         let fetchedEntities = try? persistenceController.container.viewContext.fetch(fetchRequest)
         
-        var todayMinutes: String {
-
+        var todayMinutes: Int {
             var todaySeconds = 0
             for log in fetchedEntities! {
                 if Calendar.current.isDateInToday(log.timestamp!) {
@@ -38,10 +37,11 @@ struct Provider: TimelineProvider {
             }
             let minutes = todaySeconds / 60
 //            let seconds = todaySeconds % 60
-//            let formatedMinutes = String(format: "%02d:%02d", minutes, seconds)
+//            let formattedMinutes = String(format: "%02d:%02d", minutes, seconds)
             
-            return String(minutes)
+            return minutes
         }
+
 
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
         let currentDate = Date()
@@ -58,8 +58,9 @@ struct Provider: TimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let todayMinutes: String
+    let todayMinutes: Int
 }
+
 
 struct CalisthenicsWidgetEntryView : View {
     var entry: Provider.Entry
@@ -68,7 +69,11 @@ struct CalisthenicsWidgetEntryView : View {
         ZStack {
             ContainerRelativeShape()
                 .fill(.green.gradient)
-            Text(Int(entry.todayMinutes)! != 1 ? "\(entry.todayMinutes)\n minutes" : "\(entry.todayMinutes)\n minute")
+            Text("\(entry.todayMinutes)" + (entry.todayMinutes == 1 ? "\n minute" : "\n minutes"))
+                .bold()
+                .font(.title)
+                .multilineTextAlignment(.center)
+
                 .bold()
                 .font(.title)
                 .multilineTextAlignment(.center)
@@ -91,7 +96,7 @@ struct CalisthenicsWidget: Widget {
 
 struct CalisthenicsWidget_Previews: PreviewProvider {
     static var previews: some View {
-        CalisthenicsWidgetEntryView(entry: SimpleEntry(date: Date(), todayMinutes: "00:00"))
+        CalisthenicsWidgetEntryView(entry: SimpleEntry(date: Date(), todayMinutes: 0))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }

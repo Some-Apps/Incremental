@@ -24,50 +24,37 @@ struct CurrentExerciseView: View {
     @State private var difficulty: Difficulty = .medium
 
     var exercise: Exercise? {
-        guard !randomExercise.isEmpty else { return nil }
-        let request: NSFetchRequest<Exercise> = Exercise.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %@", randomExercise)
-        do {
-            let result = try moc.fetch(request)
-            return result.first
-        } catch {
-            print("Failed to fetch exercise: \(error)")
-            return nil
+            guard !randomExercise.isEmpty else { return nil }
+            let request: NSFetchRequest<Exercise> = Exercise.fetchRequest()
+            request.predicate = NSPredicate(format: "id == %@", randomExercise)
+            do {
+                let result = try moc.fetch(request)
+                if let fetchedExercise = result.first {
+                    DispatchQueue.main.async {
+                        difficulty = Difficulty(rawValue: fetchedExercise.difficulty!) ?? .medium
+                    }
+                    return fetchedExercise
+                }
+                return nil
+            } catch {
+                print("Failed to fetch exercise: \(error)")
+                return nil
+            }
         }
-    }
-
 
 
     var body: some View {
         NavigationStack {
             if (exercise != nil && randomExercise != "") {
                 VStack {
+                    Text(totalDurationToday())
                     List {
-                        Section {
-                            Text(exercise!.title!)
-                                .bold()
-                            if exercise!.units == "Reps" {
-                                Text(String(Int(exercise!.currentReps)))
-                            } else if exercise!.units == "Duration" {
-                                Text(String(format: "%01d:%02d", Int(exercise!.currentReps) / 60, Int(exercise!.currentReps) % 60))
-                            }
-                            if (exercise!.notes!.count > 0) {
-                                Text(exercise!.notes!)
-                                    .italic()
-                            }
-                        }
-                        Section {
-                            Picker("Difficulty", selection: $difficulty) {
-                                ForEach(Difficulty.allCases, id: \.self) {
-                                    Text($0.rawValue)
-                                }
-                            }
-                            .pickerStyle(.segmented)
-                        }
+                        ExerciseCardView(exercise: exercise!, difficulty: $difficulty)
                         Section {
                             Button("Finished") {
                                 finished(difficulty: difficulty)
                             }
+                            .disabled(viewModel.seconds < 5)
                         }
                     }
                     StopwatchView(viewModel: viewModel)
@@ -148,6 +135,7 @@ struct CurrentExerciseView: View {
         newLog.units = oldExercise!.units
 
         oldExercise?.addToLogs(newLog)
+        oldExercise?.difficulty = difficulty.rawValue
 
         switch difficulty {
         case .easy:
@@ -178,5 +166,25 @@ struct CurrentExerciseView: View {
             print("No random exercise found")
         }
     }
+    
+    func totalDurationToday() -> String {
+        let fetchRequest: NSFetchRequest<Log> = Log.fetchRequest()
+        
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let predicate = NSPredicate(format: "(timestamp >= %@)", startOfDay as NSDate)
+        fetchRequest.predicate = predicate
+        
+        do {
+            let logs = try moc.fetch(fetchRequest)
+            let totalDuration = logs.reduce(0) { $0 + TimeInterval($1.duration) }
+            let minutes = Int(totalDuration) / 60
+            let seconds = Int(totalDuration) % 60
+            return String(format: "%02d:%02d", minutes, seconds)
+        } catch {
+            print("Failed to fetch Logs: \(error)")
+            return "00:00"
+        }
+    }
+
 
 }
