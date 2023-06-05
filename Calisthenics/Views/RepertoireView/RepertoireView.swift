@@ -57,9 +57,6 @@ struct RepertoireView: View {
             }
             
         }
-        .sheet(isPresented: $showSettings) {
-            SettingsView()
-        }
         .sheet(isPresented: $showAdd) {
             AddExerciseView()
         }

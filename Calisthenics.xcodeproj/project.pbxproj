@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		C0360AE22A2DFA5A00E8CA37 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */; };
+		C0360AE42A2E0CFA00E8CA37 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0360AE32A2E0CFA00E8CA37 /* Models.swift */; };
 		C08DCD6929CF8E1B00F26717 /* EditExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08DCD6829CF8E1B00F26717 /* EditExerciseView.swift */; };
 		C08FA4F229CB9404002CA6AF /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F129CB9404002CA6AF /* PersistenceController.swift */; };
 		C08FA4F529CB9418002CA6AF /* ExerciseLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F329CB9418002CA6AF /* ExerciseLog.xcdatamodeld */; };
 		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
 		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
 		C08FA4FF29CB9F24002CA6AF /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FE29CB9F24002CA6AF /* StatsView.swift */; };
-		C08FA50129CB9F3B002CA6AF /* CurrentExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA50029CB9F3B002CA6AF /* CurrentExerciseView.swift */; };
 		C0A65C5829D9D742001EAA5A /* DateSecitonHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A65C5729D9D742001EAA5A /* DateSecitonHeader.swift */; };
 		C0A65C5A29D9D77A001EAA5A /* LogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A65C5929D9D77A001EAA5A /* LogRow.swift */; };
 		C0A9A4F529CF3FF8000CD191 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4F129CB9404002CA6AF /* PersistenceController.swift */; };
@@ -61,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C0360AE32A2E0CFA00E8CA37 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		C08DCD6829CF8E1B00F26717 /* EditExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExerciseView.swift; sourceTree = "<group>"; };
 		C08FA4F129CB9404002CA6AF /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		C08FA4F429CB9418002CA6AF /* Exercise.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Exercise.xcdatamodel; sourceTree = "<group>"; };
@@ -68,7 +69,6 @@
 		C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepertoireView.swift; sourceTree = "<group>"; };
 		C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
 		C08FA4FE29CB9F24002CA6AF /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
-		C08FA50029CB9F3B002CA6AF /* CurrentExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentExerciseView.swift; sourceTree = "<group>"; };
 		C08FA50A29CF33DF002CA6AF /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C08FA50C29CF33DF002CA6AF /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C08FA52829CF3510002CA6AF /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
@@ -146,7 +146,6 @@
 			isa = PBXGroup;
 			children = (
 				C0A9A4F929CF4623000CD191 /* StopwatchView.swift */,
-				C08FA50029CB9F3B002CA6AF /* CurrentExerciseView.swift */,
 			);
 			path = ExerciseView;
 			sourceTree = "<group>";
@@ -209,6 +208,7 @@
 				C08FA4F129CB9404002CA6AF /* PersistenceController.swift */,
 				C0A65C5D29D9DAB3001EAA5A /* ViewModels */,
 				C08FA4F929CB957A002CA6AF /* Views */,
+				C0360AE32A2E0CFA00E8CA37 /* Models.swift */,
 				C08FA4F329CB9418002CA6AF /* ExerciseLog.xcdatamodeld */,
 				C0CB957E29C6445B0099974B /* Assets.xcassets */,
 				C0CB958029C6445B0099974B /* Preview Content */,
@@ -337,12 +337,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C08FA4FF29CB9F24002CA6AF /* StatsView.swift in Sources */,
+				C0360AE42A2E0CFA00E8CA37 /* Models.swift in Sources */,
 				C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */,
 				C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */,
 				C08FA4F229CB9404002CA6AF /* PersistenceController.swift in Sources */,
 				C08FA4F529CB9418002CA6AF /* ExerciseLog.xcdatamodeld in Sources */,
 				C0360AE22A2DFA5A00E8CA37 /* SettingsView.swift in Sources */,
-				C08FA50129CB9F3B002CA6AF /* CurrentExerciseView.swift in Sources */,
 				C0CB957D29C6445A0099974B /* ContentView.swift in Sources */,
 				C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */,
 				C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */,
