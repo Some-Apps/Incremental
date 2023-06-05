@@ -13,8 +13,8 @@ struct AddExerciseView: View {
         
     @State private var title = ""
     @State private var units = "Reps"
-    @State private var startingReps = 0.0
-    @State private var startingDuration = 0.0
+    @State private var startingReps = 30.0
+    @State private var startingDuration = 30.0
     @State private var notes = ""
     @State private var mainMuscles = Set<String>()
     @State private var accessoryMuscles = Set<String>()
@@ -58,9 +58,9 @@ struct AddExerciseView: View {
                     Stepper("\(timeFormatter())", value: $startingDuration)
                 }
             }
-            Section("Notes") {
-                TextEditor(text: $notes)
-            }
+//            Section("Notes") {
+//                TextEditor(text: $notes)
+//            }
         }
         .toolbar {
             ToolbarItem {
@@ -68,6 +68,7 @@ struct AddExerciseView: View {
                     addExercise()
                     dismiss()
                 }
+                .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines) == "")
             }
         }
     }
