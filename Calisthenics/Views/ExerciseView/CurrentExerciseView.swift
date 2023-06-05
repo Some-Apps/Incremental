@@ -12,7 +12,6 @@ import WidgetKit
 struct CurrentExerciseView: View {
     let moc = PersistenceController.shared.container.viewContext
     @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<Exercise>
-    @FetchRequest(sortDescriptors: []) var stashedExercises: FetchedResults<StashExercise>
     @AppStorage("randomExercise") var randomExercise = ""
     @AppStorage("positiveLabel") var positiveLabel = "Finished"
     @AppStorage("negativeLabel") var negativeLabel = "Could Not Finish"
@@ -20,9 +19,7 @@ struct CurrentExerciseView: View {
     @AppStorage("negativeRate") var negativeRate = -0.1
     @FocusState private var textFieldIsFocused: Bool
     @StateObject var viewModel = StopwatchViewModel()
-    var numStashed: Int {
-        stashedExercises.count
-    }
+    
     var exercise: Exercise? {
         let filteredExercises = exercises.filter { $0.goal != "Inactive" }
         if let matchedExercise = filteredExercises.first(where: { $0.id?.uuidString == randomExercise }) {
@@ -32,8 +29,6 @@ struct CurrentExerciseView: View {
             return filteredExercises.first(where: { $0.id?.uuidString == randomExercise }) ?? nil
         }
     }
-
-
     
     var body: some View {
         NavigationStack {
@@ -65,14 +60,6 @@ struct CurrentExerciseView: View {
                             }
                             .disabled(viewModel.seconds == 0)
                         }
-                        Section {
-                            Button("Stash Exercise") {
-                                stashExercise()
-                                generateRandomExercise()
-                            }
-                            Text("\(numStashed) stashed exercises")
-                            NavigationLink("Complete Stashed Exercises", destination: StashedExerciseView())
-                        }
                     }
                     StopwatchView(viewModel: viewModel)
                         .padding()
@@ -88,19 +75,6 @@ struct CurrentExerciseView: View {
                     }
             }
         }
-    }
-        
-    
-    func stashExercise() {
-        let newStashedExercise = StashExercise(context: moc)
-        newStashedExercise.currentReps = exercise!.currentReps
-        newStashedExercise.units = exercise!.units
-        newStashedExercise.maintainReps = exercise!.maintainReps
-        newStashedExercise.notes = exercise!.notes
-        newStashedExercise.title = exercise!.title
-        newStashedExercise.goal = exercise!.goal
-        newStashedExercise.id = exercise!.id
-        try? moc.save()
     }
     
     func saveWorkout(exerciseType: HKWorkoutActivityType, startDate: Date, endDate: Date, duration: TimeInterval) {

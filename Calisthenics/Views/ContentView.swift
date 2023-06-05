@@ -20,7 +20,7 @@ struct ContentView: View {
                 .tabItem {
                     Image(systemName: "list.clipboard")
                 }
-            StatsView()
+            SettingsView()
                 .tabItem {
                     Image(systemName: "chart.bar.fill")
                 }

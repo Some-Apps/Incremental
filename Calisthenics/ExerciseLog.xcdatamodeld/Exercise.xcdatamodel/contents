@@ -17,13 +17,4 @@
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="units" optional="YES" attributeType="String"/>
     </entity>
-    <entity name="StashExercise" representedClassName="StashExercise" syncable="YES" codeGenerationType="class">
-        <attribute name="currentReps" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="goal" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="maintainReps" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="notes" optional="YES" attributeType="String"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
-        <attribute name="units" optional="YES" attributeType="String"/>
-    </entity>
 </model>

@@ -33,11 +33,7 @@ struct EditExerciseView: View {
         self._selectedNotes = State(initialValue: exercise.notes ?? "")
     }
     
-    var totalReps: Int {
-        let exerciseLogs = logs.filter { $0.exerciseTitle == exerciseTitle }
-        let totalReps = exerciseLogs.map { Int($0.reps) }.reduce(0, +)
-        return totalReps
-    }
+   
 
     
     var body: some View {
