@@ -85,7 +85,7 @@ struct AddExerciseView: View {
         newExercise.isActive = true
         newExercise.title = title
         newExercise.units = units
-        newExercise.currentReps = Double(startingReps)
+        newExercise.currentReps = units == "Reps" ? Double(startingReps) : Double(startingDuration)
         newExercise.notes = notes
         newExercise.difficulty = "medium"
         try? moc.save()
