@@ -22,6 +22,7 @@ struct ExerciseView: View {
             Form {
                 Chart(sortedLogs, id: \.self) { log in
                     LineMark(x: .value("Date", log.timestamp!), y: .value("Reps", log.reps))
+                        .interpolationMethod(.cardinal)
                 }
                 .frame(height: 200)
             }
