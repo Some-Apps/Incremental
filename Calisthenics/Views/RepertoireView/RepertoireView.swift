@@ -8,57 +8,68 @@
 import SwiftUI
 
 struct RepertoireView: View {
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "timestamp", ascending: false)]) var logs: FetchedResults<Log>
     let moc = PersistenceController.shared.container.viewContext
+
     @FetchRequest(
         entity: Exercise.entity(),
         sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)],
-        predicate: NSPredicate(format: "goal != %@", "Inactive")
+        predicate: NSPredicate(format: "isActive == %@", NSNumber(value: true))
     ) var activeExercises: FetchedResults<Exercise>
 
     @FetchRequest(
         entity: Exercise.entity(),
         sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)],
-        predicate: NSPredicate(format: "goal == %@", "Inactive")
+        predicate: NSPredicate(format: "isActive != %@", NSNumber(value: true))
     ) var inactiveExercises: FetchedResults<Exercise>
+    
     @Environment(\.editMode) private var editMode
-    @AppStorage("randomExercise") var randomExercise = ""
-    @AppStorage("randomStashExercise") var randomStashExercise = ""
-    @AppStorage("secondsPerExercisePerDay") var secondsPerExercisePerDay = 30
-    @State private var showSettings = false
-    @State private var showAdd = false
 
     var body: some View {
         NavigationStack {
             List {
                 Section("Active") {
                     ForEach(activeExercises, id: \.self) { exercise in
-                        NavigationLink(destination: EditExerciseView(exercise: exercise)) {
+                        NavigationLink(destination: ExerciseView(exercise: exercise)) {
                             Text(exercise.title ?? "Unkown")
                         }
                     }
+                    .onDelete(perform: deleteExercise)
                 }
                 Section("Inactive") {
                     ForEach(inactiveExercises, id: \.self) { exercise in
-                        NavigationLink(destination: EditExerciseView(exercise: exercise)) {
+                        NavigationLink(destination: ExerciseView(exercise: exercise)) {
                             Text(exercise.title ?? "Unknown")
                         }
                     }
+                    .onDelete(perform: deleteExercise)
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showAdd.toggle()
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink {
+                        AddExerciseView()
                     } label: {
                         Image(systemName: "plus")
                     }
                 }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    EditButton()
+                }
             }
-            
         }
-        .sheet(isPresented: $showAdd) {
-            AddExerciseView()
+    }
+
+    private func deleteExercise(at offsets: IndexSet) {
+        for index in offsets {
+            let exercise = activeExercises[index]
+            moc.delete(exercise)
+        }
+        
+        do {
+            try moc.save()
+        } catch {
+            print("Failed to save context after deleting exercise: \(error)")
         }
     }
 }
+

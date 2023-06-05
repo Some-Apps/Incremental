@@ -10,91 +10,119 @@ import SwiftUI
 struct AddExerciseView: View {
     @Environment(\.dismiss) var dismiss
     let moc = PersistenceController.shared.container.viewContext
-    
-    let goals = ["Improve", "Maintain", "Inactive"]
-    let units = ["Reps", "Duration"]
-    
-    @State private var selectedTitle = ""
-    @State private var selectedGoal = "Improve"
-    @State private var selectedUnits = "Reps"
-    @State private var selectedCurrentReps = ""
-    @State private var selectedNotes = ""
-    @State private var selectedMaintainReps = ""
-    
-    
-    var customBinding: Binding<String> {
-        Binding<String>(
-            get: {
-                var formattedString = ""
-                let inputNumbers = Array(selectedCurrentReps).compactMap { Int(String($0)) }
-                
-                guard inputNumbers.count >= 2 else {
-                    return selectedCurrentReps
-                }
-                
-                for i in 0..<(inputNumbers.count - 1) {
-                    formattedString += String(format: "%02d", inputNumbers[i]) + ":"
-                }
-                
-                formattedString += String(format: "%02d", inputNumbers.last!)
-                return formattedString
-            },
-            set: { newValue in
-                if let lastChar = newValue.last,
-                   let lastNumber = Int(String(lastChar)),
-                   lastNumber >= 0, lastNumber <= 9 {
-                    selectedCurrentReps.append(lastChar)
-                }
-            }
-        )
-    }
-
-
+        
+    @State private var title = ""
+    @State private var units = "Reps"
+    @State private var startingReps = 0.0
+    @State private var startingDuration = 0.0
+    @State private var notes = ""
+    @State private var mainMuscles = Set<String>()
+    @State private var accessoryMuscles = Set<String>()
     
     var body: some View {
-        VStack {
-            List {
-                Section("General") {
-                    TextField("Title", text: $selectedTitle)
-                    Picker("Goal", selection: $selectedGoal) {
-                        ForEach(goals, id: \.self) { goal in
-                            Text(goal)
-                        }
+        Form {
+            Section("General") {
+                TextField("Title", text: $title)
+                Picker("Units", selection: $units) {
+                    ForEach(unitOptions, id: \.self) { unit in
+                        Text(unit)
                     }
-                    Picker("Units", selection: $selectedUnits) {
-                        ForEach(units, id: \.self) { unit in
-                            Text(unit)
-                        }
+                }
+                NavigationLink {
+                    MuscleSelectorView(muscles: $mainMuscles, muscleType: "main")
+                } label: {
+                    HStack {
+                        Text("Main Muscles")
+                        Spacer()
+                        Text(mainMuscles.count == 1 ? "1 muscle" : "\(mainMuscles.count) muscles")
+                            .foregroundColor(.secondary)
                     }
-                    
                 }
-                Section(selectedGoal == "Improve" ? "Starting" : "Maintain") {
-                    TextField("Reps", text: selectedGoal == "Improve" ? $selectedCurrentReps : $selectedMaintainReps)
-                        .keyboardType(.numberPad)
-                }
-                Section("Notes") {
-                    TextEditor(text: $selectedNotes)
-                }
-                Section {
-                    Button("Add Exercise") {
-                        addExercise()
-                        dismiss()
+                NavigationLink {
+                    MuscleSelectorView(muscles: $accessoryMuscles, muscleType: "accessory")
+                } label: {
+                    HStack {
+                        Text("Accessory Muscles")
+                        Spacer()
+                        Text(accessoryMuscles.count == 1 ? "1 muscle" : "\(accessoryMuscles.count) muscles")
+                            .foregroundColor(.secondary)
                     }
+                }
+            }
+            if units == "Reps" {
+                Section("Starting Reps") {
+                    Stepper("\(Int(startingReps))", value: $startingReps)
+                }
+            } else if units == "Duration" {
+                Section("Starting Duration") {
+                    Stepper("\(timeFormatter())", value: $startingDuration)
+                }
+            }
+            Section("Notes") {
+                TextEditor(text: $notes)
+            }
+        }
+        .toolbar {
+            ToolbarItem {
+                Button("Save") {
+                    addExercise()
+                    dismiss()
                 }
             }
         }
     }
     
+    func timeFormatter() -> String {
+        let minutes = Int(startingDuration / 60)
+        let remainingSeconds = Int(startingDuration.truncatingRemainder(dividingBy: 60))
+        return String(format: "%02d:%02d", minutes, remainingSeconds)
+    }
+    
     func addExercise() {
         let newExercise = Exercise(context: moc)
         newExercise.id = UUID()
-        newExercise.title = selectedTitle
-        newExercise.goal = selectedGoal
-        newExercise.units = selectedUnits
-        newExercise.currentReps = Double(selectedCurrentReps) ?? 0.0
-        newExercise.notes = selectedNotes
-        newExercise.maintainReps = Double(selectedMaintainReps) ?? 0.0
+        newExercise.isActive = true
+        newExercise.title = title
+        newExercise.units = units
+        newExercise.currentReps = Double(startingReps)
+        newExercise.notes = notes
         try? moc.save()
+    }
+}
+
+struct MultipleSelectionRow: View {
+    var title: String
+    var isSelected: Bool
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                    .foregroundColor(isSelected ? .accentColor : .primary)
+                if isSelected {
+                    Spacer()
+                    Image(systemName: "checkmark")
+                }
+            }
+        }
+    }
+}
+
+struct MuscleSelectorView: View {
+    @Binding var muscles: Set<String>
+    let muscleType: String
+    
+    var body: some View {
+        List(muscleType == "main" ? mainMuscleOptions : accessoryMuscleOptions, id: \.self) { option in
+            MultipleSelectionRow(title: option, isSelected: muscles.contains(option)) {
+                if muscles.contains(option) {
+                    muscles.remove(option)
+                } else {
+                    muscles.insert(option)
+                }
+            }
+        }
     }
 }
 

@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @AppStorage("easyPercent") var easyPercent = 110
+    @AppStorage("mediumPercent") var mediumPercent = 105
+    @AppStorage("hardPercent") var hardPercent = 95
+
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Form {
+            Stepper("Easy: \(easyPercent)%", value: $easyPercent, step: 1)
+            Stepper("Medium: \(mediumPercent)%", value: $mediumPercent, step: 1)
+            Stepper("Hard: \(hardPercent)%", value: $hardPercent, step: 1)
+        }
     }
 }
 

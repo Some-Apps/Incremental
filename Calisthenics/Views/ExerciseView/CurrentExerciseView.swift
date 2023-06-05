@@ -5,6 +5,7 @@
 //  Created by Jared Jones on 3/22/23.
 //
 
+import CoreData
 import SwiftUI
 import HealthKit
 import WidgetKit
@@ -12,27 +13,34 @@ import WidgetKit
 struct CurrentExerciseView: View {
     let moc = PersistenceController.shared.container.viewContext
     @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<Exercise>
-    @AppStorage("randomExercise") var randomExercise = ""
-    @AppStorage("positiveLabel") var positiveLabel = "Finished"
-    @AppStorage("negativeLabel") var negativeLabel = "Could Not Finish"
-    @AppStorage("positiveRate") var positiveRate = 0.1
-    @AppStorage("negativeRate") var negativeRate = -0.1
-    @FocusState private var textFieldIsFocused: Bool
+
+    @AppStorage("randomExercise") var randomExercise: String = ""
+    @AppStorage("easyPercent") var easyPercent = 110
+    @AppStorage("mediumPercent") var mediumPercent = 105
+    @AppStorage("hardPercent") var hardPercent = 95
+
     @StateObject var viewModel = StopwatchViewModel()
-    
+
+    @State private var difficulty: Difficulty = .medium
+
     var exercise: Exercise? {
-        let filteredExercises = exercises.filter { $0.goal != "Inactive" }
-        if let matchedExercise = filteredExercises.first(where: { $0.id?.uuidString == randomExercise }) {
-            return matchedExercise
-        } else {
-            generateRandomExercise()
-            return filteredExercises.first(where: { $0.id?.uuidString == randomExercise }) ?? nil
+        guard !randomExercise.isEmpty else { return nil }
+        let request: NSFetchRequest<Exercise> = Exercise.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", randomExercise)
+        do {
+            let result = try moc.fetch(request)
+            return result.first
+        } catch {
+            print("Failed to fetch exercise: \(error)")
+            return nil
         }
     }
-    
+
+
+
     var body: some View {
         NavigationStack {
-            if (exercise != nil) {
+            if (exercise != nil && randomExercise != "") {
                 VStack {
                     List {
                         Section {
@@ -49,37 +57,43 @@ struct CurrentExerciseView: View {
                             }
                         }
                         Section {
-                            Button(positiveLabel) {
-                                finishedOrNot(finished: true)
+                            Picker("Difficulty", selection: $difficulty) {
+                                ForEach(Difficulty.allCases, id: \.self) {
+                                    Text($0.rawValue)
+                                }
                             }
-                            .disabled(viewModel.seconds == 0)
+                            .pickerStyle(.segmented)
                         }
                         Section {
-                            Button(negativeLabel) {
-                                finishedOrNot(finished: false)
+                            Button("Finished") {
+                                finished(difficulty: difficulty)
                             }
-                            .disabled(viewModel.seconds == 0)
                         }
                     }
                     StopwatchView(viewModel: viewModel)
                         .padding()
-                    
+
                 }
                 .onAppear {
                     requestAuthorization()
                 }
             } else {
-                Text("No exercices")
+                Text("No exercises")
                     .onAppear {
-                        generateRandomExercise()
+                        if exercises.isEmpty {
+                            print("No exercises available")
+                        } else {
+                            generateRandomExercise()
+                        }
                     }
             }
         }
+
     }
-    
+
     func saveWorkout(exerciseType: HKWorkoutActivityType, startDate: Date, endDate: Date, duration: TimeInterval) {
         let healthStore = HKHealthStore()
-        
+
         let workout = HKWorkout(activityType: exerciseType,
                                 start: startDate,
                                 end: endDate,
@@ -87,7 +101,7 @@ struct CurrentExerciseView: View {
                                 totalEnergyBurned: nil,
                                 totalDistance: nil,
                                 metadata: nil)
-        
+
         healthStore.save(workout) { (success, error) in
             if let error = error {
                 print("Error saving workout: \(error.localizedDescription)")
@@ -96,22 +110,21 @@ struct CurrentExerciseView: View {
             }
         }
     }
-    
-    func finishedOrNot(finished: Bool) {
-        createLog(finished: finished)
+
+    func finished(difficulty: Difficulty) {
+        createLog(difficulty: difficulty)
         generateRandomExercise()
-        textFieldIsFocused.toggle()
         WidgetCenter.shared.reloadAllTimelines()
-        
+
         let exerciseType = HKWorkoutActivityType.functionalStrengthTraining
         let startDate = Date()
         let duration = TimeInterval(viewModel.seconds) // 30 minutes
         let endDate = startDate.addingTimeInterval(duration)
-        
+
         saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
         viewModel.reset()
     }
-    
+
     func requestAuthorization() {
         let healthStore = HKHealthStore()
         let typesToShare: Set<HKSampleType> = [HKObjectType.workoutType()]
@@ -124,38 +137,34 @@ struct CurrentExerciseView: View {
         }
     }
 
-    func createLog(finished: Bool) {
+    func createLog(difficulty: Difficulty) {
+        let oldExercise = exercise
+        
         let newLog = Log(context: moc)
         newLog.id = UUID()
         newLog.duration = Int16(exactly: viewModel.seconds)!
-        newLog.exercise = exercise!.title
-        newLog.reps = Int16(exactly: exercise!.currentReps.rounded(.down))!
+        newLog.reps = Int16(exactly: oldExercise!.currentReps.rounded(.down))!
         newLog.timestamp = Date()
-        newLog.units = exercise!.units
-        
-        if finished {
-            if (exercise!.goal == "Maintain") && (Int(exercise!.currentReps) != Int(exercise!.maintainReps)) {
-                if exercise!.currentReps > exercise!.maintainReps {
-                    exercise!.currentReps = exercise!.maintainReps
-                } else {
-                    exercise!.currentReps += positiveRate
-                }
-            } else {
-                exercise!.currentReps += positiveRate
-            }
-        } else if !finished {
-            if exercise!.goal == "Maintain" {
-                if exercise!.currentReps > exercise!.maintainReps {
-                    exercise!.currentReps = exercise!.maintainReps
-                }
-                exercise!.currentReps += negativeRate
-            }
-            // go back to the last completed amount
-            exercise!.currentReps += negativeRate
+        newLog.units = oldExercise!.units
+
+        oldExercise?.addToLogs(newLog)
+
+        switch difficulty {
+        case .easy:
+            oldExercise?.currentReps *= Double(easyPercent)/100
+        case .medium:
+            oldExercise?.currentReps *= Double(mediumPercent)/100
+        case .hard:
+            oldExercise?.currentReps *= Double(hardPercent)/100
         }
-        try? moc.save()
+
+        do {
+            try moc.save()
+        } catch {
+            print("Error saving to CoreData: \(error)")
+        }
     }
-    
+
     func generateRandomExercise() {
         if let randomElement = exercises.randomElement() {
             print("Random exercise: \(randomElement)")
