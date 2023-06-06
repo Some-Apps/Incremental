@@ -67,17 +67,12 @@ struct CalisthenicsWidgetEntryView : View {
 
     var body: some View {
         ZStack {
-            ContainerRelativeShape()
-                .fill(.green.gradient)
             Text("\(entry.todayMinutes)" + (entry.todayMinutes == 1 ? "\n minute" : "\n minutes"))
                 .bold()
                 .font(.title)
                 .multilineTextAlignment(.center)
-
-                .bold()
-                .font(.title)
-                .multilineTextAlignment(.center)
         }
+        .containerBackground(AnyShapeStyle(.green), for: .widget)
     }
 }
 
