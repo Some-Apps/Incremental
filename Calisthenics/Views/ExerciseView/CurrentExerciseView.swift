@@ -5,6 +5,7 @@
 //  Created by Jared Jones on 3/22/23.
 //
 
+import AlertToast
 import CoreData
 import SwiftUI
 import HealthKit
@@ -12,8 +13,12 @@ import WidgetKit
 
 struct CurrentExerciseView: View {
     let moc = PersistenceController.shared.container.viewContext
-    
-    @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<Exercise>
+
+        @FetchRequest(
+            entity: Exercise.entity(),
+            sortDescriptors: [],
+            predicate: NSPredicate(format: "isActive == %@", NSNumber(value: true))
+        ) var exercises: FetchedResults<Exercise>
 
     @AppStorage("randomExercise") var randomExercise: String = ""
     @AppStorage("easyType") var easyType = "Increment"
@@ -27,10 +32,12 @@ struct CurrentExerciseView: View {
     @AppStorage("hardPercent") var hardPercent = -5.0
 
     @StateObject var stopwatchViewModel = StopwatchViewModel()
-
+       @StateObject var exerciseViewModel = ExerciseViewModel()
+    
     @State private var difficulty: Difficulty = .medium
     @State private var lastExercise: Exercise? = nil
     
+    @State private var finishedTapped = false
 
     var exercise: Exercise? {
         guard !randomExercise.isEmpty else { return nil }
@@ -59,37 +66,50 @@ struct CurrentExerciseView: View {
 
     var body: some View {
         NavigationStack {
-            if (exercise != nil && randomExercise != "") {
+            if (exercise != nil && randomExercise != "" && exercises.count > 1) {
                 VStack {
                     Text(totalDurationToday())
-                    List {
-                        ExerciseCardView(exercise: exercise!, difficulty: $difficulty)
-                        Section {
-                            Button("Finished") {
-                                finished(difficulty: difficulty)
+                    ExerciseCardView(exercise: exercise!, seconds: stopwatchViewModel.seconds, difficulty: $difficulty, finishedTapped: $finishedTapped)
+                        .onChange(of: finishedTapped) { newValue in
+                            if newValue {
+                                finished(difficulty: exerciseViewModel.difficulty)
+                            } else {
+                                exerciseViewModel.fetchExercise()
+
                             }
-                            .disabled(stopwatchViewModel.seconds < 5)
                         }
-                    }
+                    //                    Button("Finished") {
+//                        finished(difficulty: difficulty)
+//                    }
+//                    .disabled(stopwatchViewModel.seconds < 5)
+//                    .buttonStyle(.bordered)
+//                    .tint(.green)
+//                    .font(.title)
                     StopwatchView(viewModel: stopwatchViewModel)
                         .padding()
 
                 }
                 .onAppear {
                     requestAuthorization()
+                    exerciseViewModel.fetchExercise()
+                }
+                .toast(isPresenting: $finishedTapped) {
+                    AlertToast(displayMode: .hud, type: .complete(.green), title: "Exercise completed!")
+                        
                 }
             } else {
-                Text("No exercises")
+                Text("At least 2 exercises required")
                     .onAppear {
                         if exercises.isEmpty {
                             print("No exercises available")
                         } else {
-                            generateRandomExercise()
+                            exerciseViewModel.generateRandomExercise()
                         }
                     }
             }
+            
         }
-
+        
     }
 
     func saveWorkout(exerciseType: HKWorkoutActivityType, startDate: Date, endDate: Date, duration: TimeInterval) {
@@ -180,7 +200,8 @@ struct CurrentExerciseView: View {
     }
 
     func generateRandomExercise() {
-        let exercisesWithoutLast = exercises.filter({ $0.id != lastExercise?.id })
+        let activeExercises = exercises.filter({ $0.isActive == true })
+        let exercisesWithoutLast = activeExercises.filter({ $0.id != lastExercise?.id })
         if let randomElement = exercisesWithoutLast.randomElement() {
             print("Random exercise: \(randomElement)")
             if let uuidString = randomElement.id?.uuidString {
@@ -191,8 +212,14 @@ struct CurrentExerciseView: View {
             }
         } else {
             print("No random exercise found")
+            if let randomElement = activeExercises.randomElement() {
+                if let uuidString = randomElement.id?.uuidString {
+                    randomExercise = uuidString
+                }
+            }
         }
     }
+
 
     func totalDurationToday() -> String {
         let fetchRequest: NSFetchRequest<Log> = Log.fetchRequest()
