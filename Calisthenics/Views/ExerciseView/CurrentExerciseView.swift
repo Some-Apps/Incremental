@@ -32,7 +32,7 @@ struct CurrentExerciseView: View {
     @AppStorage("hardPercent") var hardPercent = -5.0
 
     @StateObject var stopwatchViewModel = StopwatchViewModel()
-       @StateObject var exerciseViewModel = ExerciseViewModel()
+    @StateObject var exerciseViewModel = ExerciseViewModel()
     
     @State private var difficulty: Difficulty = .medium
     @State private var lastExercise: Exercise? = nil
@@ -69,9 +69,9 @@ struct CurrentExerciseView: View {
             if (exercise != nil && randomExercise != "" && exercises.count > 1) {
                 VStack {
                     Text(totalDurationToday())
-                    ExerciseCardView(exercise: exercise!, seconds: stopwatchViewModel.seconds, difficulty: $difficulty, finishedTapped: $finishedTapped)
-                        .onChange(of: finishedTapped) { newValue in
-                            if newValue {
+                    ExerciseCardView(exercise: exercise!, seconds: stopwatchViewModel.seconds, difficulty: $difficulty, finishedTapped: $finishedTapped, isRunning: $stopwatchViewModel.isRunning)
+                        .onChange(of: finishedTapped) {
+                            if finishedTapped {
                                 finished(difficulty: exerciseViewModel.difficulty)
                             } else {
                                 exerciseViewModel.fetchExercise()

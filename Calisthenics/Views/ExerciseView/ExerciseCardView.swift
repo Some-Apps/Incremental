@@ -13,14 +13,15 @@ struct ExerciseCardView: View {
     
     @Binding var difficulty: Difficulty
     @Binding var finishedTapped: Bool
+    @Binding var isRunning: Bool
     
     
     var body: some View {
         ScrollView {
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: 25)
                     .fill(Color.white)
-                    .shadow(radius: 2)
+                    .shadow(radius: 3)
                 VStack {
                     Text(exercise.title!)
                         .font(.largeTitle)
@@ -48,6 +49,7 @@ struct ExerciseCardView: View {
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
+                    .disabled(isRunning)
                     switch difficulty {
                     case .easy:
                         Text("Didn't have to pause")
@@ -65,7 +67,7 @@ struct ExerciseCardView: View {
                     .buttonStyle(.bordered)
                     .tint(.green)
                     .font(.title)
-                    .disabled(seconds < 5)
+                    .disabled(seconds < 5 || isRunning)
                 }
                 .padding()
             }
