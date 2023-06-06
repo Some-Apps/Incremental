@@ -176,19 +176,19 @@ struct CurrentExerciseView: View {
             if easyType == "Increment" {
                 lastExercise?.currentReps += easyIncrement
             } else {
-                lastExercise?.currentReps *= (easyPercent + 1)
+                lastExercise?.currentReps *= (easyPercent/100 + 1)
             }
         case .medium:
             if mediumType == "Increment" {
                 lastExercise?.currentReps += mediumIncrement
             } else {
-                lastExercise?.currentReps *= (mediumPercent + 1)
+                lastExercise?.currentReps *= (mediumPercent/100 + 1)
             }
         case .hard:
             if hardType == "Increment" {
                 lastExercise?.currentReps += hardIncrement
             } else {
-                lastExercise?.currentReps *= (hardPercent + 1)
+                lastExercise?.currentReps *= (hardPercent/100 + 1)
             }
         }
 
