@@ -72,7 +72,7 @@ struct CalisthenicsWidgetEntryView : View {
                 .font(.title)
                 .multilineTextAlignment(.center)
         }
-        .containerBackground(AnyShapeStyle(.green), for: .widget)
+//        .containerBackground(AnyShapeStyle(.green), for: .widget)
     }
 }
 

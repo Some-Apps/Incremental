@@ -12,35 +12,49 @@ import WidgetKit
 
 struct CurrentExerciseView: View {
     let moc = PersistenceController.shared.container.viewContext
+    
     @FetchRequest(sortDescriptors: []) var exercises: FetchedResults<Exercise>
 
     @AppStorage("randomExercise") var randomExercise: String = ""
-    @AppStorage("easyPercent") var easyPercent = 110
-    @AppStorage("mediumPercent") var mediumPercent = 105
-    @AppStorage("hardPercent") var hardPercent = 95
+    @AppStorage("easyType") var easyType = "Increment"
+    @AppStorage("easyIncrement") var easyIncrement = 0.5
+    @AppStorage("easyPercent") var easyPercent = 5.0
+    @AppStorage("mediumType") var mediumType = "Increment"
+    @AppStorage("mediumIncrement") var mediumIncrement =  0.1
+    @AppStorage("mediumPercent") var mediumPercent = 1.0
+    @AppStorage("hardType") var hardType = "Increment"
+    @AppStorage("hardIncrement") var hardIncrement = -1.0
+    @AppStorage("hardPercent") var hardPercent = -5.0
 
-    @StateObject var viewModel = StopwatchViewModel()
+    @StateObject var stopwatchViewModel = StopwatchViewModel()
 
     @State private var difficulty: Difficulty = .medium
+    @State private var lastExercise: Exercise? = nil
+    
 
     var exercise: Exercise? {
-            guard !randomExercise.isEmpty else { return nil }
-            let request: NSFetchRequest<Exercise> = Exercise.fetchRequest()
-            request.predicate = NSPredicate(format: "id == %@", randomExercise)
-            do {
-                let result = try moc.fetch(request)
-                if let fetchedExercise = result.first {
-                    DispatchQueue.main.async {
-                        difficulty = Difficulty(rawValue: fetchedExercise.difficulty!) ?? .medium
-                    }
-                    return fetchedExercise
+        guard !randomExercise.isEmpty else { return nil }
+        let request: NSFetchRequest<Exercise> = Exercise.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", randomExercise)
+        do {
+            let result = try moc.fetch(request)
+            if let fetchedExercise = result.first {
+                DispatchQueue.main.async {
+                    difficulty = Difficulty(rawValue: fetchedExercise.difficulty!) ?? .medium
                 }
-                return nil
-            } catch {
-                print("Failed to fetch exercise: \(error)")
+                return fetchedExercise
+            } else {
+                // Exercise with the provided UUID not found.
+                // Generate a new random exercise.
+                generateRandomExercise()
                 return nil
             }
+        } catch {
+            print("Failed to fetch exercise: \(error)")
+            return nil
         }
+    }
+
 
 
     var body: some View {
@@ -54,10 +68,10 @@ struct CurrentExerciseView: View {
                             Button("Finished") {
                                 finished(difficulty: difficulty)
                             }
-                            .disabled(viewModel.seconds < 5)
+                            .disabled(stopwatchViewModel.seconds < 5)
                         }
                     }
-                    StopwatchView(viewModel: viewModel)
+                    StopwatchView(viewModel: stopwatchViewModel)
                         .padding()
 
                 }
@@ -105,11 +119,11 @@ struct CurrentExerciseView: View {
 
         let exerciseType = HKWorkoutActivityType.functionalStrengthTraining
         let startDate = Date()
-        let duration = TimeInterval(viewModel.seconds) // 30 minutes
+        let duration = TimeInterval(stopwatchViewModel.seconds) // 30 minutes
         let endDate = startDate.addingTimeInterval(duration)
 
         saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
-        viewModel.reset()
+        stopwatchViewModel.reset()
     }
 
     func requestAuthorization() {
@@ -125,25 +139,37 @@ struct CurrentExerciseView: View {
     }
 
     func createLog(difficulty: Difficulty) {
-        let oldExercise = exercise
+        lastExercise = exercise
         
         let newLog = Log(context: moc)
         newLog.id = UUID()
-        newLog.duration = Int16(exactly: viewModel.seconds)!
-        newLog.reps = Int16(exactly: oldExercise!.currentReps.rounded(.down))!
+        newLog.duration = Int16(exactly: stopwatchViewModel.seconds)!
+        newLog.reps = Int16(exactly: lastExercise!.currentReps.rounded(.down))!
         newLog.timestamp = Date()
-        newLog.units = oldExercise!.units
+        newLog.units = lastExercise!.units
 
-        oldExercise?.addToLogs(newLog)
-        oldExercise?.difficulty = difficulty.rawValue
+        lastExercise?.addToLogs(newLog)
+        lastExercise?.difficulty = difficulty.rawValue
 
         switch difficulty {
         case .easy:
-            oldExercise?.currentReps *= Double(easyPercent)/100
+            if easyType == "Increment" {
+                lastExercise?.currentReps += easyIncrement
+            } else {
+                lastExercise?.currentReps *= (easyPercent + 1)
+            }
         case .medium:
-            oldExercise?.currentReps *= Double(mediumPercent)/100
+            if mediumType == "Increment" {
+                lastExercise?.currentReps += mediumIncrement
+            } else {
+                lastExercise?.currentReps *= (mediumPercent + 1)
+            }
         case .hard:
-            oldExercise?.currentReps *= Double(hardPercent)/100
+            if hardType == "Increment" {
+                lastExercise?.currentReps += hardIncrement
+            } else {
+                lastExercise?.currentReps *= (hardPercent + 1)
+            }
         }
 
         do {
@@ -154,7 +180,8 @@ struct CurrentExerciseView: View {
     }
 
     func generateRandomExercise() {
-        if let randomElement = exercises.randomElement() {
+        let exercisesWithoutLast = exercises.filter({ $0.id != lastExercise?.id })
+        if let randomElement = exercisesWithoutLast.randomElement() {
             print("Random exercise: \(randomElement)")
             if let uuidString = randomElement.id?.uuidString {
                 randomExercise = uuidString
@@ -166,7 +193,7 @@ struct CurrentExerciseView: View {
             print("No random exercise found")
         }
     }
-    
+
     func totalDurationToday() -> String {
         let fetchRequest: NSFetchRequest<Log> = Log.fetchRequest()
         
@@ -185,6 +212,4 @@ struct CurrentExerciseView: View {
             return "00:00"
         }
     }
-
-
 }

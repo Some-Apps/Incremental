@@ -22,7 +22,7 @@ struct ContentView: View {
                 }
             SettingsView()
                 .tabItem {
-                    Image(systemName: "chart.bar.fill")
+                    Image(systemName: "gearshape.fill")
                 }
         }
     }
