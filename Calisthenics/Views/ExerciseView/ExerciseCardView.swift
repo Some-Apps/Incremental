@@ -15,6 +15,8 @@ struct ExerciseCardView: View {
     @Binding var finishedTapped: Bool
     @Binding var isRunning: Bool
     
+    @State private var showPopover = false
+    
     
     var body: some View {
         ScrollView {
@@ -23,10 +25,25 @@ struct ExerciseCardView: View {
                     .fill(Color.white)
                     .shadow(radius: 3)
                 VStack {
-                    Text(exercise.title!)
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
-                        .foregroundColor(.secondary)
+                    HStack {
+                        Text(exercise.title!)
+                            .font(.largeTitle)
+                            .fontWeight(.heavy)
+                            .foregroundColor(.secondary)
+                        if exercise.notes?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
+                            Button {
+                                showPopover.toggle()
+                            } label: {
+                                Image(systemName: "questionmark.circle")
+                            }
+                            .popover(isPresented: $showPopover, content: {
+                                Text(exercise.notes!)
+                                    .padding()
+                            })
+                        }
+                        
+                    }
+                    
                     Divider()
                     if exercise.units == "Reps" {
                         Text(String(Int(exercise.currentReps)))
@@ -37,11 +54,6 @@ struct ExerciseCardView: View {
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                     }
-    //                if exercise.notes!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
-    //                    Divider()
-    //                    Text(exercise.notes!)
-    //                        .italic()
-    //                }
                     Divider()
                     Picker("Difficulty", selection: $difficulty) {
                         ForEach(Difficulty.allCases, id: \.self) {

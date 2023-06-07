@@ -8,8 +8,8 @@
 import CoreData
 import Foundation
 
-let mainMuscleOptions = ["Abs", "Back", "Biceps", "Chest", "Glutes", "Hamstrings", "Quadriceps", "Shoulders", "Triceps", "Lower Back"]
-let accessoryMuscleOptions = ["Calves", "Trapezius", "Abductors", "Adductors", "Forearms", "Neck"]
+let muscleOptions = ["Abductors", "Abs", "Adductors", "Back", "Biceps", "Calves", "Chest", "Forearms", "Glutes", "Hamstrings", "Lower Back", "Neck", "Quadriceps", "Shoulders", "Triceps", "Trapezius"]
+
 let unitOptions = ["Reps", "Duration"]
 
 enum Difficulty: String, CaseIterable {

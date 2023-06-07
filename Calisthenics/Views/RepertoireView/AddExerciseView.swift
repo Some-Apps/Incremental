@@ -16,8 +16,7 @@ struct AddExerciseView: View {
     @State private var startingReps = 30.0
     @State private var startingDuration = 30.0
     @State private var notes = ""
-    @State private var mainMuscles = Set<String>()
-    @State private var accessoryMuscles = Set<String>()
+//    @State private var selectedMuscles = Set<String>()
     
     var body: some View {
         Form {
@@ -28,26 +27,18 @@ struct AddExerciseView: View {
                         Text(unit)
                     }
                 }
-                NavigationLink {
-                    MuscleSelectorView(muscles: $mainMuscles, muscleType: "main")
-                } label: {
-                    HStack {
-                        Text("Main Muscles")
-                        Spacer()
-                        Text(mainMuscles.count == 1 ? "1 muscle" : "\(mainMuscles.count) muscles")
-                            .foregroundColor(.secondary)
-                    }
-                }
-                NavigationLink {
-                    MuscleSelectorView(muscles: $accessoryMuscles, muscleType: "accessory")
-                } label: {
-                    HStack {
-                        Text("Accessory Muscles")
-                        Spacer()
-                        Text(accessoryMuscles.count == 1 ? "1 muscle" : "\(accessoryMuscles.count) muscles")
-                            .foregroundColor(.secondary)
-                    }
-                }
+//                NavigationLink {
+//                    MuscleSelectorView(muscles: $selectedMuscles)
+//                } label: {
+//                    HStack {
+//                        Text("Muscles")
+//                        Spacer()
+//                        let totalMuscles = selectedMuscles.count
+//                        Text(totalMuscles == 1 ? "1 muscle" : "\(totalMuscles) muscles")
+//                            .foregroundColor(.secondary)
+//                    }
+//                }
+
             }
             if units == "Reps" {
                 Section("Starting Reps") {
@@ -58,9 +49,9 @@ struct AddExerciseView: View {
                     Stepper("\(timeFormatter())", value: $startingDuration)
                 }
             }
-//            Section("Notes") {
-//                TextEditor(text: $notes)
-//            }
+            Section("Notes") {
+                TextEditor(text: $notes)
+            }
         }
         .toolbar {
             ToolbarItem {
@@ -92,41 +83,46 @@ struct AddExerciseView: View {
     }
 }
 
-struct MultipleSelectionRow: View {
-    var title: String
-    var isSelected: Bool
-    var action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack {
-                Text(title)
-                    .foregroundColor(isSelected ? .accentColor : .primary)
-                if isSelected {
-                    Spacer()
-                    Image(systemName: "checkmark")
-                }
-            }
-        }
-    }
-}
-
-struct MuscleSelectorView: View {
-    @Binding var muscles: Set<String>
-    let muscleType: String
-    
-    var body: some View {
-        List(muscleType == "main" ? mainMuscleOptions : accessoryMuscleOptions, id: \.self) { option in
-            MultipleSelectionRow(title: option, isSelected: muscles.contains(option)) {
-                if muscles.contains(option) {
-                    muscles.remove(option)
-                } else {
-                    muscles.insert(option)
-                }
-            }
-        }
-    }
-}
+//struct MultipleSelectionRow: View {
+//    var title: String
+//    var isSelected: Bool
+//    var action: () -> Void
+//
+//    var body: some View {
+//        Button(action: action) {
+//            HStack {
+//                Text(title)
+//                    .foregroundColor(isSelected ? .accentColor : .primary)
+//                if isSelected {
+//                    Spacer()
+//                    Image(systemName: "checkmark")
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//struct MuscleSelectorView: View {
+//    @Binding var muscles: Set<String>
+//    
+//    var body: some View {
+//        List {
+//            ForEach(muscleOptions, id: \.self) { option in
+//                muscleSelectionRow(title: option)
+//            }
+//        }
+//    }
+//    
+//    private func muscleSelectionRow(title: String) -> some View {
+//        MultipleSelectionRow(title: title, isSelected: muscles.contains(title)) {
+//            if muscles.contains(title) {
+//                muscles.remove(title)
+//            } else {
+//                muscles.insert(title)
+//            }
+//        }
+//    }
+//}
 
 struct AddExerciseView_Previews: PreviewProvider {
     static var previews: some View {
