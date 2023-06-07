@@ -47,6 +47,7 @@ struct CurrentExerciseView: View {
             let result = try moc.fetch(request)
             if let fetchedExercise = result.first {
                 DispatchQueue.main.async {
+                    print(fetchedExercise.difficulty)
                     difficulty = Difficulty(rawValue: fetchedExercise.difficulty!) ?? .medium
                 }
                 return fetchedExercise
@@ -168,8 +169,10 @@ struct CurrentExerciseView: View {
         newLog.timestamp = Date()
         newLog.units = lastExercise!.units
 
-        lastExercise?.addToLogs(newLog)
+        // why isn't this actually saving the difficulty?
         lastExercise?.difficulty = difficulty.rawValue
+        print(lastExercise?.difficulty)
+        lastExercise?.addToLogs(newLog)
 
         switch difficulty {
         case .easy:
