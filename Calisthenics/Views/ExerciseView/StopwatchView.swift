@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StopwatchView: View {
     @ObservedObject var viewModel: StopwatchViewModel
-    
+
     var seconds: Int {
         viewModel.seconds % 60
     }
@@ -24,82 +24,28 @@ struct StopwatchView: View {
 
     var body: some View {
         VStack {
-            HStack(spacing: 10) {
-                StopwatchUnit(timeUnit: minutes, timeUnitText: "MIN", color: .red)
-                Text(":")
-                    .font(.system(size: 48))
-                    .offset(y: -18)
-                StopwatchUnit(timeUnit: seconds, timeUnitText: "SEC", color: .blue)
-            }
-
             HStack {
-                Button(action: {
-                    viewModel.startStop()
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15.0)
-                            .frame(width: 120, height: 50, alignment: .center)
-                            .foregroundColor(viewModel.isRunning ? .pink : .green)
-
-                        Text(viewModel.isRunning ? "Stop" : "Start")
-                            .font(.title)
-                            .foregroundColor(.white)
-                    }
-                }
-
-                Button(action: {
-                    viewModel.reset()
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15.0)
-                            .frame(width: 120, height: 50, alignment: .center)
-                            .foregroundColor(.gray)
-
-                        Text("Reset")
-                            .font(.title)
-                            .foregroundColor(.white)
-                    }
-                }
+                Text("\(minutes) : \(seconds)")
+                    .font(.title)
+                    .fontWeight(.heavy)
             }
+            HStack {
+                Button(viewModel.isRunning ? "Stop" : "Start") {
+                    viewModel.startStop()
+                }
+                .buttonStyle(.bordered)
+                Button("Reset") {
+                    viewModel.reset()
+                }
+                .buttonStyle(.bordered)
+            }
+            .padding(.top, 10)
             .preventSleep(isRunning: $viewModel.isRunning)
         }
-    }
-}
-
-
-
-struct StopwatchUnit: View {
-
-    var timeUnit: Int
-    var timeUnitText: String
-    var color: Color
-
-    var timeUnitStr: String {
-        let timeUnitStr = String(timeUnit)
-        return timeUnit < 10 ? "0" + timeUnitStr : timeUnitStr
-    }
-
-    var body: some View {
-        VStack {
-            ZStack {
-                RoundedRectangle(cornerRadius: 15.0)
-                    .stroke(style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                    .fill(color)
-                    .frame(width: 75, height: 75, alignment: .center)
-
-                HStack(spacing: 2) {
-                    Text(timeUnitStr.substring(index: 0))
-                        .font(.system(size: 48))
-                        .frame(width: 28)
-                    Text(timeUnitStr.substring(index: 1))
-                        .font(.system(size: 48))
-                        .frame(width: 28)
-                }
-            }
-
-            Text(timeUnitText)
-                .font(.system(size: 16))
-        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(15.0)
+        .shadow(radius: 3)
     }
 }
 

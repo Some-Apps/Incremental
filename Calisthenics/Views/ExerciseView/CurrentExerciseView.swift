@@ -79,13 +79,6 @@ struct CurrentExerciseView: View {
 
                             }
                         }
-                    //                    Button("Finished") {
-//                        finished(difficulty: difficulty)
-//                    }
-//                    .disabled(stopwatchViewModel.seconds < 5)
-//                    .buttonStyle(.bordered)
-//                    .tint(.green)
-//                    .font(.title)
                     StopwatchView(viewModel: stopwatchViewModel)
                         .padding()
 
