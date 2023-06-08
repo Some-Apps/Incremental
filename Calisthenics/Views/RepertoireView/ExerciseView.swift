@@ -11,7 +11,6 @@ import SwiftUI
 struct ExerciseView: View {
     @Environment(\.dismiss) var dismiss
     
-//    @State private var selectedMuscles = Set<String>()
     @State private var notes = ""
     
     let moc = PersistenceController.shared.container.viewContext
@@ -27,7 +26,6 @@ struct ExerciseView: View {
     
     init(exercise: Exercise) {
         self.exercise = exercise
-//        self._selectedMuscles = State(initialValue: exercise.muscles as! Set<String>)
         self._notes = State(initialValue: exercise.notes!)
     }
     
@@ -48,29 +46,16 @@ struct ExerciseView: View {
                             isActive = exercise.isActive
                         }
                 }
-//                Section {
-//                    NavigationLink {
-//                        MuscleSelectorView(muscles: $selectedMuscles)
-//                    } label: {
-//                        HStack {
-//                            Text("Muscles")
-//                            Spacer()
-//                            let totalMuscles = selectedMuscles.count
-//                            Text(totalMuscles == 1 ? "1 muscle" : "\(totalMuscles) muscles")
-//                                .foregroundColor(.secondary)
-//                        }
-//                    }
-//                }
                 Section("Notes") {
                     TextEditor(text: $notes)
                 }
+                Text(exercise.difficulty?.description ?? "idk")
             }
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Save") {
                     exercise.notes = notes
-//                    exercise.muscles = selectedMuscles as NSSet
                     exercise.isActive = isActive
                     try? moc.save()
                     dismiss()

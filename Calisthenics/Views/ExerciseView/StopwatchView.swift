@@ -8,35 +8,39 @@
 import SwiftUI
 
 struct StopwatchView: View {
-    @ObservedObject var viewModel: StopwatchViewModel
+    @ObservedObject var viewModel = StopwatchViewModel.shared
 
-    var seconds: Int {
-        viewModel.seconds % 60
+    var seconds: String {
+        String(format: "%02d", viewModel.seconds % 60)
     }
 
-    var hours: Int {
-        viewModel.seconds / 3600
+    var hours: String {
+        String(format: "%02d", viewModel.seconds / 3600)
     }
 
-    var minutes: Int {
-        (viewModel.seconds % 3600) / 60
+    var minutes: String {
+        String(format: "%02d", (viewModel.seconds % 3600) / 60)
     }
 
     var body: some View {
         VStack {
             HStack {
                 Text("\(minutes) : \(seconds)")
-                    .font(.title)
+                    .font(.largeTitle)
                     .fontWeight(.heavy)
             }
             HStack {
                 Button(viewModel.isRunning ? "Stop" : "Start") {
                     viewModel.startStop()
                 }
+                .tint(viewModel.isRunning ? .red : .green)
+                .font(.largeTitle)
                 .buttonStyle(.bordered)
                 Button("Reset") {
                     viewModel.reset()
                 }
+                .tint(.gray)
+                .font(.largeTitle)
                 .buttonStyle(.bordered)
             }
             .padding(.top, 10)

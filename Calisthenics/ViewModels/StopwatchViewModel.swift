@@ -9,6 +9,8 @@ import Combine
 import SwiftUI
 
 class StopwatchViewModel: ObservableObject {
+    static let shared = StopwatchViewModel()
+    
     @Published var seconds: Int = 0
     @Published var isRunning: Bool = false
 

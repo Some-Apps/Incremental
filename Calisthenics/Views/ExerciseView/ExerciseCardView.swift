@@ -8,15 +8,19 @@
 import SwiftUI
 
 struct ExerciseCardView: View {
-    let exercise: Exercise
-    let seconds: Int
+    @StateObject var stopwatchViewModel = StopwatchViewModel.shared
+    @StateObject var exerciseViewModel = ExerciseViewModel.shared
     
-    @Binding var difficulty: Difficulty
     @Binding var finishedTapped: Bool
-    @Binding var isRunning: Bool
     
     @State private var showPopover = false
+    @State private var tempDifficulty: Difficulty = .medium
     
+    @FetchRequest(
+        entity: Exercise.entity(),
+        sortDescriptors: [],
+        predicate: NSPredicate(format: "isActive == %@", NSNumber(value: true))
+    ) var exercises: FetchedResults<Exercise>
     
     var body: some View {
         ScrollView {
@@ -26,18 +30,18 @@ struct ExerciseCardView: View {
                     .shadow(radius: 3)
                 VStack {
                     HStack {
-                        Text(exercise.title!)
+                        Text(exerciseViewModel.exercise!.title!)
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.secondary)
-                        if exercise.notes?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
+                        if exerciseViewModel.exercise!.notes?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                             Button {
                                 showPopover.toggle()
                             } label: {
                                 Image(systemName: "questionmark.circle")
                             }
                             .popover(isPresented: $showPopover, content: {
-                                Text(exercise.notes!)
+                                Text(exerciseViewModel.exercise!.notes!)
                                     .padding()
                             })
                         }
@@ -45,24 +49,27 @@ struct ExerciseCardView: View {
                     }
                     
                     Divider()
-                    if exercise.units == "Reps" {
-                        Text(String(Int(exercise.currentReps)))
+                    if exerciseViewModel.exercise!.units == "Reps" {
+                        Text(String(Int(exerciseViewModel.exercise!.currentReps)))
                             .font(.largeTitle)
                             .fontWeight(.heavy)
-                    } else if exercise.units == "Duration" {
-                        Text(String(format: "%01d:%02d", Int(exercise.currentReps) / 60, Int(exercise.currentReps) % 60))
+                    } else if exerciseViewModel.exercise!.units == "Duration" {
+                        Text(String(format: "%01d:%02d", Int(exerciseViewModel.exercise!.currentReps) / 60, Int(exerciseViewModel.exercise!.currentReps) % 60))
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                     }
                     Divider()
-                    Picker("Difficulty", selection: $difficulty) {
+                    Picker("Difficulty", selection: $tempDifficulty) {
                         ForEach(Difficulty.allCases, id: \.self) {
                             Text($0.rawValue)
                         }
                     }
+                    .onChange(of: tempDifficulty) {
+                        exerciseViewModel.difficulty = tempDifficulty
+                    }
                     .pickerStyle(SegmentedPickerStyle())
-                    .disabled(isRunning)
-                    switch difficulty {
+                    .disabled(stopwatchViewModel.isRunning)
+                    switch exerciseViewModel.difficulty {
                     case .easy:
                         Text("Didn't have to pause")
                             .foregroundColor(.secondary)
@@ -79,13 +86,20 @@ struct ExerciseCardView: View {
                     .buttonStyle(.bordered)
                     .tint(.green)
                     .font(.title)
-                    .disabled(seconds < 5 || isRunning)
+                    .disabled(stopwatchViewModel.seconds < 5 || stopwatchViewModel.isRunning)
                 }
                 .padding()
             }
             .padding()
         }
+        .onReceive(exerciseViewModel.$exercise) { exercise in
+                if let fetchedExercise = exercise,
+                   let difficulty = Difficulty(rawValue: fetchedExercise.difficulty!) {
+                    tempDifficulty = difficulty
+                }
+            }
     }
+    
 }
 
 
