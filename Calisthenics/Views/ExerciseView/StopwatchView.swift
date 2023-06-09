@@ -24,12 +24,28 @@ struct StopwatchView: View {
 
     var body: some View {
         VStack {
-            HStack {
+            if viewModel.seconds >= 0 {
                 Text("\(minutes) : \(seconds)")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
+            } else {
+                Text(seconds.replacingOccurrences(of: "-", with: ""))
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
             }
+            
+            
             HStack {
+                if !viewModel.isRunning && viewModel.seconds == 0 {
+                    Button {
+                        viewModel.seconds = -5
+                        viewModel.startStop()
+                    } label: {
+                        Image(systemName: "clock.arrow.circlepath")
+                            .font(.title)
+                    }
+                }
+                                
                 Button(viewModel.isRunning ? "Stop" : "Start") {
                     viewModel.startStop()
                 }
@@ -37,6 +53,9 @@ struct StopwatchView: View {
                 .font(.largeTitle)
                 .buttonStyle(.bordered)
                 Button("Reset") {
+                    if viewModel.isRunning {
+                        viewModel.startStop()
+                    }
                     viewModel.reset()
                 }
                 .tint(.gray)
