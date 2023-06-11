@@ -159,7 +159,7 @@ class ExerciseViewModel: ObservableObject {
         let endDate = startDate.addingTimeInterval(duration)
 
         saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
-        stopwatchViewModel.reset()
         generateRandomExercise(exercises: Array(exercises))
+        stopwatchViewModel.reset()
     }
 }
