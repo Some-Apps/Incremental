@@ -9,6 +9,8 @@ import Charts
 import SwiftUI
 
 struct ExerciseView: View {
+    @AppStorage("randomExercise") var randomExercise: String = ""
+
     @Environment(\.dismiss) var dismiss
     
     @State private var notes = ""
@@ -49,7 +51,12 @@ struct ExerciseView: View {
                 Section("Notes") {
                     TextEditor(text: $notes)
                 }
-                Text(exercise.difficulty?.description ?? "idk")
+                Section {
+                    Button("Do Exercise") {
+                        randomExercise = exercise.id!.uuidString
+                        dismiss()
+                    }
+                }
             }
         }
         .toolbar {

@@ -16,6 +16,8 @@ struct ExerciseCardView: View {
     @State private var showPopover = false
     @State private var tempDifficulty: Difficulty = .medium
     
+    @AppStorage("randomExercise") var randomExercise: String = ""
+    
     @FetchRequest(
         entity: Exercise.entity(),
         sortDescriptors: [],
@@ -30,10 +32,13 @@ struct ExerciseCardView: View {
                     .shadow(radius: 3)
                 VStack {
                     HStack {
-                        Text(exerciseViewModel.exercise!.title!)
+                        Text(exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!)!.title!)
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.secondary)
+                            .onAppear {
+                                exerciseViewModel.exercise = exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!)
+                            }
                         if exerciseViewModel.exercise!.notes?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                             Button {
                                 showPopover.toggle()
