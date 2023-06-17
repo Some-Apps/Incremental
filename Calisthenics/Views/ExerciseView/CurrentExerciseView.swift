@@ -37,8 +37,8 @@ struct CurrentExerciseView: View {
                     VStack {
                         Text(totalDurationToday())
                         ExerciseCardView(finishedTapped: $finishedTapped)
-                            .onChange(of: finishedTapped) {
-                                if finishedTapped {
+                            .onChange(of: finishedTapped) { newValue in
+                                if newValue {
                                     exerciseViewModel.finished(exercises: Array(exercises))
                                 }
                             }

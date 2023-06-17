@@ -69,7 +69,7 @@ struct ExerciseCardView: View {
                             Text($0.rawValue)
                         }
                     }
-                    .onChange(of: tempDifficulty) {
+                    .onChange(of: tempDifficulty) { newValue in
                         exerciseViewModel.difficulty = tempDifficulty
                     }
                     .pickerStyle(SegmentedPickerStyle())
