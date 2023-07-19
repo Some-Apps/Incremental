@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct StopwatchView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var viewModel = StopwatchViewModel.shared
 
     var seconds: String {
@@ -33,8 +34,6 @@ struct StopwatchView: View {
                     .font(.largeTitle)
                     .fontWeight(.heavy)
             }
-            
-            
             HStack {
                 if !viewModel.isRunning && viewModel.seconds == 0 {
                     Button {
@@ -66,9 +65,9 @@ struct StopwatchView: View {
             .preventSleep(isRunning: $viewModel.isRunning)
         }
         .padding()
-        .background(Color.white)
+        .background(colorScheme == .light ? .white : .black)
         .cornerRadius(15.0)
-        .shadow(radius: 3)
+        .shadow(color: colorScheme == .light ? .black : .white, radius: 3)
     }
 }
 
