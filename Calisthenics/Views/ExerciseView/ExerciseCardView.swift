@@ -36,6 +36,7 @@ struct ExerciseCardView: View {
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
                             .onAppear {
                                 exerciseViewModel.exercise = exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!)
                             }
