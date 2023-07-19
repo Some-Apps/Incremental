@@ -30,7 +30,7 @@ struct ExerciseCardView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
                     .fill(colorScheme == .light ? .white : .black)
-                    .shadow(color: colorScheme == .light ? .black : .white, radius: 3)
+                    .shadow(color: colorScheme == .light ? .black.opacity(0.33) : .white, radius: 3)
                 VStack {
                     HStack {
                         Text(exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!)!.title!)

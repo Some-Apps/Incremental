@@ -67,7 +67,7 @@ struct StopwatchView: View {
         .padding()
         .background(colorScheme == .light ? .white : .black)
         .cornerRadius(15.0)
-        .shadow(color: colorScheme == .light ? .black : .white, radius: 3)
+        .shadow(color: colorScheme == .light ? .black.opacity(0.33) : .white, radius: 3)
     }
 }
 
