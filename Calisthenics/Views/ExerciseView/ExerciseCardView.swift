@@ -84,7 +84,7 @@ struct ExerciseCardView: View {
                         Text("Had to pause but didn't have to take a break")
                             .foregroundColor(.secondary)
                     case .hard:
-                        Text("Had to take a break")
+                        Text("Had to take a break or 3 pauses")
                             .foregroundColor(.secondary)
                     }
                     Button("Finish") {
