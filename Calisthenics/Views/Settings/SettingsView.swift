@@ -10,15 +10,15 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyIncrement") var easyIncrement = 0.5
-    @AppStorage("easyPercent") var easyPercent = 5.0
+    @AppStorage("easyPercent") var easyPercent = 1.0
     @AppStorage("mediumType") var mediumType = "Increment"
     @AppStorage("mediumIncrement") var mediumIncrement =  0.1
-    @AppStorage("mediumPercent") var mediumPercent = 1.0
+    @AppStorage("mediumPercent") var mediumPercent = 0.1
     @AppStorage("hardType") var hardType = "Increment"
-    @AppStorage("hardIncrement") var hardIncrement = -1.0
+    @AppStorage("hardIncrement") var hardIncrement = -2.0
     @AppStorage("hardPercent") var hardPercent = -5.0
     
-    let typeOptions = ["Increment", "Percent"]
+    let typeOptions = ["Percent", "Increment"]
 
     
     var body: some View {

@@ -34,7 +34,7 @@ struct ExerciseView: View {
     var body: some View {
         VStack {
             Text(exercise.title!)
-            List {
+            Form {
                 Section {
                     Chart(sortedLogs, id: \.self) { log in
                         LineMark(x: .value("Date", log.timestamp!), y: .value("Reps", log.reps))
@@ -50,6 +50,7 @@ struct ExerciseView: View {
                 }
                 Section("Notes") {
                     TextEditor(text: $notes)
+                        .frame(minHeight: CGFloat(Double(notes.count) * 0.8) > 150 ? 150 : CGFloat(Double(notes.count) * 0.8))
                 }
                 Section {
                     Button("Do Exercise") {
@@ -70,12 +71,5 @@ struct ExerciseView: View {
                 .disabled(isActive == exercise.isActive && notes == exercise.notes)
             }
         }
-    }
-}
-
-
-struct ExerciseView_Previews: PreviewProvider {
-    static var previews: some View {
-        ExerciseView(exercise: Exercise.preview())
     }
 }
