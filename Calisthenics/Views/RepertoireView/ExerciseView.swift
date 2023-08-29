@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ExerciseView: View {
     @AppStorage("randomExercise") var randomExercise: String = ""
+    @State private var isTextEditorSheetPresented = false
 
     @Environment(\.dismiss) var dismiss
     
@@ -49,9 +50,28 @@ struct ExerciseView: View {
                         }
                 }
                 Section("Notes") {
-                    TextEditor(text: $notes)
-                        .frame(minHeight: CGFloat(Double(notes.count) * 0.8) > 150 ? 150 : CGFloat(Double(notes.count) * 0.8))
+                    HStack {
+                        Text(notes)
+                        Spacer()
+                        VStack {
+                            Button(action: {
+                                isTextEditorSheetPresented.toggle()
+                            }) {
+                                Image(systemName: "pencil")
+                            }
+                            .padding(.top)
+                            .sheet(isPresented: $isTextEditorSheetPresented) {
+                                NotesEditorView(notes: $notes)
+                            }
+                            Spacer()
+                        }
+                        
+                    }
+                    
+                    
+
                 }
+                
                 Section {
                     Button("Do Exercise") {
                         randomExercise = exercise.id!.uuidString
@@ -69,6 +89,36 @@ struct ExerciseView: View {
                     dismiss()
                 }
                 .disabled(isActive == exercise.isActive && notes == exercise.notes)
+            }
+        }
+    }
+}
+
+struct NotesEditorView: View {
+    enum FocusedField {
+            case active, inactive
+        }
+    
+    @Environment(\.dismiss) var dismiss
+    @Binding var notes: String
+    @FocusState private var focusedField: FocusedField?
+
+    var body: some View {
+        NavigationStack {
+            VStack {
+                TextEditor(text: $notes)
+                    .padding()
+                    .focused($focusedField, equals: .active)
+                    .onAppear {
+                        focusedField = .active
+                    }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
             }
         }
     }
