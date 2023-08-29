@@ -11,16 +11,21 @@ import CoreData
 class PersistenceController {
     static let shared = PersistenceController()
 
-    let container: NSPersistentContainer
+    let container: NSPersistentCloudKitContainer
+    
 
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "ExerciseLog") // Update the data model name here
+        container = NSPersistentCloudKitContainer(name: "ExerciseLog") // Update the data model name here
+
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else {
             // Configure the persistent store to use the App Group's shared container
             let storeURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.me.jareddanieljones.calisthenics")!.appendingPathComponent("ExerciseLog.sqlite") // Update the SQLite file name here
             let storeDescription = NSPersistentStoreDescription(url: storeURL)
+
+            // Enable CloudKit synchronization
+            storeDescription.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.me.jareddanieljones.calisthenics")
             
             // Enable lightweight migration
             storeDescription.shouldMigrateStoreAutomatically = true
@@ -28,6 +33,8 @@ class PersistenceController {
             
             container.persistentStoreDescriptions = [storeDescription]
         }
+
+        container.viewContext.automaticallyMergesChangesFromParent = true
 
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
