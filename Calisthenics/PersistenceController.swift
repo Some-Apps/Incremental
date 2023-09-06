@@ -41,10 +41,25 @@ class PersistenceController {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        
+        NotificationCenter.default.addObserver(
+                    self,
+                    selector: #selector(handleRemoteChange),
+                    name: .NSPersistentStoreRemoteChange,
+                    object: container.persistentStoreCoordinator
+                )
     }
 }
 
 extension PersistenceController {
+    @objc func handleRemoteChange(_ notification: Notification) {
+            // Refresh your data here
+            // You could post your own notification, update UI if needed, refresh fetched results controller, etc.
+            DispatchQueue.main.async {
+                // Your code to update UI or refresh data
+            }
+        }
+    
     // Fetch entities
     func fetch<T: NSManagedObject>(entity: T.Type, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, fetchLimit: Int? = nil) -> [T] {
         let request = T.fetchRequest()

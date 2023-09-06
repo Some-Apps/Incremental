@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct ContentView: View {
     
@@ -24,6 +25,9 @@ struct ContentView: View {
                 .tabItem {
                     Image(systemName: "gearshape.fill")
                 }
+        }
+        .onAppear {
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
 }

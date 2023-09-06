@@ -27,7 +27,6 @@ struct CurrentExerciseView: View {
     
     @State private var difficulty: Difficulty = .medium
     @State private var lastExercise: Exercise? = nil
-    
     @State private var finishedTapped = false
     
     var body: some View {
