@@ -1,10 +1,3 @@
-//
-//  ExerciseView.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 6/5/23.
-//
-
 import Charts
 import SwiftUI
 
