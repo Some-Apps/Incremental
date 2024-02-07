@@ -20,8 +20,8 @@ struct AddExerciseView: View {
     
     var body: some View {
         Form {
-            Section("General") {
-                TextField("Title", text: $title)
+            Section {
+                TextField("Exercise Title", text: $title)
                 Picker("Units", selection: $units) {
                     ForEach(unitOptions, id: \.self) { unit in
                         Text(unit)
