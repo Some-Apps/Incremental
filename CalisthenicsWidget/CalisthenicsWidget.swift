@@ -66,15 +66,11 @@ struct CalisthenicsWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        ZStack {
-            ContainerRelativeShape()
-                .fill(.green)
-            Text("\(entry.todayMinutes)" + (entry.todayMinutes == 1 ? "\n minute" : "\n minutes"))
-                .bold()
-                .font(.title)
-                .multilineTextAlignment(.center)
-        }
-//        .containerBackground(AnyShapeStyle(.green), for: .widget)
+        Text("\(entry.todayMinutes)" + (entry.todayMinutes == 1 ? "\n minute" : "\n minutes"))
+            .fontWeight(.bold)
+            .font(.title)
+            .multilineTextAlignment(.center)
+            .containerBackground(.clear, for: .widget)
     }
 }
 
