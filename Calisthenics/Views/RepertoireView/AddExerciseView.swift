@@ -9,8 +9,8 @@ import SwiftUI
 
 struct AddExerciseView: View {
     @Environment(\.dismiss) var dismiss
-    let moc = PersistenceController.shared.container.viewContext
-        
+    @Environment(\.modelContext) private var modelContext
+
     @State private var title = ""
     @State private var units = "Reps"
     @State private var startingReps = 30.0
@@ -71,7 +71,7 @@ struct AddExerciseView: View {
     }
     
     func addExercise() {
-        let newExercise = Exercise(context: moc)
+        let newExercise = Exercise(context: modelContext)
         newExercise.id = UUID()
         newExercise.isActive = true
         newExercise.title = title

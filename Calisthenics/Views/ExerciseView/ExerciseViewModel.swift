@@ -10,6 +10,7 @@ import CoreData
 import SwiftUI
 import HealthKit
 import WidgetKit
+import SwiftData
 
 class ExerciseViewModel: ObservableObject {
     static let shared = ExerciseViewModel(stopwatchViewModel: StopwatchViewModel.shared)
@@ -29,8 +30,8 @@ class ExerciseViewModel: ObservableObject {
     @AppStorage("hardIncrement") var hardIncrement = -1.0
     @AppStorage("hardPercent") var hardPercent = -5.0
 
-    let moc = PersistenceController.shared.container.viewContext
-    
+    @Environment(\.modelContext) private var modelContext
+
     let stopwatchViewModel: StopwatchViewModel
     
     init(stopwatchViewModel: StopwatchViewModel) {
@@ -70,7 +71,8 @@ class ExerciseViewModel: ObservableObject {
     }
     
     func createLog(difficulty: Difficulty, lastExercise: Exercise) {
-        let newLog = Log(context: moc)
+        let newLog = Log(duration: Int16(exactly: stopwatchViewModel.seconds)!, id: UUID(), reps: Int16(exactly: lastExercise.currentReps.rounded(.down))!, timestamp: Date(), units: lastExercise.units, exercises: lastExercise)
+        
         newLog.id = UUID()
         newLog.duration = Int16(exactly: stopwatchViewModel.seconds)!
         newLog.reps = Int16(exactly: lastExercise.currentReps.rounded(.down))!
@@ -81,7 +83,7 @@ class ExerciseViewModel: ObservableObject {
 
         // why isn't this actually saving the difficulty?
         lastExercise.difficulty = difficulty.rawValue
-        lastExercise.addToLogs(newLog)
+//        lastExercise.addToLogs(newLog)
 
         switch difficulty {
         case .easy:
@@ -105,7 +107,7 @@ class ExerciseViewModel: ObservableObject {
         }
 
         do {
-            try moc.save()
+            try modelContext.save()
         } catch {
             print("Error saving to CoreData: \(error)")
         }
@@ -116,35 +118,23 @@ class ExerciseViewModel: ObservableObject {
         let exercisesWithoutLast = activeExercises.filter({ $0.id != exercise?.id })
         if let randomElement = exercisesWithoutLast.randomElement() {
             print("Random exercise: \(randomElement)")
-            if let uuidString = randomElement.id?.uuidString {
-                randomExercise = uuidString
-                exercise = fetchExerciseById(id: UUID(uuidString: uuidString)!)
-                print("UUID string: \(uuidString)")
-            } else {
-                print("UUID string is empty")
-            }
+            randomExercise = randomElement.id.uuidString
+            exercise = fetchExerciseById(id: (UUID(uuidString: randomElement.id.uuidString))!)
+
         } else {
             print("No random exercise found")
             if let randomElement = activeExercises.randomElement() {
-                if let uuidString = randomElement.id?.uuidString {
-                    randomExercise = uuidString
-                    exercise = fetchExerciseById(id: UUID(uuidString: uuidString)!)
-                }
+                randomExercise = randomElement.id.uuidString
+                exercise = fetchExerciseById(id: UUID(uuidString: randomElement.id.uuidString)!)
             }
         }
     }
     
     func fetchExerciseById(id: UUID) -> Exercise? {
-        let fetchRequest: NSFetchRequest<Exercise> = Exercise.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        @Query var exercises: [Exercise]
         
-        do {
-            let exercises = try moc.fetch(fetchRequest)
-            return exercises.first
-        } catch {
-            print("Failed to fetch Exercise: \(error)")
-        }
-        
+        return exercises.first
+
         return nil
     }
 

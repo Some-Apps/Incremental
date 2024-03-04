@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ExerciseCardView: View {
     @Environment(\.colorScheme) private var colorScheme
@@ -19,11 +20,9 @@ struct ExerciseCardView: View {
     
     @AppStorage("randomExercise") var randomExercise: String = ""
     
-    @FetchRequest(
-        entity: Exercise.entity(),
-        sortDescriptors: [],
-        predicate: NSPredicate(format: "isActive == %@", NSNumber(value: true))
-    ) var exercises: FetchedResults<Exercise>
+    @Query(filter: #Predicate<Exercise> { exercise in
+        exercise.isActive == true
+    }) var exercises: Exercise
     
     var body: some View {
         ScrollView {
@@ -33,7 +32,7 @@ struct ExerciseCardView: View {
                     .shadow(color: colorScheme == .light ? .black.opacity(0.33) : .white, radius: 3)
                 VStack {
                     HStack {
-                        Text(exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!)!.title!)
+                        Text(exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!)!.title)
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.secondary)
@@ -41,14 +40,14 @@ struct ExerciseCardView: View {
                             .onAppear {
                                 exerciseViewModel.exercise = exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!)
                             }
-                        if exerciseViewModel.exercise!.notes?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
+                        if exerciseViewModel.exercise!.notes.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                             Button {
                                 showPopover.toggle()
                             } label: {
                                 Image(systemName: "questionmark.circle")
                             }
                             .popover(isPresented: $showPopover, content: {
-                                Text(exerciseViewModel.exercise!.notes!)
+                                Text(exerciseViewModel.exercise!.notes)
                                     .padding()
                             })
                         }
@@ -101,7 +100,7 @@ struct ExerciseCardView: View {
         }
         .onReceive(exerciseViewModel.$exercise) { exercise in
                 if let fetchedExercise = exercise,
-                   let difficulty = Difficulty(rawValue: fetchedExercise.difficulty!) {
+                   let difficulty = Difficulty(rawValue: fetchedExercise.difficulty) {
                     tempDifficulty = difficulty
                 }
             }

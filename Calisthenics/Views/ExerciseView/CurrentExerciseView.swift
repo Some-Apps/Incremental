@@ -6,19 +6,17 @@
 //
 
 import AlertToast
-import CoreData
 import SwiftUI
 import HealthKit
 import WidgetKit
+import SwiftData
 
 struct CurrentExerciseView: View {
-    let moc = PersistenceController.shared.container.viewContext
+    @Environment(\.modelContext) private var modelContext
 
-    @FetchRequest(
-        entity: Exercise.entity(),
-        sortDescriptors: [],
-        predicate: NSPredicate(format: "isActive == %@", NSNumber(value: true))
-    ) var exercises: FetchedResults<Exercise>
+    @Query(filter: #Predicate<Exercise> { exercise in
+        exercise.isActive == true
+    }) var exercises: [Exercise]
 
     @AppStorage("randomExercise") var randomExercise: String = ""
 
@@ -76,21 +74,16 @@ struct CurrentExerciseView: View {
     }
     
     func totalDurationToday() -> String {
-        let fetchRequest: NSFetchRequest<Log> = Log.fetchRequest()
-        
-        let startOfDay = Calendar.current.startOfDay(for: Date())
-        let predicate = NSPredicate(format: "(timestamp >= %@)", startOfDay as NSDate)
-        fetchRequest.predicate = predicate
+        @Query(filter: #Predicate<Log> { log in
+            log.timestamp >= Calendar.current.startOfDay(for: Date())
+        }) var logs: [Log]
         
         do {
-            let logs = try moc.fetch(fetchRequest)
+            let logs = logs
             let totalDuration = logs.reduce(0) { $0 + TimeInterval($1.duration) }
             let minutes = Int(totalDuration) / 60
             let seconds = Int(totalDuration) % 60
             return String(format: "%02d:%02d", minutes, seconds)
-        } catch {
-            print("Failed to fetch Logs: \(error)")
-            return "00:00"
         }
     }
 }
