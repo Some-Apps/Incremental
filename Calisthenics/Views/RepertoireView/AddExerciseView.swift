@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddExerciseView: View {
     @Environment(\.dismiss) var dismiss
@@ -74,6 +75,7 @@ struct AddExerciseView: View {
         let newExercise = Exercise(currentReps: units == "Reps" ? Double(startingReps) : Double(startingDuration), difficulty: "medium", id: UUID(), isActive: true, notes: notes, title: title, units: units, logs: [], muscles: [])
         modelContext.insert(newExercise)
         try? modelContext.save()
+        print("Saved")
     }
 }
 

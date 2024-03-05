@@ -1,5 +1,6 @@
 import Charts
 import SwiftUI
+import SwiftData
 
 struct ExerciseView: View {
     @AppStorage("randomExercise") var randomExercise: String = ""

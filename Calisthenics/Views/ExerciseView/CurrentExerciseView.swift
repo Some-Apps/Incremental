@@ -88,13 +88,9 @@ struct CurrentExerciseView: View {
     }
     
     func totalDurationToday() -> String {
-        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let newLogs = logs.filter( { Calendar.autoupdatingCurrent.isDateInToday($0.timestamp!) } )
         
-        let logs = try! logs.filter(#Predicate<Log> { item in
-            item.timestamp! >= startOfDay
-        })
-        
-        let totalDuration = logs.reduce(0) { $0 + TimeInterval($1.duration!) }
+        let totalDuration = newLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
         let minutes = Int(totalDuration) / 60
         let seconds = Int(totalDuration) % 60
         return String(format: "%02d:%02d", minutes, seconds)
@@ -184,6 +180,7 @@ struct CurrentExerciseView: View {
         newLog.reps = Int16(exactly: lastExercise.currentReps!.rounded(.down))!
         newLog.timestamp = Date()
         newLog.units = lastExercise.units
+        newLog.exercises = lastExercise
 
         print("LOG: \(difficulty)")
 
@@ -211,7 +208,6 @@ struct CurrentExerciseView: View {
         }
         modelContext.insert(newLog)
         try? modelContext.save()
-
     }
 
     func generateRandomExercise(exercises: [Exercise]) {
