@@ -71,15 +71,9 @@ struct AddExerciseView: View {
     }
     
     func addExercise() {
-        let newExercise = Exercise(context: modelContext)
-        newExercise.id = UUID()
-        newExercise.isActive = true
-        newExercise.title = title
-        newExercise.units = units
-        newExercise.currentReps = units == "Reps" ? Double(startingReps) : Double(startingDuration)
-        newExercise.notes = notes
-        newExercise.difficulty = "medium"
-        try? moc.save()
+        let newExercise = Exercise(currentReps: units == "Reps" ? Double(startingReps) : Double(startingDuration), difficulty: "medium", id: UUID(), isActive: true, notes: notes, title: title, units: units, logs: [], muscles: [])
+        modelContext.insert(newExercise)
+        try? modelContext.save()
     }
 }
 

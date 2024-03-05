@@ -6,21 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct RepertoireView: View {
-    let moc = PersistenceController.shared.container.viewContext
+//    let moc = PersistenceController.shared.container.viewContext
+    @Environment(\.modelContext) var modelContext
+    
+    @Query(filter: #Predicate<Exercise> {item in
+        item.isActive ?? true
+    }, sort: \.title) var activeExercises: [Exercise]
 
-    @FetchRequest(
-        entity: Exercise.entity(),
-        sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)],
-        predicate: NSPredicate(format: "isActive == %@", NSNumber(value: true))
-    ) var activeExercises: FetchedResults<Exercise>
-
-    @FetchRequest(
-        entity: Exercise.entity(),
-        sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)],
-        predicate: NSPredicate(format: "isActive != %@", NSNumber(value: true))
-    ) var inactiveExercises: FetchedResults<Exercise>
+    @Query(filter: #Predicate<Exercise> { item in
+        item.isActive != true ?? false
+    }, sort: \.title) var inactiveExercises: [Exercise]
     
     @Environment(\.editMode) private var editMode
 
@@ -30,7 +28,7 @@ struct RepertoireView: View {
                 Section("Active") {
                     ForEach(activeExercises, id: \.self) { exercise in
                         NavigationLink(destination: ExerciseView(exercise: exercise)) {
-                            Text(exercise.title ?? "Unkown")
+                            Text(exercise.title ?? "Unknown")
                         }
                     }
                     .onDelete(perform: deleteExercise)
@@ -38,7 +36,7 @@ struct RepertoireView: View {
                 Section("Inactive") {
                     ForEach(inactiveExercises, id: \.self) { exercise in
                         NavigationLink(destination: ExerciseView(exercise: exercise)) {
-                            Text(exercise.title ?? "Unknown")
+                            Text(exercise.title!)
                         }
                     }
                     .onDelete(perform: deleteExercise)
@@ -62,11 +60,11 @@ struct RepertoireView: View {
     private func deleteExercise(at offsets: IndexSet) {
         for index in offsets {
             let exercise = activeExercises[index]
-            moc.delete(exercise)
+            modelContext.delete(exercise)
         }
         
         do {
-            try moc.save()
+            try modelContext.save()
         } catch {
             print("Failed to save context after deleting exercise: \(error)")
         }

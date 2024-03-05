@@ -16,23 +16,23 @@ struct ExerciseView: View {
     
     var sortedLogs: [Log] {
         let logsArray = exercise.logs
-        return logsArray.sorted { $0.timestamp < $1.timestamp }
+        return logsArray!.sorted { $0.timestamp! < $1.timestamp! }
     }
     
     @State private var isActive = false
     
     init(exercise: Exercise) {
         self.exercise = exercise
-        self._notes = State(initialValue: exercise.notes)
+        self._notes = State(initialValue: exercise.notes!)
     }
     
     var body: some View {
         VStack {
-            Text(exercise.title)
+            Text(exercise.title!)
             Form {
                 Section {
                     Chart(sortedLogs, id: \.self) { log in
-                        LineMark(x: .value("Date", log.timestamp), y: .value("Reps", log.reps))
+                        LineMark(x: .value("Date", log.timestamp!), y: .value("Reps", log.reps!))
                             .interpolationMethod(.linear)
                     }
                     .frame(height: 200)
@@ -40,7 +40,7 @@ struct ExerciseView: View {
                 Section {
                     Toggle("Active", isOn: $isActive)
                         .onAppear {
-                            isActive = exercise.isActive
+                            isActive = exercise.isActive!
                         }
                 }
                 Section("Notes") {
@@ -68,7 +68,7 @@ struct ExerciseView: View {
                 
                 Section {
                     Button("Do Exercise") {
-                        randomExercise = exercise.id.uuidString
+                        randomExercise = exercise.id!.uuidString
                         dismiss()
                     }
                 }

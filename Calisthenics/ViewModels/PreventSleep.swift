@@ -19,8 +19,8 @@ struct PreventSleep: ViewModifier {
             .onDisappear {
                 UIApplication.shared.isIdleTimerDisabled = false
             }
-            .onChange(of: isRunning) { newValue in
-                UIApplication.shared.isIdleTimerDisabled = newValue
+            .onChange(of: isRunning) {
+                UIApplication.shared.isIdleTimerDisabled = isRunning
             }
     }
 }

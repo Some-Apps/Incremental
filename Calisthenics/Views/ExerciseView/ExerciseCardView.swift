@@ -20,9 +20,9 @@ struct ExerciseCardView: View {
     
     @AppStorage("randomExercise") var randomExercise: String = ""
     
-    @Query(filter: #Predicate<Exercise> { exercise in
-        exercise.isActive == true
-    }) var exercises: Exercise
+    @Query(filter: #Predicate<Exercise> { item in
+        item.isActive == true
+    }) var exercises: [Exercise]
     
     var body: some View {
         ScrollView {
@@ -32,22 +32,22 @@ struct ExerciseCardView: View {
                     .shadow(color: colorScheme == .light ? .black.opacity(0.33) : .white, radius: 3)
                 VStack {
                     HStack {
-                        Text(exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!)!.title)
+                        Text(exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)!.title!)
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
                             .onAppear {
-                                exerciseViewModel.exercise = exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!)
+                                exerciseViewModel.exercise = exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)
                             }
-                        if exerciseViewModel.exercise!.notes.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
+                        if exerciseViewModel.exercise!.notes!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                             Button {
                                 showPopover.toggle()
                             } label: {
                                 Image(systemName: "questionmark.circle")
                             }
                             .popover(isPresented: $showPopover, content: {
-                                Text(exerciseViewModel.exercise!.notes)
+                                Text(exerciseViewModel.exercise!.notes!)
                                     .padding()
                             })
                         }
@@ -56,11 +56,11 @@ struct ExerciseCardView: View {
                     
                     Divider()
                     if exerciseViewModel.exercise!.units == "Reps" {
-                        Text(String(Int(exerciseViewModel.exercise!.currentReps)))
+                        Text(String(Int(exerciseViewModel.exercise!.currentReps!)))
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                     } else if exerciseViewModel.exercise!.units == "Duration" {
-                        Text(String(format: "%01d:%02d", Int(exerciseViewModel.exercise!.currentReps) / 60, Int(exerciseViewModel.exercise!.currentReps) % 60))
+                        Text(String(format: "%01d:%02d", Int(exerciseViewModel.exercise!.currentReps!) / 60, Int(exerciseViewModel.exercise!.currentReps!) % 60))
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                     }
@@ -70,7 +70,7 @@ struct ExerciseCardView: View {
                             Text($0.rawValue)
                         }
                     }
-                    .onChange(of: tempDifficulty) { newValue in
+                    .onChange(of: tempDifficulty) {
                         exerciseViewModel.difficulty = tempDifficulty
                     }
                     .pickerStyle(SegmentedPickerStyle())
@@ -100,7 +100,7 @@ struct ExerciseCardView: View {
         }
         .onReceive(exerciseViewModel.$exercise) { exercise in
                 if let fetchedExercise = exercise,
-                   let difficulty = Difficulty(rawValue: fetchedExercise.difficulty) {
+                   let difficulty = Difficulty(rawValue: fetchedExercise.difficulty!) {
                     tempDifficulty = difficulty
                 }
             }

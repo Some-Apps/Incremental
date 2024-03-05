@@ -10,12 +10,13 @@ import SwiftUI
 @main
 struct CalisthenicsApp: App {
     
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: Log.self)
+                .modelContainer(for: Exercise.self)
+                .modelContainer(for: Muscle.self)
         }
-        .modelContainer(for: Log.self)
-        .modelContainer(for: Exercise.self)
-        .modelContainer(for: Muscle.self)
     }
 }

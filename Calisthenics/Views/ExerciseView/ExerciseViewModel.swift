@@ -14,7 +14,10 @@ import SwiftData
 
 class ExerciseViewModel: ObservableObject {
     static let shared = ExerciseViewModel(stopwatchViewModel: StopwatchViewModel.shared)
+    @Environment(\.modelContext) private var modelContext
     
+    @Query var exercises: [Exercise]
+
     @Published var exercise: Exercise? = nil
     @Published var difficulty: Difficulty = .medium
     @Published var isLoading = true
@@ -30,7 +33,6 @@ class ExerciseViewModel: ObservableObject {
     @AppStorage("hardIncrement") var hardIncrement = -1.0
     @AppStorage("hardPercent") var hardPercent = -5.0
 
-    @Environment(\.modelContext) private var modelContext
 
     let stopwatchViewModel: StopwatchViewModel
     
@@ -71,11 +73,11 @@ class ExerciseViewModel: ObservableObject {
     }
     
     func createLog(difficulty: Difficulty, lastExercise: Exercise) {
-        let newLog = Log(duration: Int16(exactly: stopwatchViewModel.seconds)!, id: UUID(), reps: Int16(exactly: lastExercise.currentReps.rounded(.down))!, timestamp: Date(), units: lastExercise.units, exercises: lastExercise)
+        let newLog = Log(duration: Int16(exactly: stopwatchViewModel.seconds)!, id: UUID(), reps: Int16(exactly: lastExercise.currentReps!.rounded(.down))!, timestamp: Date(), units: lastExercise.units!, exercises: lastExercise)
         
         newLog.id = UUID()
         newLog.duration = Int16(exactly: stopwatchViewModel.seconds)!
-        newLog.reps = Int16(exactly: lastExercise.currentReps.rounded(.down))!
+        newLog.reps = Int16(exactly: lastExercise.currentReps!.rounded(.down))!
         newLog.timestamp = Date()
         newLog.units = lastExercise.units
         
@@ -88,21 +90,21 @@ class ExerciseViewModel: ObservableObject {
         switch difficulty {
         case .easy:
             if easyType == "Increment" {
-                lastExercise.currentReps += easyIncrement
+                lastExercise.currentReps! += easyIncrement
             } else {
-                lastExercise.currentReps *= (easyPercent/100 + 1)
+                lastExercise.currentReps! *= (easyPercent/100 + 1)
             }
         case .medium:
             if mediumType == "Increment" {
-                lastExercise.currentReps += mediumIncrement
+                lastExercise.currentReps! += mediumIncrement
             } else {
-                lastExercise.currentReps *= (mediumPercent/100 + 1)
+                lastExercise.currentReps! *= (mediumPercent/100 + 1)
             }
         case .hard:
             if hardType == "Increment" {
-                lastExercise.currentReps += hardIncrement
+                lastExercise.currentReps! += hardIncrement
             } else {
-                lastExercise.currentReps *= (hardPercent/100 + 1)
+                lastExercise.currentReps! *= (hardPercent/100 + 1)
             }
         }
 
@@ -118,24 +120,23 @@ class ExerciseViewModel: ObservableObject {
         let exercisesWithoutLast = activeExercises.filter({ $0.id != exercise?.id })
         if let randomElement = exercisesWithoutLast.randomElement() {
             print("Random exercise: \(randomElement)")
-            randomExercise = randomElement.id.uuidString
-            exercise = fetchExerciseById(id: (UUID(uuidString: randomElement.id.uuidString))!)
+            randomExercise = randomElement.id!.uuidString
+            exercise = fetchExerciseById(id: (UUID(uuidString: randomElement.id!.uuidString))!, exercises: exercises)
 
         } else {
             print("No random exercise found")
             if let randomElement = activeExercises.randomElement() {
-                randomExercise = randomElement.id.uuidString
-                exercise = fetchExerciseById(id: UUID(uuidString: randomElement.id.uuidString)!)
+                randomExercise = randomElement.id!.uuidString
+                exercise = fetchExerciseById(id: UUID(uuidString: randomElement.id!.uuidString)!, exercises: exercises)
             }
         }
     }
     
-    func fetchExerciseById(id: UUID) -> Exercise? {
-        @Query var exercises: [Exercise]
+    func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
+        print("LOGG: \(id.description)")
+        print("LOGG: \(exercises)")
         
-        return exercises.first
-
-        return nil
+        return exercises.first(where: { $0.id!.description == id.description })
     }
 
     

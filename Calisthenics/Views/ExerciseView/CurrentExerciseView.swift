@@ -17,7 +17,9 @@ struct CurrentExerciseView: View {
     @Query(filter: #Predicate<Exercise> { exercise in
         exercise.isActive == true
     }) var exercises: [Exercise]
-
+    
+    @Query var logs: [Log]
+    
     @AppStorage("randomExercise") var randomExercise: String = ""
 
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
@@ -34,8 +36,8 @@ struct CurrentExerciseView: View {
                     VStack {
                         Text(totalDurationToday())
                         ExerciseCardView(finishedTapped: $finishedTapped)
-                            .onChange(of: finishedTapped) { newValue in
-                                if newValue {
+                            .onChange(of: finishedTapped) {
+                                if finishedTapped {
                                     exerciseViewModel.finished(exercises: Array(exercises))
                                 }
                             }
@@ -64,7 +66,7 @@ struct CurrentExerciseView: View {
                                 if randomExercise == "" {
                                     exerciseViewModel.generateRandomExercise(exercises: Array(exercises))
                                 } else {
-                                    exerciseViewModel.exercise = exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!)
+                                    exerciseViewModel.exercise = exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)
                                 }
                             }
                         }
@@ -74,16 +76,15 @@ struct CurrentExerciseView: View {
     }
     
     func totalDurationToday() -> String {
-        @Query(filter: #Predicate<Log> { log in
-            log.timestamp >= Calendar.current.startOfDay(for: Date())
-        }) var logs: [Log]
+        let startOfDay = Calendar.current.startOfDay(for: Date())
         
-        do {
-            let logs = logs
-            let totalDuration = logs.reduce(0) { $0 + TimeInterval($1.duration) }
-            let minutes = Int(totalDuration) / 60
-            let seconds = Int(totalDuration) % 60
-            return String(format: "%02d:%02d", minutes, seconds)
-        }
+        let logs = try! logs.filter(#Predicate<Log> { item in
+            item.timestamp! >= startOfDay
+        })
+        
+        let totalDuration = logs.reduce(0) { $0 + TimeInterval($1.duration!) }
+        let minutes = Int(totalDuration) / 60
+        let seconds = Int(totalDuration) % 60
+        return String(format: "%02d:%02d", minutes, seconds)
     }
 }

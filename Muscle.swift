@@ -11,9 +11,9 @@ import SwiftData
 
 
 @Model class Muscle {
-    var id: UUID
-    var muscle: String
-    var exercises: [Exercise]
+    var id: UUID?
+    var muscle: String?
+    var exercises: [Exercise]?
     
     init(id: UUID, muscle: String, exercises: [Exercise]) {
         self.id = id
