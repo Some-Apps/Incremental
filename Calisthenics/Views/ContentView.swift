@@ -15,15 +15,15 @@ struct ContentView: View {
         TabView {
             CurrentExerciseView()
                 .tabItem {
-                    Image(systemName: "figure.core.training")
+                    Label("Exercise", systemImage: "figure.core.training")
                 }
             RepertoireView()
                 .tabItem {
-                    Image(systemName: "list.clipboard")
+                    Label("Repertoire", systemImage: "list.clipboard")
                 }
             SettingsView()
                 .tabItem {
-                    Image(systemName: "gearshape.fill")
+                    Label("Settings", systemImage: "gearshape.fill")
                 }
         }
         .onAppear {

@@ -10,6 +10,7 @@ import SwiftData
 
 struct ExerciseCardView: View {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.modelContext) var modelContext
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
     @StateObject var exerciseViewModel = ExerciseViewModel.shared
     
@@ -32,13 +33,13 @@ struct ExerciseCardView: View {
                     .shadow(color: colorScheme == .light ? .black.opacity(0.33) : .white, radius: 3)
                 VStack {
                     HStack {
-                        Text(exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)!.title!)
+                        Text(fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)!.title!)
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
                             .onAppear {
-                                exerciseViewModel.exercise = exerciseViewModel.fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)
+                                exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)
                             }
                         if exerciseViewModel.exercise!.notes!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                             Button {
@@ -104,6 +105,12 @@ struct ExerciseCardView: View {
                     tempDifficulty = difficulty
                 }
             }
+    }
+    func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
+        print("LOGG: \(id.description)")
+        print("LOGG: \(exercises)")
+        
+        return exercises.first(where: { $0.id!.description == id.description })
     }
     
 }
