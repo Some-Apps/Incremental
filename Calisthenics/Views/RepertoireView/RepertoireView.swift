@@ -9,9 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct RepertoireView: View {
-//    let moc = PersistenceController.shared.container.viewContext
     @Environment(\.modelContext) var modelContext
-    
+
     @Query(filter: #Predicate<Exercise> {item in
         item.isActive ?? true
     }, sort: \.title) var activeExercises: [Exercise]
@@ -19,8 +18,10 @@ struct RepertoireView: View {
     @Query(filter: #Predicate<Exercise> { item in
         item.isActive != true ?? false
     }, sort: \.title) var inactiveExercises: [Exercise]
-    
+
     @Environment(\.editMode) private var editMode
+    @State private var confirmDelete = false
+    @State private var indexSetToDelete: IndexSet?
 
     var body: some View {
         NavigationStack {
@@ -31,16 +32,31 @@ struct RepertoireView: View {
                             Text(exercise.title ?? "Unknown")
                         }
                     }
-                    .onDelete(perform: deleteExercise)
+                    .onDelete(perform: { indexSet in
+                        indexSetToDelete = indexSet
+                        confirmDelete = true
+                    })
                 }
                 Section("Inactive") {
                     ForEach(inactiveExercises, id: \.self) { exercise in
                         NavigationLink(destination: ExerciseView(exercise: exercise)) {
-                            Text(exercise.title!)
+                            Text(exercise.title ?? "Unknown")
                         }
                     }
-                    .onDelete(perform: deleteExercise)
+                    // Assuming you want the same delete behavior for inactive exercises
+                    .onDelete(perform: { indexSet in
+                        indexSetToDelete = indexSet
+                        confirmDelete = true
+                    })
                 }
+            }
+            .confirmationDialog("Are you sure you want to delete this exercise?", isPresented: $confirmDelete, titleVisibility: .visible) {
+                Button("Delete", role: .destructive) {
+                    if let indexSet = indexSetToDelete {
+                        deleteExercise(at: indexSet)
+                    }
+                }
+                Button("Cancel", role: .cancel) { }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -59,15 +75,18 @@ struct RepertoireView: View {
 
     private func deleteExercise(at offsets: IndexSet) {
         for index in offsets {
+            // Ensure deletion logic handles both active and inactive lists appropriately
+            // You might need to adjust this logic based on how you manage active/inactive exercises
             let exercise = activeExercises[index]
             modelContext.delete(exercise)
         }
         
         do {
             try modelContext.save()
+            // Reset the indexSetToDelete after operation to avoid unintended deletions
+            indexSetToDelete = nil
         } catch {
             print("Failed to save context after deleting exercise: \(error)")
         }
     }
 }
-

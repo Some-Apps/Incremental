@@ -18,7 +18,7 @@ import SwiftData
     var notes: String?
     var title: String?
     var units: String?
-    @Relationship(inverse: \Log.exercise) var logs: [Log]?
+    @Relationship(inverse: \Log.exercises) var logs: [Log]?
     @Relationship(inverse: \Muscle.exercises) var muscles: [Muscle]?
     
     init(currentReps: Double, difficulty: String, id: UUID, isActive: Bool, notes: String, title: String, units: String, logs: [Log], muscles: [Muscle]) {
