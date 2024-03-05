@@ -113,24 +113,68 @@ struct CurrentExerciseView: View {
     }
     
     func saveWorkout(exerciseType: HKWorkoutActivityType, startDate: Date, endDate: Date, duration: TimeInterval) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            print("Health data not available")
+            return
+        }
+
         let healthStore = HKHealthStore()
-
-        let workout = HKWorkout(activityType: exerciseType,
-                                start: startDate,
-                                end: endDate,
-                                workoutEvents: nil,
-                                totalEnergyBurned: nil,
-                                totalDistance: nil,
-                                metadata: nil)
-
-        healthStore.save(workout) { (success, error) in
+        
+        // Specify the types of data this workout will include; adjust these as needed for your app.
+        let typesToShare: Set = [
+            HKQuantityType.workoutType()
+        ]
+        
+        let typesToRead: Set<HKObjectType> = []
+        
+        // Request authorization for the types of data your app needs.
+        healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
             if let error = error {
-                print("Error saving workout: \(error.localizedDescription)")
+                print("Authorization error: \(error.localizedDescription)")
+                return
+            }
+            
+            if success {
+                let configuration = HKWorkoutConfiguration()
+                configuration.activityType = exerciseType
+                configuration.locationType = .unknown // Adjust this as necessary
+                
+                let builder = HKWorkoutBuilder(healthStore: healthStore, configuration: configuration, device: .local())
+                
+                builder.beginCollection(withStart: startDate) { (success, error) in
+                    guard success else {
+                        if let error = error {
+                            print("Error beginning collection: \(error.localizedDescription)")
+                        }
+                        return
+                    }
+                    
+                    // End the workout collection at the specified end date
+                    builder.endCollection(withEnd: endDate) { (success, error) in
+                        guard success else {
+                            if let error = error {
+                                print("Error ending collection: \(error.localizedDescription)")
+                            }
+                            return
+                        }
+                        
+                        // Finish building the workout
+                        builder.finishWorkout { (workout, error) in
+                            if let error = error {
+                                print("Error finishing workout: \(error.localizedDescription)")
+                            } else {
+                                print("Successfully saved workout: \(String(describing: workout))")
+                            }
+                        }
+                    }
+                }
+                
             } else {
-                print("Successfully saved workout")
+                print("Authorization was not successful")
             }
         }
     }
+
     
     func createLog(difficulty: Difficulty, lastExercise: Exercise) {
         print("LOG: creating log")
