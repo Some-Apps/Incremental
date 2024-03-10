@@ -11,6 +11,7 @@ struct ExerciseView: View {
     @State private var notes = ""
     
     @Environment(\.modelContext) private var modelContext
+    @AppStorage("currentTab") var currentTab: Int = 0
 
     
     let exercise: Exercise
@@ -43,6 +44,7 @@ struct ExerciseView: View {
                         .onAppear {
                             isActive = exercise.isActive!
                         }
+                    Text(exercise.currentReps?.description ?? "0")
                 }
                 Section("Notes") {
                     HStack {
@@ -70,10 +72,13 @@ struct ExerciseView: View {
                 Section {
                     Button("Do Exercise") {
                         randomExercise = exercise.id!.uuidString
-                        dismiss()
+                        currentTab = 0
                     }
                 }
             }
+        }
+        .onDisappear() {
+            dismiss()
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

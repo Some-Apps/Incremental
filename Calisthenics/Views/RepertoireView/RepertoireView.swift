@@ -10,6 +10,7 @@ import SwiftData
 
 struct RepertoireView: View {
     @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
 
     @Query(filter: #Predicate<Exercise> {item in
         item.isActive ?? true
@@ -22,6 +23,8 @@ struct RepertoireView: View {
     @Environment(\.editMode) private var editMode
     @State private var confirmDelete = false
     @State private var indexSetToDelete: IndexSet?
+    @AppStorage("randomExercise") var randomExercise: String = ""
+
 
     var body: some View {
         NavigationStack {
@@ -71,19 +74,20 @@ struct RepertoireView: View {
                 }
             }
         }
+        
     }
 
     private func deleteExercise(at offsets: IndexSet) {
         for index in offsets {
-            // Ensure deletion logic handles both active and inactive lists appropriately
-            // You might need to adjust this logic based on how you manage active/inactive exercises
             let exercise = activeExercises[index]
+            if exercise.id?.uuidString == randomExercise {
+                randomExercise = ""
+            }
             modelContext.delete(exercise)
         }
         
         do {
             try modelContext.save()
-            // Reset the indexSetToDelete after operation to avoid unintended deletions
             indexSetToDelete = nil
         } catch {
             print("Failed to save context after deleting exercise: \(error)")

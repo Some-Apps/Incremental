@@ -10,24 +10,29 @@ import WidgetKit
 
 struct ContentView: View {
     
+    @AppStorage("currentTab") var currentTab: Int = 0
     
     var body: some View {
-        TabView {
+        TabView(selection: $currentTab) {
             CurrentExerciseView()
                 .tabItem {
                     Label("Exercise", systemImage: "figure.core.training")
                 }
+                .tag(0)
             RepertoireView()
                 .tabItem {
                     Label("Repertoire", systemImage: "list.clipboard")
                 }
+                .tag(1)
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.fill")
                 }
+                .tag(2)
         }
         .onAppear {
             WidgetCenter.shared.reloadAllTimelines()
+            currentTab = 0
         }
     }
 }

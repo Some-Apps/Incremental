@@ -26,12 +26,12 @@ struct CurrentExerciseView: View {
     @AppStorage("randomExercise") var randomExercise: String = ""
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyIncrement") var easyIncrement = 0.5
-    @AppStorage("easyPercent") var easyPercent = 5.0
+    @AppStorage("easyPercent") var easyPercent = 1.0
     @AppStorage("mediumType") var mediumType = "Increment"
     @AppStorage("mediumIncrement") var mediumIncrement =  0.1
-    @AppStorage("mediumPercent") var mediumPercent = 1.0
+    @AppStorage("mediumPercent") var mediumPercent = 0.1
     @AppStorage("hardType") var hardType = "Increment"
-    @AppStorage("hardIncrement") var hardIncrement = -1.0
+    @AppStorage("hardIncrement") var hardIncrement = -2.0
     @AppStorage("hardPercent") var hardPercent = -5.0
 
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
@@ -47,7 +47,7 @@ struct CurrentExerciseView: View {
                 if exerciseViewModel.exercise != nil && randomExercise != "" && exercises.count > 1 {
                     VStack {
                         Text(totalDurationToday())
-                        ExerciseCardView(finishedTapped: $finishedTapped)
+                        ExerciseCardView(finishedTapped: $finishedTapped, tempDifficulty: $difficulty)
                             .onChange(of: finishedTapped) {
                                 if finishedTapped {
                                     finished(exercises: Array(exercises))
@@ -78,6 +78,9 @@ struct CurrentExerciseView: View {
                                 if randomExercise == "" {
                                     generateRandomExercise(exercises: Array(exercises))
                                 } else {
+                                    if fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises) == nil {
+                                        generateRandomExercise(exercises: Array(exercises))
+                                    }
                                     exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises)
                                 }
                             }
@@ -185,6 +188,7 @@ struct CurrentExerciseView: View {
         print("LOG: \(difficulty)")
 
         lastExercise.difficulty = difficulty.rawValue
+        
 
         switch difficulty {
         case .easy:
