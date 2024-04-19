@@ -243,7 +243,7 @@ struct CurrentExerciseView: View {
         createLog(difficulty: difficulty, lastExercise: exerciseViewModel.exercise!)
         WidgetCenter.shared.reloadAllTimelines()
 
-        let exerciseType = HKWorkoutActivityType.functionalStrengthTraining
+        let exerciseType = HKWorkoutActivityType.coreTraining
         let startDate = Date()
         let duration = TimeInterval(stopwatchViewModel.seconds) // 30 minutes
         let endDate = startDate.addingTimeInterval(duration)
