@@ -44,6 +44,7 @@ struct ExerciseView: View {
                         .onAppear {
                             isActive = exercise.isActive!
                         }
+                        .disabled(randomExercise == exercise.id?.uuidString)
                     Text(exercise.currentReps?.description ?? "0")
                 }
                 Section("Notes") {
