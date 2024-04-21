@@ -37,6 +37,7 @@
 		C0CB957D29C6445A0099974B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB957C29C6445A0099974B /* ContentView.swift */; };
 		C0CB957F29C6445B0099974B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB957E29C6445B0099974B /* Assets.xcassets */; };
 		C0CB958229C6445B0099974B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB958129C6445B0099974B /* Preview Assets.xcassets */; };
+		C0FCBDD42BD5560800288BFE /* EnableChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FCBDD32BD5560800288BFE /* EnableChanges.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +104,7 @@
 		C0CB957C29C6445A0099974B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C0CB957E29C6445B0099974B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0CB958129C6445B0099974B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C0FCBDD32BD5560800288BFE /* EnableChanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableChanges.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */,
+				C0FCBDD32BD5560800288BFE /* EnableChanges.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -420,6 +423,7 @@
 				C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */,
 				C00ECE4D2B9669C300A2CD21 /* Log.swift in Sources */,
 				C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */,
+				C0FCBDD42BD5560800288BFE /* EnableChanges.swift in Sources */,
 				C00ECE4B2B9669C300A2CD21 /* Exercise.swift in Sources */,
 				C00ECE4F2B9669C300A2CD21 /* Muscle.swift in Sources */,
 				C0360AE22A2DFA5A00E8CA37 /* SettingsView.swift in Sources */,

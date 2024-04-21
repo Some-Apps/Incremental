@@ -18,51 +18,131 @@ struct SettingsView: View {
     @AppStorage("hardIncrement") var hardIncrement = -2.0
     @AppStorage("hardPercent") var hardPercent = -5.0
     
+    @State private var tempEasyType = "Increment"
+    @State private var tempMediumType = "Increment"
+    @State private var tempHardType = "Increment"
+    @State private var tempEasyPercent = 1.0
+    @State private var tempMediumPercent = 0.1
+    @State private var tempHardPercent = -5.0
+    @State private var tempEasyIncrement = 0.5
+    @State private var tempMediumIncrement = 0.1
+    @State private var tempHardIncrement = -2.0
+
+    
+    @AppStorage("holdDuration") var holdDuration: Double = 0
+    @AppStorage("lastHoldTime") var lastHoldTime: Double = Date().timeIntervalSinceReferenceDate
+    
+    @State private var confirmSaveSettings = false
+    
     let typeOptions = ["Percent", "Increment"]
 
     
     var body: some View {
-        Form {
-            Section("Easy") {
-                Picker("Type", selection: $easyType) {
-                    ForEach(typeOptions, id: \.self) {
-                        Text($0)
+        NavigationStack {
+            Form {
+                Section("Easy") {
+                    Picker("Type", selection: $tempEasyType) {
+                        ForEach(typeOptions, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    if tempEasyType == "Increment" {
+                        Stepper("\(tempEasyIncrement, specifier: "%.2f")", value: $tempEasyIncrement, step: 0.05)
+                    } else {
+                        Stepper("\(tempEasyPercent, specifier: "%.2f")%", value: $tempEasyPercent, step: 0.05)
                     }
                 }
-                .pickerStyle(.segmented)
-                if easyType == "Increment" {
-                    Stepper("\(easyIncrement, specifier: "%.2f")", value: $easyIncrement, step: 0.05)
-                } else {
-                    Stepper("\(easyPercent, specifier: "%.2f")%", value: $easyPercent, step: 0.05)
-                }
-            }
-            Section("Medium") {
-                Picker("Type", selection: $mediumType) {
-                    ForEach(typeOptions, id: \.self) {
-                        Text($0)
+                .disabled(!isEligibleForChange())
+
+                Section("Medium") {
+                    Picker("Type", selection: $tempMediumType) {
+                        ForEach(typeOptions, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    if tempMediumType == "Increment" {
+                        Stepper("\(tempMediumIncrement, specifier: "%.2f")", value: $tempMediumIncrement, step: 0.05)
+                    } else {
+                        Stepper("\(tempMediumPercent, specifier: "%.2f")%", value: $tempMediumPercent, step: 0.05)
                     }
                 }
-                .pickerStyle(.segmented)
-                if mediumType == "Increment" {
-                    Stepper("\(mediumIncrement, specifier: "%.2f")", value: $mediumIncrement, step: 0.05)
-                } else {
-                    Stepper("\(mediumPercent, specifier: "%.2f")%", value: $mediumPercent, step: 0.05)
-                }
-            }
-            Section("Hard") {
-                Picker("Type", selection: $hardType) {
-                    ForEach(typeOptions, id: \.self) {
-                        Text($0)
+                .disabled(!isEligibleForChange())
+
+                Section("Hard") {
+                    Picker("Type", selection: $tempHardType) {
+                        ForEach(typeOptions, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    if tempHardType == "Increment" {
+                        Stepper("\(tempHardIncrement, specifier: "%.2f")", value: $tempHardIncrement, step: 0.05)
+                    } else {
+                        Stepper("\(tempHardPercent, specifier: "%.2f")%", value: $tempHardPercent, step: 0.05)
                     }
                 }
-                .pickerStyle(.segmented)
-                if hardType == "Increment" {
-                    Stepper("\(hardIncrement, specifier: "%.2f")", value: $hardIncrement, step: 0.05)
-                } else {
-                    Stepper("\(hardPercent, specifier: "%.2f")%", value: $hardPercent, step: 0.05)
+                .disabled(!isEligibleForChange())
+                Section {
+                    if isEligibleForChange() {
+                        Button("Save Budget") {
+                            confirmSaveSettings.toggle()
+                        }
+                        .confirmationDialog("Confirm Settings", isPresented: $confirmSaveSettings) {
+                            Button("Yes") {
+                                easyType = tempEasyType
+                                easyPercent = tempEasyPercent
+                                easyIncrement = tempEasyIncrement
+                                mediumType = tempMediumType
+                                mediumPercent = tempMediumPercent
+                                mediumIncrement = tempMediumIncrement
+                                hardType = tempHardType
+                                hardPercent = tempHardPercent
+                                hardIncrement = tempHardIncrement
+                                holdDuration = 0
+                            }
+                            Button("Nevermind", role: .cancel) {
+                                
+                            }
+                        } message: {
+                            Text("Confirm this budget?")
+                        }
+                    } else {
+                        NavigationLink("Enable Changes", destination: EnableChanges())
+                    }
                 }
             }
+            .onAppear {
+                cleanUpOldDurations()
+                tempEasyType = easyType
+                tempEasyPercent = easyPercent
+                tempEasyIncrement = easyIncrement
+                tempMediumType = mediumType
+                tempMediumPercent = mediumPercent
+                tempMediumIncrement = mediumIncrement
+                tempHardType = hardType
+                tempHardPercent = hardPercent
+                tempHardIncrement = hardIncrement
         }
+        }
+    }
+    
+    private func cleanUpOldDurations() {
+        let now = Date()
+        let lastHoldEndTime = Date(timeIntervalSinceReferenceDate: lastHoldTime)
+        
+        // Reset holdDuration if it's a new day
+        if !Calendar.current.isDate(lastHoldEndTime, inSameDayAs: now) {
+            holdDuration = 0
+        }
+    }
+    
+    private func isEligibleForChange() -> Bool {
+        // Check if holdDuration meets the new requirement of 20 minutes within a single day
+        let eligible = holdDuration >= 60 // 20 minutes expressed in seconds
+        print("Is eligible for change: \(eligible)")
+        return eligible
     }
 }
 
