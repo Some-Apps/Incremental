@@ -16,7 +16,7 @@ struct EnableChanges: View {
     @State private var holdTimer: Timer?
 
     var body: some View {
-        if holdDuration >= 60 {
+        if holdDuration >= 600 {
             Text("You can now edit your settings")
                 .font(.title)
                 .multilineTextAlignment(.center)
@@ -24,7 +24,7 @@ struct EnableChanges: View {
             VStack(spacing: 15) {
                 Text("Hold button for 10 minutes in a single day to enable changes")
                     .bold()
-                ProgressBar(value: min(holdDuration / 60, 1.0)) // Progress bar for 20 minutes
+                ProgressBar(value: min(holdDuration / 600, 1.0)) // Progress bar for 20 minutes
                     .frame(height: 20)
                 Text("Hold time: \(formatTime(holdDuration))")
                 Button(isHoldingButton ? "Holding" : "Hold to Enable") {}

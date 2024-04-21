@@ -140,7 +140,7 @@ struct SettingsView: View {
     
     private func isEligibleForChange() -> Bool {
         // Check if holdDuration meets the new requirement of 20 minutes within a single day
-        let eligible = holdDuration >= 60 // 20 minutes expressed in seconds
+        let eligible = holdDuration >= 600 // 20 minutes expressed in seconds
         print("Is eligible for change: \(eligible)")
         return eligible
     }
