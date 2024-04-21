@@ -33,7 +33,7 @@ struct SettingsView: View {
                 if easyType == "Increment" {
                     Stepper("\(easyIncrement, specifier: "%.2f")", value: $easyIncrement, step: 0.05)
                 } else {
-                    Stepper("\(easyPercent, specifier: "%.1f")%", value: $easyPercent, step: 0.1)
+                    Stepper("\(easyPercent, specifier: "%.2f")%", value: $easyPercent, step: 0.05)
                 }
             }
             Section("Medium") {
@@ -46,7 +46,7 @@ struct SettingsView: View {
                 if mediumType == "Increment" {
                     Stepper("\(mediumIncrement, specifier: "%.2f")", value: $mediumIncrement, step: 0.05)
                 } else {
-                    Stepper("\(mediumPercent, specifier: "%.1f")%", value: $mediumPercent, step: 0.1)
+                    Stepper("\(mediumPercent, specifier: "%.2f")%", value: $mediumPercent, step: 0.05)
                 }
             }
             Section("Hard") {
@@ -59,7 +59,7 @@ struct SettingsView: View {
                 if hardType == "Increment" {
                     Stepper("\(hardIncrement, specifier: "%.2f")", value: $hardIncrement, step: 0.05)
                 } else {
-                    Stepper("\(hardPercent, specifier: "%.1f")%", value: $hardPercent, step: 0.1)
+                    Stepper("\(hardPercent, specifier: "%.2f")%", value: $hardPercent, step: 0.05)
                 }
             }
         }
