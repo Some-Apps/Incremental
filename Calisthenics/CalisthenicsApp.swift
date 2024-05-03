@@ -14,6 +14,7 @@ struct CalisthenicsApp: App {
         let schema = Schema([
             Log.self,
             Exercise.self,
+            StashedExercise.self,
             Muscle.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)

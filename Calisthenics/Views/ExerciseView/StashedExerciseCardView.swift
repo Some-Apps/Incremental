@@ -1,30 +1,26 @@
 //
-//  ExerciseCardView.swift
+//  StashedExerciseCardView.swift
 //  Calisthenics
 //
-//  Created by Jared Jones on 6/5/23.
+//  Created by Jared Jones on 5/3/24.
 //
 
 import SwiftUI
 import SwiftData
 
-struct ExerciseCardView: View {
+struct StashedExerciseCardView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) var modelContext
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
-    @StateObject var exerciseViewModel = ExerciseViewModel.shared
+    @StateObject var exerciseViewModel = StashedExerciseViewModel.shared
     
     @Binding var finishedTapped: Bool
     @Binding var stashedExercise: Bool
     
     @State private var showPopover = false
     @Binding var tempDifficulty: Difficulty
-    
-    @AppStorage("randomExercise") var randomExercise: String = ""
-    
-    @Query(filter: #Predicate<Exercise> { item in
-        item.isActive == true
-    }) var exercises: [Exercise]
+        
+    @Query var exercises: [StashedExercise]
     
     var body: some View {
         ScrollView {
@@ -34,13 +30,13 @@ struct ExerciseCardView: View {
                     .shadow(color: colorScheme == .light ? .black.opacity(0.33) : .white.opacity(0.33), radius: 3)
                 VStack {
                     HStack {
-                        Text(fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)!.title!)
+                        Text(exercises.first?.title ?? "")
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
                             .onAppear {
-                                exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)
+                                exerciseViewModel.exercise = exercises.first
                             }
                         if exerciseViewModel.exercise!.notes!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                             Button {
@@ -95,16 +91,6 @@ struct ExerciseCardView: View {
                     .tint(.green)
                     .font(.title)
                     .disabled(stopwatchViewModel.seconds < 5 || stopwatchViewModel.isRunning)
-                    Button("Stash Exercise") {
-                        if let exercise = exerciseViewModel.exercise {
-                            let tempExercise = StashedExercise(currentReps: exercise.currentReps!, difficulty: exercise.difficulty!, id: exercise.id!, isActive: exercise.isActive!, notes: exercise.notes!, title: exercise.title!, units: exercise.units!)
-                            modelContext.insert(tempExercise)
-                            try? modelContext.save()
-                            stashedExercise = true
-                        }
-                        
-                    }
-                    .disabled(stopwatchViewModel.seconds > 5)
                 }
                 .padding()
             }
@@ -117,19 +103,5 @@ struct ExerciseCardView: View {
                 }
             }
     }
-    func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
-        print("LOGG: \(id.description)")
-        print("LOGG: \(exercises)")
-        
-        return exercises.first(where: { $0.id!.description == id.description })
-    }
-    
+
 }
-
-
-
-//struct ExerciseCardView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ExerciseCardView(exercise: Exercise.preview())
-//    }
-//}

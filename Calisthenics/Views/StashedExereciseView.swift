@@ -1,29 +1,16 @@
-//
-//  ExercisesView.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 3/22/23.
-//
-
 import AlertToast
 import SwiftUI
 import HealthKit
 import WidgetKit
 import SwiftData
 
-struct CurrentExerciseView: View {
+struct StashedExereciseView: View {
     @Environment(\.modelContext) private var modelContext
     
-    @Query var allExercises: [Exercise]
-
-
-    @Query(filter: #Predicate<Exercise> { exercise in
-        exercise.isActive == true
-    }) var exercises: [Exercise]
-    
+    @Query var exercises: [StashedExercise]
+    @Query var originalExercises: [Exercise]
     @Query var logs: [Log]
     
-    @AppStorage("randomExercise") var randomExercise: String = ""
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyIncrement") var easyIncrement = 0.5
     @AppStorage("easyPercent") var easyPercent = 1.0
@@ -35,7 +22,7 @@ struct CurrentExerciseView: View {
     @AppStorage("hardPercent") var hardPercent = -5.0
 
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
-    @StateObject var exerciseViewModel = ExerciseViewModel.shared
+    @StateObject var exerciseViewModel = StashedExerciseViewModel.shared
     
     @State private var difficulty: Difficulty = .medium
     @State private var lastExercise: Exercise? = nil
@@ -45,21 +32,25 @@ struct CurrentExerciseView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if exerciseViewModel.exercise != nil && randomExercise != "" && exercises.count > 1 {
+                if exerciseViewModel.exercise != nil && exercises.count >= 1  && (fetchExerciseById(id: exerciseViewModel.exercise?.id ?? UUID(), exercises: originalExercises) != nil) {
                     VStack {
                         Text(totalDurationToday())
-                        ExerciseCardView(finishedTapped: $finishedTapped, stashedExercise: $stashedExercise, tempDifficulty: $difficulty)
+                        StashedExerciseCardView(finishedTapped: $finishedTapped, stashedExercise: $stashedExercise, tempDifficulty: $difficulty)
                             .onChange(of: finishedTapped) {
                                 if finishedTapped {
                                     finished(exercises: Array(exercises))
                                 }
                             }
-                            .onChange(of: stashedExercise) {
-                                if stashedExercise {
-                                    generateRandomExercise(exercises: Array(exercises))
+                            .onAppear {
+                                exerciseViewModel.exercise = exercises.first
+                                for exercise in exercises {
+                                    if (fetchExerciseById(id: exercise.id!, exercises: originalExercises) == nil) {
+                                        modelContext.delete(exercise)
+                                        try? modelContext.save()
+                                    }
                                 }
-                                
                             }
+                      
                         Spacer()
                         StopwatchView(viewModel: stopwatchViewModel)
                             .padding()
@@ -71,26 +62,14 @@ struct CurrentExerciseView: View {
                     .toast(isPresenting: $finishedTapped) {
                         AlertToast(displayMode: .hud, type: .complete(.green), title: "Exercise completed!")
                     }
-                    .toast(isPresenting: $stashedExercise) {
-                        AlertToast(displayMode: .hud, type: .complete(.orange), title: "Exercise stashed!")
-                    }
                 } else {
-                    Text("At least 2 exercises required")
+                    Text("No stashed exercises")
                         .onAppear {
-                            print(randomExercise)
-                            if exercises.isEmpty {
-                                print("No exercises available")
-                            } else {
-                                
-                                print("LOG: random")
-                                print("LOG: \(randomExercise)")
-                                if randomExercise == "" {
-                                    generateRandomExercise(exercises: Array(exercises))
-                                } else {
-                                    if fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises) == nil {
-                                        generateRandomExercise(exercises: Array(exercises))
-                                    }
-                                    exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises)
+                            exerciseViewModel.exercise = exercises.first
+                            for exercise in exercises {
+                                if (fetchExerciseById(id: exercise.id!, exercises: originalExercises) == nil) {
+                                    modelContext.delete(exercise)
+                                    try? modelContext.save()
                                 }
                             }
                         }
@@ -184,7 +163,7 @@ struct CurrentExerciseView: View {
     }
 
     
-    func createLog(difficulty: Difficulty, lastExercise: Exercise) {
+    func createLog(difficulty: Difficulty, lastExercise: StashedExercise) {
         print("LOG: creating log")
         let newLog = Log(backingData: Log.createBackingData())
         newLog.id = UUID()
@@ -192,7 +171,7 @@ struct CurrentExerciseView: View {
         newLog.reps = Int16(exactly: lastExercise.currentReps!.rounded(.down))!
         newLog.timestamp = Date()
         newLog.units = lastExercise.units
-        newLog.exercises = lastExercise
+        newLog.exercises = fetchExerciseById(id: lastExercise.id!, exercises: originalExercises)
 
         print("LOG: \(difficulty)")
 
@@ -220,35 +199,11 @@ struct CurrentExerciseView: View {
             }
         }
         modelContext.insert(newLog)
+        modelContext.delete(lastExercise)
         try? modelContext.save()
     }
 
-    func generateRandomExercise(exercises: [Exercise]) {
-        let activeExercises = exercises.filter({ $0.isActive == true })
-        let exercisesWithoutLast = activeExercises.filter({ $0.id != exerciseViewModel.exercise?.id })
-        if let randomElement = exercisesWithoutLast.randomElement() {
-            print("Random exercise: \(randomElement)")
-            randomExercise = randomElement.id!.uuidString
-            exerciseViewModel.exercise = fetchExerciseById(id: (UUID(uuidString: randomElement.id!.uuidString))!, exercises: exercises)
-
-        } else {
-            print("No random exercise found")
-            if let randomElement = activeExercises.randomElement() {
-                randomExercise = randomElement.id!.uuidString
-                exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomElement.id!.uuidString)!, exercises: exercises)
-            }
-        }
-    }
-    
-    func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
-        print("LOGG: \(id.description)")
-        print("LOGG: \(exercises)")
-        
-        return exercises.first(where: { $0.id!.description == id.description })
-    }
-
-    
-    func finished(exercises: [Exercise]) {
+    func finished(exercises: [StashedExercise]) {
         createLog(difficulty: difficulty, lastExercise: exerciseViewModel.exercise!)
         WidgetCenter.shared.reloadAllTimelines()
 
@@ -258,7 +213,10 @@ struct CurrentExerciseView: View {
         let endDate = startDate.addingTimeInterval(duration)
 
         saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
-        generateRandomExercise(exercises: Array(exercises))
         stopwatchViewModel.reset()
+    }
+    
+    func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
+        return originalExercises.first(where: { $0.id!.description == id.description })
     }
 }

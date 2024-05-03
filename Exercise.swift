@@ -11,7 +11,7 @@ import SwiftData
 
 
 @Model class Exercise {
-    var currentReps: Double? = 0
+    var currentReps: Double?
     var difficulty: String?
     var id: UUID?
     var isActive: Bool?
@@ -31,5 +31,25 @@ import SwiftData
         self.units = units
         self.logs = logs
         self.muscles = muscles
+    }
+}
+
+@Model class StashedExercise {
+    var currentReps: Double?
+    var difficulty: String?
+    var id: UUID?
+    var isActive: Bool?
+    var notes: String?
+    var title: String?
+    var units: String?
+    
+    init(currentReps: Double, difficulty: String, id: UUID, isActive: Bool, notes: String, title: String, units: String) {
+        self.currentReps = currentReps
+        self.difficulty = difficulty
+        self.id = id
+        self.isActive = isActive
+        self.notes = notes
+        self.title = title
+        self.units = units
     }
 }
