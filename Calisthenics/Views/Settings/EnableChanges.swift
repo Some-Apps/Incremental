@@ -8,7 +8,10 @@ struct EnableChanges: View {
 
     @State private var isHoldingButton = false
     @State private var holdTimer: Timer?
-    
+    @StateObject var adManager = AdManager()
+    @Environment(\.presentationMode) var presentationMode
+    @AppStorage("showAd") private var showAd = false
+
 
     var body: some View {
         if holdDuration >= 600 {
@@ -26,11 +29,8 @@ struct EnableChanges: View {
                 Text("Watch ads for 10 minutes in a single day")
                     .bold()
                 Button("Watch Ads") {
-                    if let rootController = UIApplication.shared.connectedScenes
-                                        .flatMap({ ($0 as? UIWindowScene)?.windows ?? [] })
-                                        .first(where: { $0.isKeyWindow })?.rootViewController {
-                                        AdManager.shared.showRewardedAd(from: rootController)
-                                    }
+                    showAd = true
+                    
                 }
                 .buttonStyle(.bordered)
                 .tint(.green)
@@ -58,6 +58,31 @@ struct EnableChanges: View {
 
         }
     }
+    
+    private func findPresenter() -> UIViewController? {
+        // First, find the key window which is typically the window that is currently being displayed
+        guard let rootViewController = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController else {
+            return nil
+        }
+        
+        // Check if the rootViewController is a UITabBarController
+        if let tabBarController = rootViewController as? UITabBarController {
+            // Access the viewController for the tab with tag 3
+            let viewControllerForTag = tabBarController.viewControllers?.first { $0.tabBarItem.tag == 3 }
+            // Check if there is a viewController presented on top of it
+            return viewControllerForTag?.presentedViewController ?? viewControllerForTag
+        }
+        
+        // If the rootViewController is not a UITabBarController, check if the presentedViewController is
+        if let presented = rootViewController.presentedViewController as? UITabBarController {
+            let viewControllerForTag = presented.viewControllers?.first { $0.tabBarItem.tag == 3 }
+            return viewControllerForTag?.presentedViewController ?? viewControllerForTag
+        }
+        
+        // If there's no UITabBarController, just return the presentedViewController or the root
+        return rootViewController.presentedViewController ?? rootViewController
+    }
+
 
     private func startHolding() {
         if !isHoldingButton {

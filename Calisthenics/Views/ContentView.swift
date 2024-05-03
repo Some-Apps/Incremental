@@ -6,8 +6,10 @@ struct ContentView: View {
 
     
     @Query var stashedExercises: [StashedExercise]
-    
+    @AppStorage("showAd") private var showAd = false
     @AppStorage("currentTab") var currentTab: Int = 0
+    @StateObject private var adManager = AdManager()  // Assuming you have this from previous examples
+
     
     var body: some View {
         TabView(selection: $currentTab) {
@@ -33,6 +35,9 @@ struct ContentView: View {
                 }
                 .tag(3)
         }
+        .fullScreenCover(isPresented: $showAd) {
+                        AdView(adManager: adManager, showAd: $showAd)
+                    }
         .onAppear {
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0
