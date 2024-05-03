@@ -19,8 +19,18 @@ struct ExerciseCardView: View {
     
     @State private var showPopover = false
     @Binding var tempDifficulty: Difficulty
+    @Query var stashedExercises: [StashedExercise]
+
     
     @AppStorage("randomExercise") var randomExercise: String = ""
+    
+    @AppStorage("easyText") var easyText = "Didn't have to pause"
+    
+    @AppStorage("mediumText") var mediumText = "Had to pause but didn't have to take a break"
+
+    @AppStorage("hardText") var hardText = "Had to take a break or 3 pauses"
+    @AppStorage("maxStashed") var maxStashed = 10
+
     
     @Query(filter: #Predicate<Exercise> { item in
         item.isActive == true
@@ -79,13 +89,13 @@ struct ExerciseCardView: View {
                     .disabled(stopwatchViewModel.isRunning)
                     switch exerciseViewModel.difficulty {
                     case .easy:
-                        Text("Didn't have to pause")
+                        Text(easyText)
                             .foregroundColor(.secondary)
                     case .medium:
-                        Text("Had to pause but didn't have to take a break")
+                        Text(mediumText)
                             .foregroundColor(.secondary)
                     case .hard:
-                        Text("Had to take a break or 3 pauses")
+                        Text(hardText)
                             .foregroundColor(.secondary)
                     }
                     Button("Finish") {
@@ -95,16 +105,19 @@ struct ExerciseCardView: View {
                     .tint(.green)
                     .font(.title)
                     .disabled(stopwatchViewModel.seconds < 5 || stopwatchViewModel.isRunning)
-                    Button("Stash Exercise") {
-                        if let exercise = exerciseViewModel.exercise {
-                            let tempExercise = StashedExercise(currentReps: exercise.currentReps!, difficulty: exercise.difficulty!, id: exercise.id!, isActive: exercise.isActive!, notes: exercise.notes!, title: exercise.title!, units: exercise.units!)
-                            modelContext.insert(tempExercise)
-                            try? modelContext.save()
-                            stashedExercise = true
+                    if stashedExercises.count < maxStashed {
+                        Button("Stash Exercise") {
+                            if let exercise = exerciseViewModel.exercise {
+                                let tempExercise = StashedExercise(currentReps: exercise.currentReps!, difficulty: exercise.difficulty!, id: exercise.id!, isActive: exercise.isActive!, notes: exercise.notes!, title: exercise.title!, units: exercise.units!)
+                                modelContext.insert(tempExercise)
+                                try? modelContext.save()
+                                stashedExercise = true
+                            }
+                            
                         }
-                        
+                        .disabled(stopwatchViewModel.seconds >= 5)
                     }
-                    .disabled(stopwatchViewModel.seconds > 5)
+                    
                 }
                 .padding()
             }

@@ -19,6 +19,11 @@ struct StashedExerciseCardView: View {
     
     @State private var showPopover = false
     @Binding var tempDifficulty: Difficulty
+    @AppStorage("easyText") var easyText = "Didn't have to pause"
+    
+    @AppStorage("mediumText") var mediumText = "Had to pause but didn't have to take a break"
+
+    @AppStorage("hardText") var hardText = "Had to take a break or 3 pauses"
         
     @Query var exercises: [StashedExercise]
     
@@ -75,13 +80,13 @@ struct StashedExerciseCardView: View {
                     .disabled(stopwatchViewModel.isRunning)
                     switch exerciseViewModel.difficulty {
                     case .easy:
-                        Text("Didn't have to pause")
+                        Text(easyText)
                             .foregroundColor(.secondary)
                     case .medium:
-                        Text("Had to pause but didn't have to take a break")
+                        Text(mediumText)
                             .foregroundColor(.secondary)
                     case .hard:
-                        Text("Had to take a break or 3 pauses")
+                        Text(hardText)
                             .foregroundColor(.secondary)
                     }
                     Button("Finish") {
