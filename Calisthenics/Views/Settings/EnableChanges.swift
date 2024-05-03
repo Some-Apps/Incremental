@@ -1,10 +1,4 @@
-//
-//  EnableChanges.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 4/21/24.
-//
-
+import GoogleMobileAds
 import SwiftUI
 
 struct EnableChanges: View {
@@ -14,6 +8,7 @@ struct EnableChanges: View {
 
     @State private var isHoldingButton = false
     @State private var holdTimer: Timer?
+    
 
     var body: some View {
         if holdDuration >= 600 {
@@ -22,12 +17,31 @@ struct EnableChanges: View {
                 .multilineTextAlignment(.center)
         } else {
             VStack(spacing: 15) {
-                Text("Hold button for 10 minutes in a single day to enable changes")
-                    .bold()
+                Text("To enable changes...")
+                    .font(.title)
                 ProgressBar(value: min(holdDuration / 600, 1.0)) // Progress bar for 20 minutes
                     .frame(height: 20)
-                Text("Hold time: \(formatTime(holdDuration))")
-                Button(isHoldingButton ? "Holding" : "Hold to Enable") {}
+                Text("Hold/Ad Time: \(formatTime(holdDuration))")
+                Divider()
+                Text("Watch ads for 10 minutes in a single day")
+                    .bold()
+                Button("Watch Ads") {
+                    if let rootController = UIApplication.shared.connectedScenes
+                                        .flatMap({ ($0 as? UIWindowScene)?.windows ?? [] })
+                                        .first(where: { $0.isKeyWindow })?.rootViewController {
+                                        AdManager.shared.showRewardedAd(from: rootController)
+                                    }
+                }
+                .buttonStyle(.bordered)
+                .tint(.green)
+                .font(.title)
+
+                Text("OR")
+                    .fontWeight(.black)
+                Text("Hold button for 10 minutes in a single day")
+                    .bold()
+                
+                Button(isHoldingButton ? "Holding" : "Hold Me") {}
                     .buttonStyle(.bordered)
                     .tint(isHoldingButton ? .secondary : .green)
                     .onLongPressGesture(minimumDuration: 0.01, maximumDistance: 10, pressing: { isPressing in
@@ -37,7 +51,7 @@ struct EnableChanges: View {
                             stopHolding()
                         }
                     }, perform: {})
-                    .font(.largeTitle)
+                    .font(.title)
             }
             .padding()
             .multilineTextAlignment(.center)
@@ -75,6 +89,10 @@ struct EnableChanges: View {
         let seconds = Int(time) % 60
         return "\(minutes)m \(seconds)s"
     }
+    
+   
+
+
 }
 
 struct ProgressBar: View {

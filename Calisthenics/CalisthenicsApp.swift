@@ -1,15 +1,23 @@
-//
-//  CalisthenicsApp.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 3/18/23.
-//
-
+import GoogleMobileAds
 import SwiftUI
 import SwiftData
 
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  func application(_ application: UIApplication,
+      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+    GADMobileAds.sharedInstance().start(completionHandler: nil)
+
+    return true
+  }
+}
+
 @main
 struct CalisthenicsApp: App {
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Log.self,
