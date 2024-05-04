@@ -1,10 +1,3 @@
-//
-//  AddExerciseView.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 3/22/23.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -18,12 +11,16 @@ struct AddExerciseView: View {
     @State private var startingDuration = 30.0
     @State private var notes = ""
 //    @State private var selectedMuscles = Set<String>()
+    @FocusState private var isTitleFocused: Bool
+
     
     var body: some View {
         Form {
             Section {
                 TextField("Exercise Title", text: $title)
                     .textInputAutocapitalization(.words)
+                    .focused($isTitleFocused)  // Bind the focus state to this text field
+
                 Picker("Units", selection: $units) {
                     ForEach(unitOptions, id: \.self) { unit in
                         Text(unit)
@@ -63,6 +60,9 @@ struct AddExerciseView: View {
                 }
                 .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines) == "")
             }
+        }
+        .onAppear {
+            isTitleFocused = true
         }
     }
     
