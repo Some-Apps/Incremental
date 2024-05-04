@@ -56,7 +56,7 @@ class DefaultsManager: ObservableObject {
         
         self.maxStashed = getDataFromiCloud(key: "maxStashed") as? Int ?? 10
         self.holdDuration = getDataFromiCloud(key: "holdDuration") as? Double ?? 0.0
-        self.holdDuration = getDataFromiCloud(key: "lastHoldTime") as? Double ?? Date.timeIntervalSinceReferenceDate
+        self.lastHoldTime = getDataFromiCloud(key: "lastHoldTime") as? Double ?? Date.timeIntervalSinceReferenceDate
     }
 
 }
