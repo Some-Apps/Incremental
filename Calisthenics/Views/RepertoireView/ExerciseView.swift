@@ -45,7 +45,7 @@ struct ExerciseView: View {
                             isActive = exercise.isActive!
                         }
                         .disabled(randomExercise == exercise.id?.uuidString)
-                    Text(exercise.currentReps?.description ?? "0")
+                    Text("\(exercise.currentReps ?? 0, specifier: "%.2f")")
                 }
                 Section("Notes") {
                     HStack {

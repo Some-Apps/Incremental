@@ -64,6 +64,7 @@ struct SettingsView: View {
                         Stepper("\(tempEasyPercent, specifier: "%.2f")%", value: $tempEasyPercent, step: 0.05)
                     }
                     TextEditor(text: $tempEasyText)
+                        .frame(minHeight:  75)
                 }
                 .disabled(!isEligibleForChange())
 
@@ -80,6 +81,7 @@ struct SettingsView: View {
                         Stepper("\(tempMediumPercent, specifier: "%.2f")%", value: $tempMediumPercent, step: 0.05)
                     }
                     TextEditor(text: $tempMediumText)
+                        .frame(minHeight:  75)
 
                 }
                 .disabled(!isEligibleForChange())
@@ -97,6 +99,7 @@ struct SettingsView: View {
                         Stepper("\(tempHardPercent, specifier: "%.2f")%", value: $tempHardPercent, step: 0.05)
                     }
                     TextEditor(text: $tempHardText)
+                        .frame(minHeight:  75)
 
                 }
                 .disabled(!isEligibleForChange())

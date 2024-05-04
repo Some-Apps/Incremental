@@ -165,6 +165,7 @@ struct StashedExereciseView: View {
     
     func createLog(difficulty: Difficulty, lastExercise: StashedExercise) {
         print("LOG: creating log")
+        let exercise = fetchExerciseById(id: lastExercise.id!, exercises: originalExercises)
         let newLog = Log(backingData: Log.createBackingData())
         newLog.id = UUID()
         newLog.duration = Int16(exactly: stopwatchViewModel.seconds)!
@@ -181,21 +182,22 @@ struct StashedExereciseView: View {
         switch difficulty {
         case .easy:
             if easyType == "Increment" {
-                lastExercise.currentReps! += easyIncrement
+                exercise?.currentReps = lastExercise.currentReps! + easyIncrement
             } else {
-                lastExercise.currentReps! *= (easyPercent/100 + 1)
+                exercise?.currentReps! = lastExercise.currentReps! * (easyPercent/100 + 1)
             }
         case .medium:
             if mediumType == "Increment" {
-                lastExercise.currentReps! += mediumIncrement
+                exercise!.currentReps = lastExercise.currentReps! + mediumIncrement
+                
             } else {
-                lastExercise.currentReps! *= (mediumPercent/100 + 1)
+                exercise!.currentReps = lastExercise.currentReps! * (mediumPercent/100 + 1)
             }
         case .hard:
             if hardType == "Increment" {
-                lastExercise.currentReps! += hardIncrement
+                exercise!.currentReps = lastExercise.currentReps! + hardIncrement
             } else {
-                lastExercise.currentReps! *= (hardPercent/100 + 1)
+                exercise!.currentReps = lastExercise.currentReps! * (hardPercent/100 + 1)
             }
         }
         modelContext.insert(newLog)

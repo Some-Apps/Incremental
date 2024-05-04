@@ -7,6 +7,8 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
     @AppStorage("currentTab") var currentTab: Int = 0
     @AppStorage("holdDuration") var holdDuration: Double = 0
     @AppStorage("showAd") private var showAd1 = false
+    @AppStorage("lastHoldTime") var lastHoldTime: Double = Date().timeIntervalSinceReferenceDate
+    @AppStorage("showWatchedAd") var showWatchedAd: Bool = false
 
 
     override init() {
@@ -15,6 +17,7 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
     }
 
     func loadRewardedAd() {
+//        ca-app-pub-3940256099942544/1712485313
         GADRewardedAd.load(withAdUnitID: "ca-app-pub-3940256099942544/1712485313", request: GADRequest()) { [weak self] ad, error in
             guard let self = self else { return }
             if let error = error {
@@ -31,10 +34,11 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
             ad.present(fromRootViewController: viewController) { [weak self] in
                 guard let self = self else { return }
                 // Reward the user for watching the ad
-                let reward = ad.adReward
-                self.rewardAmount = reward.amount.doubleValue
-                holdDuration += reward.amount.doubleValue
+ 
+                
                 print("User was rewarded \(self.rewardAmount)")
+                
+                
             }
         } else {
             print("Ad wasn't ready.")
@@ -56,6 +60,11 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
         print("Ad did dismiss full screen content.")
         loadRewardedAd() // Reload ad for next time
         showAd1 = false
+        self.showWatchedAd = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.holdDuration += 45
+            self.lastHoldTime = Date().timeIntervalSinceReferenceDate
+        }
     }
 }
 
@@ -84,9 +93,10 @@ struct AdPresenter: UIViewControllerRepresentable {
         if let ad = adManager.rewardedAd {
             ad.present(fromRootViewController: uiViewController) {
                 // Handle the reward
-                let reward = ad.adReward
-                self.adManager.rewardAmount = reward.amount.doubleValue
-                self.adManager.holdDuration += reward.amount.doubleValue
+//                let reward = ad.adReward
+//                self.adManager.rewardAmount = reward.amount.doubleValue
+//                self.adManager.holdDuration += reward.amount.doubleValue
+//                self.adManager.lastHoldTime = Date().timeIntervalSinceReferenceDate
                 print("User was rewarded \(self.adManager.rewardAmount)")
             }
         } else {

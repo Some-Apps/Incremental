@@ -1,3 +1,4 @@
+import AlertToast
 import GoogleMobileAds
 import SwiftUI
 
@@ -5,7 +6,7 @@ struct EnableChanges: View {
     @AppStorage("budget") var budget: Double = 10
     @AppStorage("holdDuration") var holdDuration: Double = 0
     @AppStorage("lastHoldTime") var lastHoldTime: Double = Date().timeIntervalSinceReferenceDate
-
+    @AppStorage("showWatchedAd") var showWatchedAd: Bool = false
     @State private var isHoldingButton = false
     @State private var holdTimer: Timer?
     @StateObject var adManager = AdManager()
@@ -16,7 +17,7 @@ struct EnableChanges: View {
     var body: some View {
         if holdDuration >= 600 {
             Text("You can now edit your settings")
-                .font(.title)
+//                .font(.title)
                 .multilineTextAlignment(.center)
         } else {
             VStack(spacing: 15) {
@@ -24,23 +25,12 @@ struct EnableChanges: View {
                     .font(.title)
                 ProgressBar(value: min(holdDuration / 600, 1.0)) // Progress bar for 20 minutes
                     .frame(height: 20)
-                Text("Hold/Ad Time: \(formatTime(holdDuration))")
-                Divider()
-                Text("Watch ads for 10 minutes in a single day")
-                    .bold()
-                Button("Watch Ads") {
-                    showAd = true
-                    
-                }
-                .buttonStyle(.bordered)
-                .tint(.green)
-                .font(.title)
-
-                Text("OR")
-                    .fontWeight(.black)
+                Text("Hold Time: \(formatTime(holdDuration))")
+                    .foregroundStyle(.secondary)
+                    .fontWeight(.thin)
+                Spacer()
                 Text("Hold button for 10 minutes in a single day")
                     .bold()
-                
                 Button(isHoldingButton ? "Holding" : "Hold Me") {}
                     .buttonStyle(.bordered)
                     .tint(isHoldingButton ? .secondary : .green)
@@ -52,11 +42,26 @@ struct EnableChanges: View {
                         }
                     }, perform: {})
                     .font(.title)
+                Text("OR")
+                    .fontWeight(.black)
+                Text("Watch a 5-30 second ad to gain 45 seconds")
+                    .bold()
+                Button("Watch Ad") {
+                    showAd = true
+                    
+                }
+                .buttonStyle(.bordered)
+                .tint(.green)
+                .font(.title)
+            }
+            .toast(isPresenting: $showWatchedAd, duration: 2) {
+                AlertToast(displayMode: .alert, type: .systemImage("stopwatch.fill", .green), title: "Watched Ad", subTitle: "You gained 45 seconds by watching this ad")
             }
             .padding()
             .multilineTextAlignment(.center)
-
+            
         }
+            
     }
     
     private func findPresenter() -> UIViewController? {
