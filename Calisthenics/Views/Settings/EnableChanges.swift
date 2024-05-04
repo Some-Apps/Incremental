@@ -94,6 +94,7 @@ struct EnableChanges: View {
             isHoldingButton = true
             if !Calendar.current.isDate(Date(timeIntervalSinceReferenceDate: lastHoldTime), inSameDayAs: Date()) {
                 holdDuration = 0 // Reset if it's a new day
+                defaultsManager.holdDuration = holdDuration
             }
             holdTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { _ in
                 self.updateHoldDuration()
