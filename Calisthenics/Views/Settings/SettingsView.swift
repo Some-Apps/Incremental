@@ -165,6 +165,7 @@ struct SettingsView: View {
                 }
             }
             .onAppear {
+                print("Hold Duration: \(holdDuration)")
                 cleanUpOldDurations()
                 tempEasyType = easyType
                 tempEasyPercent = easyPercent
@@ -187,7 +188,6 @@ struct SettingsView: View {
     private func cleanUpOldDurations() {
         let now = Date()
         let lastHoldEndTime = Date(timeIntervalSinceReferenceDate: lastHoldTime)
-        defaultsManager.saveDataToiCloud(key: "lastHoldTime", value: lastHoldTime)
         // Reset holdDuration if it's a new day
         if !Calendar.current.isDate(lastHoldEndTime, inSameDayAs: now) {
             holdDuration = 0
@@ -196,8 +196,7 @@ struct SettingsView: View {
     }
     
     private func isEligibleForChange() -> Bool {
-        // Check if holdDuration meets the new requirement of 20 minutes within a single day
-        let eligible = holdDuration >= 600 // 20 minutes expressed in seconds
+        let eligible = holdDuration >= 600
         print("Is eligible for change: \(eligible)")
         return eligible
     }
