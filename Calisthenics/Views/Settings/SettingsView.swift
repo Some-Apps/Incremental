@@ -157,7 +157,7 @@ struct SettingsView: View {
                                 
                             }
                         } message: {
-                            Text("Confirm this budget?")
+                            Text("Confirm changes?")
                         }
                     } else {
                         NavigationLink("Enable Changes", destination: EnableChanges())
@@ -187,7 +187,7 @@ struct SettingsView: View {
     private func cleanUpOldDurations() {
         let now = Date()
         let lastHoldEndTime = Date(timeIntervalSinceReferenceDate: lastHoldTime)
-        
+        defaultsManager.saveDataToiCloud(key: "lastHoldTime", value: lastHoldTime)
         // Reset holdDuration if it's a new day
         if !Calendar.current.isDate(lastHoldEndTime, inSameDayAs: now) {
             holdDuration = 0
