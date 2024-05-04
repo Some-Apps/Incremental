@@ -25,6 +25,7 @@
 		C0589F202BE59EF700F19B7B /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = C0589F1F2BE59EF700F19B7B /* GoogleMobileAds */; };
 		C0589F222BE5A16B00F19B7B /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F212BE5A16B00F19B7B /* AdManager.swift */; };
 		C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F232BE6725400F19B7B /* DefaultsManager.swift */; };
+		C0589F252BE6CA2500F19B7B /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F232BE6725400F19B7B /* DefaultsManager.swift */; };
 		C065345B2A9E6AAF001DFA7B /* CalisthenicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */; };
 		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
 		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
@@ -424,6 +425,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C00ECE4C2B9669C300A2CD21 /* Exercise.swift in Sources */,
+				C0589F252BE6CA2500F19B7B /* DefaultsManager.swift in Sources */,
 				C00ECE4E2B9669C300A2CD21 /* Log.swift in Sources */,
 				C0BDACA729CF3ECE006B19F9 /* CalisthenicsWidgetBundle.swift in Sources */,
 				C00ECE502B9669C300A2CD21 /* Muscle.swift in Sources */,

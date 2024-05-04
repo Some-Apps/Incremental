@@ -67,8 +67,8 @@ struct ContentView: View {
                 .tag(3)
         }
         .fullScreenCover(isPresented: $showAd) {
-                        AdView(adManager: adManager, showAd: $showAd)
-                    }
+            AdView(adManager: adManager, showAd: $showAd)
+        }
         .onAppear {
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0

@@ -16,19 +16,6 @@ struct Provider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [SimpleEntry] = []
-                        
-//        @Query var logs: [Log]
-        
-//        var todayMinutes: Int {
-//            var todaySeconds = 0
-//            for log in logs {
-//                if Calendar.current.isDateInToday(log.timestamp) {
-//                    todaySeconds += Int(log.duration)
-//                }
-//            }
-//            let minutes = todaySeconds / 60
-//            return minutes
-//        }
 
 
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
@@ -50,10 +37,21 @@ struct SimpleEntry: TimelineEntry {
 
 
 struct CalisthenicsWidgetEntryView : View {
+    @Query var logs: [Log]
+
+    func totalDurationToday() -> String {
+        print(logs)
+        let newLogs = logs.filter( { Calendar.autoupdatingCurrent.isDateInToday($0.timestamp!) } )
+        
+        let totalDuration = newLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
+        let minutes = Int(totalDuration) / 60
+        let seconds = Int(totalDuration) % 60
+        return "\(minutes) \(minutes == 1 ? "minute" : "minutes")"
+    }
     var entry: Provider.Entry
 
     var body: some View {
-        Text("Coming Soon")
+        Text(totalDurationToday())
             .fontWeight(.bold)
             .font(.title)
             .multilineTextAlignment(.center)
@@ -63,10 +61,26 @@ struct CalisthenicsWidgetEntryView : View {
 
 struct CalisthenicsWidget: Widget {
     let kind: String = "CalisthenicsWidget"
+    var sharedModelContainer: ModelContainer = {
+        let schema = Schema([
+            Log.self,
+            Exercise.self,
+            StashedExercise.self,
+            Muscle.self
+        ])
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, cloudKitDatabase: .automatic)
+
+        do {
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             CalisthenicsWidgetEntryView(entry: entry)
+                .modelContainer(sharedModelContainer)
         }
         .configurationDisplayName("some Calisthenics")
         .description("Minutes exercised today")

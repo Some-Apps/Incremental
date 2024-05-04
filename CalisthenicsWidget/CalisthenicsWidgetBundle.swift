@@ -11,7 +11,9 @@ import SwiftData
 
 @main
 struct CalisthenicsWidgetBundle: WidgetBundle {
+    
+    
     var body: some Widget {
-        CalisthenicsWidget()
+            CalisthenicsWidget()
     }
 }
