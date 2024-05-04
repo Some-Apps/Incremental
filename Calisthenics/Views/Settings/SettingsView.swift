@@ -191,6 +191,7 @@ struct SettingsView: View {
         // Reset holdDuration if it's a new day
         if !Calendar.current.isDate(lastHoldEndTime, inSameDayAs: now) {
             holdDuration = 0
+            defaultsManager.saveDataToiCloud(key: "holdDuration", value: holdDuration)
         }
     }
     

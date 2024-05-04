@@ -64,45 +64,12 @@ struct ContentView: View {
         .onAppear {
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0
-            self.easyType = defaultsManager.getDataFromiCloud(key: "easyType") as? String ?? "Increment"
-            self.easyText = defaultsManager.getDataFromiCloud(key: "easyText") as? String ?? "Didn't have to pause"
-            self.easyIncrement = defaultsManager.getDataFromiCloud(key: "easyIncrement") as? Double ?? 0.5
-            self.easyPercent = defaultsManager.getDataFromiCloud(key: "easyPercent") as? Double ?? 1
-
-            self.mediumType = defaultsManager.getDataFromiCloud(key: "mediumType") as? String ?? "Increment"
-            self.mediumText = defaultsManager.getDataFromiCloud(key: "mediumText") as? String ?? "Had to pause but didn't have to take a break"
-            self.mediumIncrement = defaultsManager.getDataFromiCloud(key: "mediumIncrement") as? Double ?? 0.1
-            self.mediumPercent = defaultsManager.getDataFromiCloud(key: "mediumPercent") as? Double ?? 0.1
-
-            self.hardType = defaultsManager.getDataFromiCloud(key: "hardType") as? String ?? "Increment"
-            self.hardText = defaultsManager.getDataFromiCloud(key: "hardText") as? String ?? "Had to take a break or 3 pauses"
-            self.hardIncrement = defaultsManager.getDataFromiCloud(key: "hardIncrement") as? Double ?? -2
-            self.hardPercent = defaultsManager.getDataFromiCloud(key: "hardPercent") as? Double ?? -5
-            
-            self.maxStashed = defaultsManager.getDataFromiCloud(key: "maxStashed") as? Int ?? 10
-            self.holdDuration = defaultsManager.getDataFromiCloud(key: "holdDuration") as? Double ?? 0
-            self.holdDuration = defaultsManager.getDataFromiCloud(key: "lastHoldTime") as? Double ?? 0
+            defaultsManager.loadSettings()
 
         }
         .onReceive(NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)) { _ in
-            self.easyType = defaultsManager.getDataFromiCloud(key: "easyType") as? String ?? "Increment"
-            self.easyText = defaultsManager.getDataFromiCloud(key: "easyText") as? String ?? "Didn't have to pause"
-            self.easyIncrement = defaultsManager.getDataFromiCloud(key: "easyIncrement") as? Double ?? 0.5
-            self.easyPercent = defaultsManager.getDataFromiCloud(key: "easyPercent") as? Double ?? 1
-
-            self.mediumType = defaultsManager.getDataFromiCloud(key: "mediumType") as? String ?? "Increment"
-            self.mediumText = defaultsManager.getDataFromiCloud(key: "mediumText") as? String ?? "Had to pause but didn't have to take a break"
-            self.mediumIncrement = defaultsManager.getDataFromiCloud(key: "mediumIncrement") as? Double ?? 0.1
-            self.mediumPercent = defaultsManager.getDataFromiCloud(key: "mediumPercent") as? Double ?? 0.1
-
-            self.hardType = defaultsManager.getDataFromiCloud(key: "hardType") as? String ?? "Increment"
-            self.hardText = defaultsManager.getDataFromiCloud(key: "hardText") as? String ?? "Had to take a break or 3 pauses"
-            self.hardIncrement = defaultsManager.getDataFromiCloud(key: "hardIncrement") as? Double ?? -2
-            self.hardPercent = defaultsManager.getDataFromiCloud(key: "hardPercent") as? Double ?? -5
-            
-            self.maxStashed = defaultsManager.getDataFromiCloud(key: "maxStashed") as? Int ?? 10
-            self.holdDuration = defaultsManager.getDataFromiCloud(key: "holdDuration") as? Double ?? 0
-            self.holdDuration = defaultsManager.getDataFromiCloud(key: "lastHoldTime") as? Double ?? 0                    }
+            defaultsManager.loadSettings()
+        }
     }
 }
 
