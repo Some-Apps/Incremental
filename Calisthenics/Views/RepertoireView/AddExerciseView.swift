@@ -23,6 +23,7 @@ struct AddExerciseView: View {
         Form {
             Section {
                 TextField("Exercise Title", text: $title)
+                    .textInputAutocapitalization(.words)
                 Picker("Units", selection: $units) {
                     ForEach(unitOptions, id: \.self) { unit in
                         Text(unit)

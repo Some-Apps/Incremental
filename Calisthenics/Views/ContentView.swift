@@ -64,7 +64,7 @@ struct ContentView: View {
         .onAppear {
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0
-//            defaultsManager.loadSettings()
+            defaultsManager.loadSettings()
 
         }
         .onReceive(NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)) { _ in
