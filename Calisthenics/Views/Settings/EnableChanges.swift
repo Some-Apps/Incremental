@@ -3,7 +3,7 @@ import GoogleMobileAds
 import SwiftUI
 
 struct EnableChanges: View {
-    @AppStorage("budget") var budget: Double = 10
+    @ObservedObject private var defaultsManager = DefaultsManager()
     @AppStorage("holdDuration") var holdDuration: Double = 0
     @AppStorage("lastHoldTime") var lastHoldTime: Double = Date().timeIntervalSinceReferenceDate
     @AppStorage("showWatchedAd") var showWatchedAd: Bool = false
@@ -23,7 +23,7 @@ struct EnableChanges: View {
             VStack(spacing: 15) {
                 Text("To enable changes...")
                     .font(.title)
-                ProgressBar(value: min(holdDuration / 600, 1.0)) // Progress bar for 20 minutes
+                ProgressBar(value: min(holdDuration / 600, 1.0))
                     .frame(height: 20)
                 Text("Hold Time: \(formatTime(holdDuration))")
                     .foregroundStyle(.secondary)
@@ -107,11 +107,15 @@ struct EnableChanges: View {
             holdTimer?.invalidate()
             holdTimer = nil
             lastHoldTime = Date().timeIntervalSinceReferenceDate // Update last hold time
+            defaultsManager.saveDataToiCloud(key: "lastHoldTime", value: lastHoldTime)
+
         }
     }
 
     private func updateHoldDuration() {
         holdDuration += 0.25
+        defaultsManager.saveDataToiCloud(key: "holdDuration", value: holdDuration)
+
     }
 
     private func formatTime(_ time: Double) -> String {

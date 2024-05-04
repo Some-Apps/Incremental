@@ -2,6 +2,8 @@ import GoogleMobileAds
 import SwiftUI
 
 class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
+    @ObservedObject private var defaultsManager = DefaultsManager()
+
     @Published var rewardedAd: GADRewardedAd?
     @Published var rewardAmount: Double = 0
     @AppStorage("currentTab") var currentTab: Int = 0
@@ -64,6 +66,8 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.holdDuration += 45
             self.lastHoldTime = Date().timeIntervalSinceReferenceDate
+            self.defaultsManager.saveDataToiCloud(key: "holdDuration", value: self.holdDuration)
+            self.defaultsManager.saveDataToiCloud(key: "lastHoldTime", value: self.lastHoldTime)
         }
     }
 }

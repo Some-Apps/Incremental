@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @ObservedObject private var defaultsManager = DefaultsManager()
+
+    
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyText") var easyText = "Didn't have to pause"
     @AppStorage("easyIncrement") var easyIncrement = 0.5
@@ -109,7 +112,7 @@ struct SettingsView: View {
                 .disabled(!isEligibleForChange())
                 Section {
                     if isEligibleForChange() {
-                        Button("Save Budget") {
+                        Button("Save Changes") {
                             confirmSaveSettings.toggle()
                         }
                         .confirmationDialog("Confirm Settings", isPresented: $confirmSaveSettings) {
@@ -128,6 +131,27 @@ struct SettingsView: View {
                                 hardText = tempHardText
                                 maxStashed = tempmMaxStashed
                                 holdDuration = 0
+                                
+                                defaultsManager.saveDataToiCloud(key: "easyType", value: easyType)
+                                defaultsManager.saveDataToiCloud(key: "easyText", value: easyText)
+                                defaultsManager.saveDataToiCloud(key: "easyPercent", value: easyPercent)
+                                defaultsManager.saveDataToiCloud(key: "easyIncrement", value: easyIncrement)
+                                
+                                defaultsManager.saveDataToiCloud(key: "mediumType", value: mediumType)
+                                defaultsManager.saveDataToiCloud(key: "mediumText", value: mediumText)
+                                defaultsManager.saveDataToiCloud(key: "mediumPercent", value: mediumPercent)
+                                defaultsManager.saveDataToiCloud(key: "mediumIncrement", value: mediumIncrement)
+                                
+                                defaultsManager.saveDataToiCloud(key: "hardType", value: hardType)
+                                defaultsManager.saveDataToiCloud(key: "hardText", value: hardText)
+                                defaultsManager.saveDataToiCloud(key: "hardPercent", value: hardPercent)
+                                defaultsManager.saveDataToiCloud(key: "hardIncrement", value: hardIncrement)
+                                
+                                defaultsManager.saveDataToiCloud(key: "maxStashed", value: maxStashed)
+
+                                defaultsManager.saveDataToiCloud(key: "holdDuration", value: holdDuration)
+
+
                             }
                             Button("Nevermind", role: .cancel) {
                                 
@@ -155,8 +179,9 @@ struct SettingsView: View {
                 tempHardIncrement = hardIncrement
                 tempHardText = hardText
                 tempmMaxStashed = maxStashed
+            }
         }
-        }
+        
     }
     
     private func cleanUpOldDurations() {
@@ -177,8 +202,4 @@ struct SettingsView: View {
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
-}
+
