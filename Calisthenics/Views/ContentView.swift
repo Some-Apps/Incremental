@@ -3,7 +3,7 @@ import SwiftUI
 import WidgetKit
 
 struct ContentView: View {
-    @StateObject private var defaultsManager = DefaultsManager()
+    @ObservedObject private var defaultsManager = DefaultsManager()
     
     @Query var stashedExercises: [StashedExercise]
     
@@ -25,7 +25,7 @@ struct ContentView: View {
     @AppStorage("hardPercent") var hardPercent = -5.0
     
     @AppStorage("maxStashed") var maxStashed = 10
-    @AppStorage("holdDuration") var holdDuration: Double = 0
+    @AppStorage("holdDuration") var holdDuration: Double = 0.0
 
     
     @AppStorage("showAd") private var showAd = false
@@ -64,7 +64,7 @@ struct ContentView: View {
         .onAppear {
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0
-            defaultsManager.loadSettings()
+//            defaultsManager.loadSettings()
 
         }
         .onReceive(NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)) { _ in

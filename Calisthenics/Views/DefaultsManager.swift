@@ -27,7 +27,7 @@ class DefaultsManager: ObservableObject {
     @AppStorage("hardPercent") var hardPercent = -5.0
     
     @AppStorage("maxStashed") var maxStashed = 10
-    @AppStorage("holdDuration") var holdDuration: Double = 0
+    @AppStorage("holdDuration") var holdDuration: Double = 0.0
     
     func saveDataToiCloud(key: String, value: Any) {
         let store = NSUbiquitousKeyValueStore.default
@@ -55,7 +55,7 @@ class DefaultsManager: ObservableObject {
         self.hardPercent = getDataFromiCloud(key: "hardPercent") as? Double ?? -5
         
         self.maxStashed = getDataFromiCloud(key: "maxStashed") as? Int ?? 10
-        self.holdDuration = getDataFromiCloud(key: "holdDuration") as? Double ?? 0
+        self.holdDuration = getDataFromiCloud(key: "holdDuration") as? Double ?? 0.0
         self.holdDuration = getDataFromiCloud(key: "lastHoldTime") as? Double ?? Date.timeIntervalSinceReferenceDate
     }
 
