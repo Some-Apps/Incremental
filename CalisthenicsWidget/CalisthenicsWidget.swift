@@ -82,7 +82,7 @@ struct CalisthenicsWidget: Widget {
             CalisthenicsWidgetEntryView(entry: entry)
                 .modelContainer(sharedModelContainer)
         }
-        .configurationDisplayName("some Calisthenics")
+        .configurationDisplayName("Calisthenics")
         .description("Minutes exercised today")
         .supportedFamilies([.systemSmall])
     }
