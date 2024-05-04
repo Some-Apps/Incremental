@@ -13,7 +13,8 @@ import SwiftData
 
 struct CurrentExerciseView: View {
     @Environment(\.modelContext) private var modelContext
-    
+    @ObservedObject private var defaultsManager = DefaultsManager()
+
     @Query var allExercises: [Exercise]
 
 
@@ -26,7 +27,7 @@ struct CurrentExerciseView: View {
     @AppStorage("randomExercise") var randomExercise: String = ""
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyIncrement") var easyIncrement = 0.5
-    @AppStorage("easyPercent") var easyPercent = 1.0
+    @AppStorage("easyPercent") var easyPercent = 0.5
     @AppStorage("mediumType") var mediumType = "Increment"
     @AppStorage("mediumIncrement") var mediumIncrement =  0.1
     @AppStorage("mediumPercent") var mediumPercent = 0.1
@@ -229,6 +230,7 @@ struct CurrentExerciseView: View {
         if let randomElement = exercisesWithoutLast.randomElement() {
             print("Random exercise: \(randomElement)")
             randomExercise = randomElement.id!.uuidString
+            defaultsManager.saveDataToiCloud(key: "randomExercise", value: randomExercise)
             exerciseViewModel.exercise = fetchExerciseById(id: (UUID(uuidString: randomElement.id!.uuidString))!, exercises: exercises)
 
         } else {

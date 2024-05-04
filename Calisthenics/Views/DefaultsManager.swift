@@ -14,7 +14,7 @@ class DefaultsManager: ObservableObject {
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyText") var easyText = "Didn't have to pause"
     @AppStorage("easyIncrement") var easyIncrement = 0.5
-    @AppStorage("easyPercent") var easyPercent = 1.0
+    @AppStorage("easyPercent") var easyPercent = 0.5
     
     @AppStorage("mediumType") var mediumType = "Increment"
     @AppStorage("mediumText") var mediumText = "Had to pause but didn't have to take a break"
@@ -28,6 +28,8 @@ class DefaultsManager: ObservableObject {
     
     @AppStorage("maxStashed") var maxStashed = 10
     @AppStorage("holdDuration") var holdDuration: Double = 0.0
+    @AppStorage("randomExercise") var randomExercise: String = ""
+
     
     func saveDataToiCloud(key: String, value: Any) {
         let store = NSUbiquitousKeyValueStore.default
@@ -39,10 +41,11 @@ class DefaultsManager: ObservableObject {
         return store.object(forKey: key)
     }
     func loadSettings() {
+        print("loading settings")
         self.easyType = getDataFromiCloud(key: "easyType") as? String ?? "Increment"
         self.easyText = getDataFromiCloud(key: "easyText") as? String ?? "Didn't have to pause"
         self.easyIncrement = getDataFromiCloud(key: "easyIncrement") as? Double ?? 0.5
-        self.easyPercent = getDataFromiCloud(key: "easyPercent") as? Double ?? 1
+        self.easyPercent = getDataFromiCloud(key: "easyPercent") as? Double ?? 0.5
 
         self.mediumType = getDataFromiCloud(key: "mediumType") as? String ?? "Increment"
         self.mediumText = getDataFromiCloud(key: "mediumText") as? String ?? "Had to pause but didn't have to take a break"
@@ -57,6 +60,8 @@ class DefaultsManager: ObservableObject {
         self.maxStashed = getDataFromiCloud(key: "maxStashed") as? Int ?? 10
         self.holdDuration = getDataFromiCloud(key: "holdDuration") as? Double ?? 0.0
         self.lastHoldTime = getDataFromiCloud(key: "lastHoldTime") as? Double ?? Date.timeIntervalSinceReferenceDate
+        self.randomExercise = getDataFromiCloud(key: "randomExercise") as? String ?? ""
+        print("uggg: \(randomExercise)")
     }
 
 }

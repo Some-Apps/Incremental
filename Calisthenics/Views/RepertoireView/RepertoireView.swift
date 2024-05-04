@@ -11,6 +11,7 @@ import SwiftData
 struct RepertoireView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
+    @ObservedObject private var defaultsManager = DefaultsManager()
 
     @Query(filter: #Predicate<Exercise> {item in
         item.isActive ?? true
@@ -82,6 +83,7 @@ struct RepertoireView: View {
             let exercise = activeExercises[index]
             if exercise.id?.uuidString == randomExercise {
                 randomExercise = ""
+                defaultsManager.saveDataToiCloud(key: "randomExercise", value: randomExercise)
             }
             modelContext.delete(exercise)
         }

@@ -6,13 +6,17 @@ struct ContentView: View {
     @ObservedObject private var defaultsManager = DefaultsManager()
     
     @Query var stashedExercises: [StashedExercise]
+    @Query var allExercises: [Exercise]
+
     
+    @AppStorage("randomExercise") var randomExercise: String = ""
+
     @AppStorage("lastHoldTime") var lastHoldTime: Double = Date().timeIntervalSinceReferenceDate
 
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyText") var easyText = "Didn't have to pause"
     @AppStorage("easyIncrement") var easyIncrement = 0.5
-    @AppStorage("easyPercent") var easyPercent = 1.0
+    @AppStorage("easyPercent") var easyPercent = 0.5
     
     @AppStorage("mediumType") var mediumType = "Increment"
     @AppStorage("mediumText") var mediumText = "Had to pause but didn't have to take a break"
@@ -32,6 +36,7 @@ struct ContentView: View {
     @AppStorage("currentTab") var currentTab: Int = 0
     
     @StateObject private var adManager = AdManager()  // Assuming you have this from previous examples
+    @StateObject var exerciseViewModel = ExerciseViewModel.shared
 
     
     var body: some View {
@@ -41,6 +46,9 @@ struct ContentView: View {
                     Label("Exercise", systemImage: "figure.core.training")
                 }
                 .tag(0)
+                .onAppear {
+                    defaultsManager.loadSettings()
+                }
             StashedExereciseView()
                 .tabItem {
                     Label("Stashed", systemImage: "clock.arrow.circlepath")
@@ -65,11 +73,17 @@ struct ContentView: View {
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0
             defaultsManager.loadSettings()
-
+            exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises)
         }
         .onReceive(NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)) { _ in
             defaultsManager.loadSettings()
         }
+    }
+    func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
+        print("LOGG: \(id.description)")
+        print("LOGG: \(exercises)")
+        
+        return exercises.first(where: { $0.id!.description == id.description })
     }
 }
 

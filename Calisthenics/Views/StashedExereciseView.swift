@@ -13,7 +13,7 @@ struct StashedExereciseView: View {
     
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyIncrement") var easyIncrement = 0.5
-    @AppStorage("easyPercent") var easyPercent = 1.0
+    @AppStorage("easyPercent") var easyPercent = 0.5
     @AppStorage("mediumType") var mediumType = "Increment"
     @AppStorage("mediumIncrement") var mediumIncrement =  0.1
     @AppStorage("mediumPercent") var mediumPercent = 0.1
