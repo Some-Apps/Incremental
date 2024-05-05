@@ -49,143 +49,283 @@ struct SettingsView: View {
     @State private var confirmSaveSettings = false
     
     let typeOptions = ["Percent", "Increment"]
+    private var idiom : UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
 
     
     var body: some View {
-        NavigationView {
-            Form {
-                Section("Easy") {
-                    Picker("Type", selection: $tempEasyType) {
-                        ForEach(typeOptions, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    if tempEasyType == "Increment" {
-                        Stepper("\(tempEasyIncrement, specifier: "%.2f")", value: $tempEasyIncrement, step: 0.05)
-                    } else {
-                        Stepper("\(tempEasyPercent, specifier: "%.2f")%", value: $tempEasyPercent, step: 0.05)
-                    }
-                    TextEditor(text: $tempEasyText)
-                        .frame(minHeight:  75)
-                }
-                .disabled(!isEligibleForChange())
-                .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
-
-                Section("Medium") {
-                    Picker("Type", selection: $tempMediumType) {
-                        ForEach(typeOptions, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    if tempMediumType == "Increment" {
-                        Stepper("\(tempMediumIncrement, specifier: "%.2f")", value: $tempMediumIncrement, step: 0.05)
-                    } else {
-                        Stepper("\(tempMediumPercent, specifier: "%.2f")%", value: $tempMediumPercent, step: 0.05)
-                    }
-                    TextEditor(text: $tempMediumText)
-                        .frame(minHeight:  75)
-
-                }
-                .disabled(!isEligibleForChange())
-                .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
-
-                Section("Hard") {
-                    Picker("Type", selection: $tempHardType) {
-                        ForEach(typeOptions, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    if tempHardType == "Increment" {
-                        Stepper("\(tempHardIncrement, specifier: "%.2f")", value: $tempHardIncrement, step: 0.05)
-                    } else {
-                        Stepper("\(tempHardPercent, specifier: "%.2f")%", value: $tempHardPercent, step: 0.05)
-                    }
-                    TextEditor(text: $tempHardText)
-                        .frame(minHeight:  75)
-
-                }
-                .disabled(!isEligibleForChange())
-                .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
-
-                Section {
-                    Stepper("Stash Limit: \(tempmMaxStashed)", value: $tempmMaxStashed, step: 1)
-                }
-                .disabled(!isEligibleForChange())
-                .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
-
-                Section {
-                    if isEligibleForChange() {
-                        Button("Save Changes") {
-                            confirmSaveSettings.toggle()
-                        }
-                        .confirmationDialog("Confirm Settings", isPresented: $confirmSaveSettings) {
-                            Button("Yes") {
-                                easyType = tempEasyType
-                                easyPercent = tempEasyPercent
-                                easyIncrement = tempEasyIncrement
-                                easyText = tempEasyText
-                                mediumType = tempMediumType
-                                mediumPercent = tempMediumPercent
-                                mediumIncrement = tempMediumIncrement
-                                mediumText = tempMediumText
-                                hardType = tempHardType
-                                hardPercent = tempHardPercent
-                                hardIncrement = tempHardIncrement
-                                hardText = tempHardText
-                                maxStashed = tempmMaxStashed
-                                holdDuration = 0
-                                
-                                defaultsManager.saveDataToiCloud(key: "easyType", value: easyType)
-                                defaultsManager.saveDataToiCloud(key: "easyText", value: easyText)
-                                defaultsManager.saveDataToiCloud(key: "easyPercent", value: easyPercent)
-                                defaultsManager.saveDataToiCloud(key: "easyIncrement", value: easyIncrement)
-                                
-                                defaultsManager.saveDataToiCloud(key: "mediumType", value: mediumType)
-                                defaultsManager.saveDataToiCloud(key: "mediumText", value: mediumText)
-                                defaultsManager.saveDataToiCloud(key: "mediumPercent", value: mediumPercent)
-                                defaultsManager.saveDataToiCloud(key: "mediumIncrement", value: mediumIncrement)
-                                
-                                defaultsManager.saveDataToiCloud(key: "hardType", value: hardType)
-                                defaultsManager.saveDataToiCloud(key: "hardText", value: hardText)
-                                defaultsManager.saveDataToiCloud(key: "hardPercent", value: hardPercent)
-                                defaultsManager.saveDataToiCloud(key: "hardIncrement", value: hardIncrement)
-                                
-                                defaultsManager.saveDataToiCloud(key: "maxStashed", value: maxStashed)
-
-                                defaultsManager.saveDataToiCloud(key: "holdDuration", value: holdDuration)
-
-
+        if idiom == .pad || idiom == .mac {
+            NavigationStack {
+                Form {
+                    Section("Easy") {
+                        Picker("Type", selection: $tempEasyType) {
+                            ForEach(typeOptions, id: \.self) {
+                                Text($0)
                             }
-                            Button("Nevermind", role: .cancel) {
-                                
-                            }
-                        } message: {
-                            Text("Confirm changes?")
                         }
-                    } else {
-                        NavigationLink("Enable Changes", destination: EnableChanges())
+                        .pickerStyle(.segmented)
+                        if tempEasyType == "Increment" {
+                            Stepper("\(tempEasyIncrement, specifier: "%.2f")", value: $tempEasyIncrement, step: 0.05)
+                        } else {
+                            Stepper("\(tempEasyPercent, specifier: "%.2f")%", value: $tempEasyPercent, step: 0.05)
+                        }
+                        TextEditor(text: $tempEasyText)
+                            .frame(minHeight:  75)
                     }
+                    .disabled(!isEligibleForChange())
+                    .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
+
+                    Section("Medium") {
+                        Picker("Type", selection: $tempMediumType) {
+                            ForEach(typeOptions, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        if tempMediumType == "Increment" {
+                            Stepper("\(tempMediumIncrement, specifier: "%.2f")", value: $tempMediumIncrement, step: 0.05)
+                        } else {
+                            Stepper("\(tempMediumPercent, specifier: "%.2f")%", value: $tempMediumPercent, step: 0.05)
+                        }
+                        TextEditor(text: $tempMediumText)
+                            .frame(minHeight:  75)
+
+                    }
+                    .disabled(!isEligibleForChange())
+                    .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
+
+                    Section("Hard") {
+                        Picker("Type", selection: $tempHardType) {
+                            ForEach(typeOptions, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        if tempHardType == "Increment" {
+                            Stepper("\(tempHardIncrement, specifier: "%.2f")", value: $tempHardIncrement, step: 0.05)
+                        } else {
+                            Stepper("\(tempHardPercent, specifier: "%.2f")%", value: $tempHardPercent, step: 0.05)
+                        }
+                        TextEditor(text: $tempHardText)
+                            .frame(minHeight:  75)
+
+                    }
+                    .disabled(!isEligibleForChange())
+                    .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
+
+                    Section {
+                        Stepper("Stash Limit: \(tempmMaxStashed)", value: $tempmMaxStashed, step: 1)
+                    }
+                    .disabled(!isEligibleForChange())
+                    .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
+
+                    Section {
+                        if isEligibleForChange() {
+                            Button("Save Changes") {
+                                confirmSaveSettings.toggle()
+                            }
+                            .confirmationDialog("Confirm Settings", isPresented: $confirmSaveSettings) {
+                                Button("Yes") {
+                                    easyType = tempEasyType
+                                    easyPercent = tempEasyPercent
+                                    easyIncrement = tempEasyIncrement
+                                    easyText = tempEasyText
+                                    mediumType = tempMediumType
+                                    mediumPercent = tempMediumPercent
+                                    mediumIncrement = tempMediumIncrement
+                                    mediumText = tempMediumText
+                                    hardType = tempHardType
+                                    hardPercent = tempHardPercent
+                                    hardIncrement = tempHardIncrement
+                                    hardText = tempHardText
+                                    maxStashed = tempmMaxStashed
+                                    holdDuration = 0
+                                    
+                                    defaultsManager.saveDataToiCloud(key: "easyType", value: easyType)
+                                    defaultsManager.saveDataToiCloud(key: "easyText", value: easyText)
+                                    defaultsManager.saveDataToiCloud(key: "easyPercent", value: easyPercent)
+                                    defaultsManager.saveDataToiCloud(key: "easyIncrement", value: easyIncrement)
+                                    
+                                    defaultsManager.saveDataToiCloud(key: "mediumType", value: mediumType)
+                                    defaultsManager.saveDataToiCloud(key: "mediumText", value: mediumText)
+                                    defaultsManager.saveDataToiCloud(key: "mediumPercent", value: mediumPercent)
+                                    defaultsManager.saveDataToiCloud(key: "mediumIncrement", value: mediumIncrement)
+                                    
+                                    defaultsManager.saveDataToiCloud(key: "hardType", value: hardType)
+                                    defaultsManager.saveDataToiCloud(key: "hardText", value: hardText)
+                                    defaultsManager.saveDataToiCloud(key: "hardPercent", value: hardPercent)
+                                    defaultsManager.saveDataToiCloud(key: "hardIncrement", value: hardIncrement)
+                                    
+                                    defaultsManager.saveDataToiCloud(key: "maxStashed", value: maxStashed)
+
+                                    defaultsManager.saveDataToiCloud(key: "holdDuration", value: holdDuration)
+
+
+                                }
+                                Button("Nevermind", role: .cancel) {
+                                    
+                                }
+                            } message: {
+                                Text("Confirm changes?")
+                            }
+                        } else {
+                            NavigationLink("Enable Changes", destination: EnableChanges())
+                        }
+                    }
+                }
+                .onAppear {
+                    print("Hold Duration: \(holdDuration)")
+                    cleanUpOldDurations()
+                    tempEasyType = easyType
+                    tempEasyPercent = easyPercent
+                    tempEasyIncrement = easyIncrement
+                    tempEasyText = easyText
+                    tempMediumType = mediumType
+                    tempMediumPercent = mediumPercent
+                    tempMediumIncrement = mediumIncrement
+                    tempMediumText = mediumText
+                    tempHardType = hardType
+                    tempHardPercent = hardPercent
+                    tempHardIncrement = hardIncrement
+                    tempHardText = hardText
+                    tempmMaxStashed = maxStashed
                 }
             }
-            .onAppear {
-                print("Hold Duration: \(holdDuration)")
-                cleanUpOldDurations()
-                tempEasyType = easyType
-                tempEasyPercent = easyPercent
-                tempEasyIncrement = easyIncrement
-                tempEasyText = easyText
-                tempMediumType = mediumType
-                tempMediumPercent = mediumPercent
-                tempMediumIncrement = mediumIncrement
-                tempMediumText = mediumText
-                tempHardType = hardType
-                tempHardPercent = hardPercent
-                tempHardIncrement = hardIncrement
-                tempHardText = hardText
-                tempmMaxStashed = maxStashed
+        } else {
+            NavigationView {
+                Form {
+                    Section("Easy") {
+                        Picker("Type", selection: $tempEasyType) {
+                            ForEach(typeOptions, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        if tempEasyType == "Increment" {
+                            Stepper("\(tempEasyIncrement, specifier: "%.2f")", value: $tempEasyIncrement, step: 0.05)
+                        } else {
+                            Stepper("\(tempEasyPercent, specifier: "%.2f")%", value: $tempEasyPercent, step: 0.05)
+                        }
+                        TextEditor(text: $tempEasyText)
+                            .frame(minHeight:  75)
+                    }
+                    .disabled(!isEligibleForChange())
+                    .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
+
+                    Section("Medium") {
+                        Picker("Type", selection: $tempMediumType) {
+                            ForEach(typeOptions, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        if tempMediumType == "Increment" {
+                            Stepper("\(tempMediumIncrement, specifier: "%.2f")", value: $tempMediumIncrement, step: 0.05)
+                        } else {
+                            Stepper("\(tempMediumPercent, specifier: "%.2f")%", value: $tempMediumPercent, step: 0.05)
+                        }
+                        TextEditor(text: $tempMediumText)
+                            .frame(minHeight:  75)
+
+                    }
+                    .disabled(!isEligibleForChange())
+                    .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
+
+                    Section("Hard") {
+                        Picker("Type", selection: $tempHardType) {
+                            ForEach(typeOptions, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        if tempHardType == "Increment" {
+                            Stepper("\(tempHardIncrement, specifier: "%.2f")", value: $tempHardIncrement, step: 0.05)
+                        } else {
+                            Stepper("\(tempHardPercent, specifier: "%.2f")%", value: $tempHardPercent, step: 0.05)
+                        }
+                        TextEditor(text: $tempHardText)
+                            .frame(minHeight:  75)
+
+                    }
+                    .disabled(!isEligibleForChange())
+                    .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
+
+                    Section {
+                        Stepper("Stash Limit: \(tempmMaxStashed)", value: $tempmMaxStashed, step: 1)
+                    }
+                    .disabled(!isEligibleForChange())
+                    .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
+
+                    Section {
+                        if isEligibleForChange() {
+                            Button("Save Changes") {
+                                confirmSaveSettings.toggle()
+                            }
+                            .confirmationDialog("Confirm Settings", isPresented: $confirmSaveSettings) {
+                                Button("Yes") {
+                                    easyType = tempEasyType
+                                    easyPercent = tempEasyPercent
+                                    easyIncrement = tempEasyIncrement
+                                    easyText = tempEasyText
+                                    mediumType = tempMediumType
+                                    mediumPercent = tempMediumPercent
+                                    mediumIncrement = tempMediumIncrement
+                                    mediumText = tempMediumText
+                                    hardType = tempHardType
+                                    hardPercent = tempHardPercent
+                                    hardIncrement = tempHardIncrement
+                                    hardText = tempHardText
+                                    maxStashed = tempmMaxStashed
+                                    holdDuration = 0
+                                    
+                                    defaultsManager.saveDataToiCloud(key: "easyType", value: easyType)
+                                    defaultsManager.saveDataToiCloud(key: "easyText", value: easyText)
+                                    defaultsManager.saveDataToiCloud(key: "easyPercent", value: easyPercent)
+                                    defaultsManager.saveDataToiCloud(key: "easyIncrement", value: easyIncrement)
+                                    
+                                    defaultsManager.saveDataToiCloud(key: "mediumType", value: mediumType)
+                                    defaultsManager.saveDataToiCloud(key: "mediumText", value: mediumText)
+                                    defaultsManager.saveDataToiCloud(key: "mediumPercent", value: mediumPercent)
+                                    defaultsManager.saveDataToiCloud(key: "mediumIncrement", value: mediumIncrement)
+                                    
+                                    defaultsManager.saveDataToiCloud(key: "hardType", value: hardType)
+                                    defaultsManager.saveDataToiCloud(key: "hardText", value: hardText)
+                                    defaultsManager.saveDataToiCloud(key: "hardPercent", value: hardPercent)
+                                    defaultsManager.saveDataToiCloud(key: "hardIncrement", value: hardIncrement)
+                                    
+                                    defaultsManager.saveDataToiCloud(key: "maxStashed", value: maxStashed)
+
+                                    defaultsManager.saveDataToiCloud(key: "holdDuration", value: holdDuration)
+
+
+                                }
+                                Button("Nevermind", role: .cancel) {
+                                    
+                                }
+                            } message: {
+                                Text("Confirm changes?")
+                            }
+                        } else {
+                            NavigationLink("Enable Changes", destination: EnableChanges())
+                        }
+                    }
+                }
+                .onAppear {
+                    print("Hold Duration: \(holdDuration)")
+                    cleanUpOldDurations()
+                    tempEasyType = easyType
+                    tempEasyPercent = easyPercent
+                    tempEasyIncrement = easyIncrement
+                    tempEasyText = easyText
+                    tempMediumType = mediumType
+                    tempMediumPercent = mediumPercent
+                    tempMediumIncrement = mediumIncrement
+                    tempMediumText = mediumText
+                    tempHardType = hardType
+                    tempHardPercent = hardPercent
+                    tempHardIncrement = hardIncrement
+                    tempHardText = hardText
+                    tempmMaxStashed = maxStashed
+                }
             }
         }
         

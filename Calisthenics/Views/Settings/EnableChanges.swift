@@ -31,7 +31,7 @@ struct EnableChanges: View {
                     .frame(height: 20)
                 Text("Hold Time: \(formatTime(holdDuration))")
                     .foregroundStyle(.secondary)
-                    .fontWeight(.thin)
+//                    .fontWeight(.thin)
                 Spacer()
                 Text("Hold button for 10 minutes in a single day")
                     .bold()
