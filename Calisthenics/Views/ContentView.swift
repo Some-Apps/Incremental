@@ -73,7 +73,11 @@ struct ContentView: View {
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0
             defaultsManager.loadSettings()
-            exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises)
+            if let randomExerciseUUID = UUID(uuidString: randomExercise),
+               let newExercise = fetchExerciseById(id: randomExerciseUUID, exercises: allExercises) {
+                exerciseViewModel.exercise = newExercise
+            }
+
         }
         .onReceive(NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)) { _ in
             defaultsManager.loadSettings()

@@ -44,13 +44,16 @@ struct ExerciseCardView: View {
                     .shadow(color: colorScheme == .light ? .black.opacity(0.33) : .white.opacity(0.33), radius: 3)
                 VStack {
                     HStack {
+                        
                         Text(fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)!.title!)
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
                             .onAppear {
-                                exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)
+                                if let newExercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises) {
+                                    exerciseViewModel.exercise = newExercise
+                                }
                             }
                         if exerciseViewModel.exercise!.notes!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                             Button {

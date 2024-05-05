@@ -88,10 +88,16 @@ struct CurrentExerciseView: View {
                                 if randomExercise == "" {
                                     generateRandomExercise(exercises: Array(exercises))
                                 } else {
-                                    if fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises) == nil {
+                                    if let randomExerciseUUID = UUID(uuidString: randomExercise),
+                                       let newExercise = fetchExerciseById(id: randomExerciseUUID, exercises: allExercises) {
                                         generateRandomExercise(exercises: Array(exercises))
+                                        exerciseViewModel.exercise = newExercise
                                     }
-                                    exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises)
+
+//                                    if fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises) == nil {
+//                                        generateRandomExercise(exercises: Array(exercises))
+//                                    }
+//                                    exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises)
                                 }
                             }
                         }
@@ -231,14 +237,22 @@ struct CurrentExerciseView: View {
             print("Random exercise: \(randomElement)")
             randomExercise = randomElement.id!.uuidString
             defaultsManager.saveDataToiCloud(key: "randomExercise", value: randomExercise)
-            exerciseViewModel.exercise = fetchExerciseById(id: (UUID(uuidString: randomElement.id!.uuidString))!, exercises: exercises)
+            if let randomExerciseUUID = UUID(uuidString: randomElement.id!.uuidString),
+               let newExercise = fetchExerciseById(id: randomExerciseUUID, exercises: allExercises) {
+                exerciseViewModel.exercise = newExercise
+            }
+//            exerciseViewModel.exercise = fetchExerciseById(id: (UUID(uuidString: randomElement.id!.uuidString))!, exercises: exercises)
 
         } else {
             print("No random exercise found")
             if let randomElement = activeExercises.randomElement() {
                 randomExercise = randomElement.id!.uuidString
-                exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomElement.id!.uuidString)!, exercises: exercises)
+                if let newExercise = fetchExerciseById(id: UUID(uuidString: randomElement.id!.uuidString)!, exercises: exercises) {
+                    exerciseViewModel.exercise = newExercise
+
+                }
             }
+
         }
     }
     

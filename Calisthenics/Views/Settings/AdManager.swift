@@ -19,8 +19,9 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
     }
 
     func loadRewardedAd() {
-//        ca-app-pub-3940256099942544/1712485313
-        GADRewardedAd.load(withAdUnitID: "ca-app-pub-3940256099942544/1712485313", request: GADRequest()) { [weak self] ad, error in
+//        ca-app-pub-3940256099942544/1712485313 test
+//        ca-app-pub-4456875215293250/1422568668 real
+        GADRewardedAd.load(withAdUnitID: "ca-app-pub-4456875215293250/1422568668", request: GADRequest()) { [weak self] ad, error in
             guard let self = self else { return }
             if let error = error {
                 print("Failed to load rewarded ad with error: \(error.localizedDescription)")
