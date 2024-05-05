@@ -4,6 +4,7 @@ import SwiftUI
 
 struct EnableChanges: View {
     @ObservedObject private var defaultsManager = DefaultsManager()
+    @Environment(\.dismiss) var dismiss
     @AppStorage("holdDuration") var holdDuration: Double = 0
     @AppStorage("lastHoldTime") var lastHoldTime: Double = Date().timeIntervalSinceReferenceDate
     @AppStorage("showWatchedAd") var showWatchedAd: Bool = false
@@ -19,6 +20,9 @@ struct EnableChanges: View {
             Text("You can now edit your settings")
 //                .font(.title)
                 .multilineTextAlignment(.center)
+                .onDisappear {
+                    dismiss()
+                }
         } else {
             VStack(spacing: 15) {
                 Text("To enable changes...")
@@ -53,6 +57,9 @@ struct EnableChanges: View {
                 .buttonStyle(.bordered)
                 .tint(.green)
                 .font(.title)
+            }
+            .onDisappear {
+                dismiss()
             }
             .toast(isPresenting: $showWatchedAd, duration: 2) {
                 AlertToast(displayMode: .alert, type: .systemImage("stopwatch.fill", .green), title: "Watched Ad", subTitle: "You gained 45 seconds by watching this ad")

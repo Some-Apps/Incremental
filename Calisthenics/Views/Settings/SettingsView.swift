@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject private var defaultsManager = DefaultsManager()
-
+    @Environment(\.dismiss) var dismiss
     
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyText") var easyText = "Didn't have to pause"
@@ -52,7 +52,7 @@ struct SettingsView: View {
 
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form {
                 Section("Easy") {
                     Picker("Type", selection: $tempEasyType) {
@@ -70,6 +70,7 @@ struct SettingsView: View {
                         .frame(minHeight:  75)
                 }
                 .disabled(!isEligibleForChange())
+                .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
 
                 Section("Medium") {
                     Picker("Type", selection: $tempMediumType) {
@@ -88,6 +89,7 @@ struct SettingsView: View {
 
                 }
                 .disabled(!isEligibleForChange())
+                .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
 
                 Section("Hard") {
                     Picker("Type", selection: $tempHardType) {
@@ -106,10 +108,14 @@ struct SettingsView: View {
 
                 }
                 .disabled(!isEligibleForChange())
+                .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
+
                 Section {
                     Stepper("Stash Limit: \(tempmMaxStashed)", value: $tempmMaxStashed, step: 1)
                 }
                 .disabled(!isEligibleForChange())
+                .foregroundStyle(!isEligibleForChange() ? .secondary : .primary)
+
                 Section {
                     if isEligibleForChange() {
                         Button("Save Changes") {
