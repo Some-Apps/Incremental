@@ -65,7 +65,7 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
         showAd1 = false
         self.showWatchedAd = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.holdDuration += 45
+            self.holdDuration += 60
             self.lastHoldTime = Date().timeIntervalSinceReferenceDate
             self.defaultsManager.saveDataToiCloud(key: "holdDuration", value: self.holdDuration)
             self.defaultsManager.saveDataToiCloud(key: "lastHoldTime", value: self.lastHoldTime)

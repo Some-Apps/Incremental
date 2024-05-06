@@ -48,7 +48,7 @@ struct EnableChanges: View {
                     .font(.title)
                 Text("OR")
                     .fontWeight(.black)
-                Text("Watch a 5-30 second ad to gain 45 seconds")
+                Text("Watch a 5-30 second ad to gain 60 seconds")
                     .bold()
                 Button("Watch Ad") {
                     showAd = true
@@ -62,7 +62,7 @@ struct EnableChanges: View {
                 dismiss()
             }
             .toast(isPresenting: $showWatchedAd, duration: 2) {
-                AlertToast(displayMode: .alert, type: .systemImage("stopwatch.fill", .green), title: "Watched Ad", subTitle: "You gained 45 seconds by watching this ad")
+                AlertToast(displayMode: .alert, type: .systemImage("stopwatch.fill", .green), title: "Watched Ad", subTitle: "You gained 60 seconds by watching this ad")
             }
             .padding()
             .multilineTextAlignment(.center)
