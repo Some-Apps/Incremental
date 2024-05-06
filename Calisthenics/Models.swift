@@ -11,4 +11,3 @@ enum Difficulty: String, CaseIterable {
 enum Units: String, CaseIterable {
     case reps, duration
 }
-
