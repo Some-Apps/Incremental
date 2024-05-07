@@ -11,6 +11,9 @@ struct SettingsView: View {
     @ObservedObject private var defaultsManager = DefaultsManager()
     @Environment(\.dismiss) var dismiss
     
+    @AppStorage("hasLaunchedBefore") var hasLaunchedBefore: Bool = false
+
+    
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyText") var easyText = "Didn't have to pause"
     @AppStorage("easyIncrement") var easyIncrement = 0.5
@@ -308,6 +311,11 @@ struct SettingsView: View {
                             NavigationLink("Enable Changes", destination: EnableChanges())
                         }
                     }
+//                    Section {
+//                        Button("View Walkthrough") {
+//                            hasLaunchedBefore = false
+//                        }
+//                    }
                 }
                 .onAppear {
                     print("Hold Duration: \(holdDuration)")

@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 @main
 struct CalisthenicsApp: App {
     
+    @AppStorage("hasLaunchedBefore") var hasLaunchedBefore: Bool = false
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var sharedModelContainer: ModelContainer = {

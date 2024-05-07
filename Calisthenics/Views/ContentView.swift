@@ -8,7 +8,8 @@ struct ContentView: View {
     @Query var stashedExercises: [StashedExercise]
     @Query var allExercises: [Exercise]
 
-    
+    @AppStorage("hasLaunchedBefore") var hasLaunchedBefore: Bool = false
+
     @AppStorage("randomExercise") var randomExercise: String = ""
 
     @AppStorage("lastHoldTime") var lastHoldTime: Double = Date().timeIntervalSinceReferenceDate
