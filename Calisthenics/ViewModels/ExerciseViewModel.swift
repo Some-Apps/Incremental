@@ -40,4 +40,5 @@ class StashedExerciseViewModel: ObservableObject {
     init(stopwatchViewModel: StopwatchViewModel) {
         self.stopwatchViewModel = stopwatchViewModel
     }
+    
 }

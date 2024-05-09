@@ -118,7 +118,7 @@ struct ExerciseCardView: View {
                             }
                             
                         }
-                        .disabled(stopwatchViewModel.seconds >= 5)
+                        .disabled(stopwatchViewModel.seconds >= 5 || stashedExercise)
                     }
                     
                 }

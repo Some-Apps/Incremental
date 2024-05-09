@@ -43,7 +43,10 @@ struct StashedExerciseCardView: View {
                             .onAppear {
                                 exerciseViewModel.exercise = exercises.first
                             }
-                        if exerciseViewModel.exercise!.notes!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
+                            .onChange(of: exerciseViewModel.exercise) {
+                                exerciseViewModel.exercise = exercises.first
+                            }
+                        if exerciseViewModel.exercise?.notes?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                             Button {
                                 showPopover.toggle()
                             } label: {
@@ -58,11 +61,11 @@ struct StashedExerciseCardView: View {
                     }
                     
                     Divider()
-                    if exerciseViewModel.exercise!.units == "Reps" {
+                    if exerciseViewModel.exercise?.units == "Reps" {
                         Text(String(Int(exerciseViewModel.exercise!.currentReps!)))
                             .font(.largeTitle)
                             .fontWeight(.heavy)
-                    } else if exerciseViewModel.exercise!.units == "Duration" {
+                    } else if exerciseViewModel.exercise?.units == "Duration" {
                         Text(String(format: "%01d:%02d", Int(exerciseViewModel.exercise!.currentReps!) / 60, Int(exerciseViewModel.exercise!.currentReps!) % 60))
                             .font(.largeTitle)
                             .fontWeight(.heavy)
@@ -89,6 +92,7 @@ struct StashedExerciseCardView: View {
                         Text(hardText)
                             .foregroundColor(.secondary)
                     }
+                      
                     Button("Finish") {
                         finishedTapped = true
                     }
@@ -96,6 +100,11 @@ struct StashedExerciseCardView: View {
                     .tint(.green)
                     .font(.title)
                     .disabled(stopwatchViewModel.seconds < 5 || stopwatchViewModel.isRunning)
+//                    .onChange(of: finishedTapped) {
+//                        if finishedTapped {
+//                            exerciseViewModel.exercise = exercises.first
+//                        }
+//                    }
                 }
                 .padding()
             }

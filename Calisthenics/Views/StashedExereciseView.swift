@@ -32,7 +32,7 @@ struct StashedExereciseView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if exerciseViewModel.exercise != nil && exercises.count >= 1  && (fetchExerciseById(id: exerciseViewModel.exercise?.id ?? UUID(), exercises: originalExercises) != nil) {
+                if let currentExercise = exerciseViewModel.exercise, exercises.count > 0 {
                     VStack {
                         Text(totalDurationToday())
                         StashedExerciseCardView(finishedTapped: $finishedTapped, stashedExercise: $stashedExercise, tempDifficulty: $difficulty)
@@ -204,20 +204,42 @@ struct StashedExereciseView: View {
         modelContext.delete(lastExercise)
         try? modelContext.save()
     }
-
+    
     func finished(exercises: [StashedExercise]) {
-        createLog(difficulty: difficulty, lastExercise: exerciseViewModel.exercise!)
-        WidgetCenter.shared.reloadAllTimelines()
+        guard let currentExercise = exerciseViewModel.exercise else { return }
 
+        // Log and workout saving functions.
+        createLog(difficulty: difficulty, lastExercise: currentExercise)
         let exerciseType = HKWorkoutActivityType.coreTraining
         let startDate = Date()
-        let duration = TimeInterval(stopwatchViewModel.seconds) // 30 minutes
+        let duration = TimeInterval(stopwatchViewModel.seconds)
         let endDate = startDate.addingTimeInterval(duration)
 
         saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
+
+        // Remove the exercise from the context and save the changes.
+        modelContext.delete(currentExercise)
+        try? modelContext.save()
+
+        // Update the exerciseViewModel with the next available exercise.
+        exerciseViewModel.exercise = fetchNextAvailableExercise()
+
+        // Reset the stopwatch after handling the exercise.
         stopwatchViewModel.reset()
+
+        // Notify system to update widgets.
+        WidgetCenter.shared.reloadAllTimelines()
     }
-    
+
+    func fetchNextAvailableExercise() -> StashedExercise? {
+        // Assuming you reload or refetch the exercises from the modelContext here.
+        let updatedExercises = exercises
+        return updatedExercises.first
+    }
+
+
+
+
     func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
         return originalExercises.first(where: { $0.id!.description == id.description })
     }
