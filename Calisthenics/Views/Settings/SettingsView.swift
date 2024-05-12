@@ -11,8 +11,7 @@ struct SettingsView: View {
     @ObservedObject private var defaultsManager = DefaultsManager()
     @Environment(\.dismiss) var dismiss
     
-    @AppStorage("hasLaunchedBefore") var hasLaunchedBefore: Bool = false
-
+    @AppStorage("firstLaunch") var firstLaunch: Bool = true
     
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyText") var easyText = "Didn't have to pause"
@@ -67,9 +66,9 @@ struct SettingsView: View {
                         }
                         .pickerStyle(.segmented)
                         if tempEasyType == "Increment" {
-                            Stepper("\(tempEasyIncrement, specifier: "%.2f")", value: $tempEasyIncrement, step: 0.05)
+                            Stepper("\(tempEasyIncrement > 0 ? "+" : "")\(tempEasyIncrement, specifier: "%.2f")", value: $tempEasyIncrement, step: 0.05)
                         } else {
-                            Stepper("\(tempEasyPercent, specifier: "%.2f")%", value: $tempEasyPercent, step: 0.05)
+                            Stepper("\(tempEasyPercent > 0 ? "+" : "")\(tempEasyPercent, specifier: "%.2f")%", value: $tempEasyPercent, step: 0.05)
                         }
                         TextEditor(text: $tempEasyText)
                             .frame(minHeight:  75)
@@ -85,9 +84,9 @@ struct SettingsView: View {
                         }
                         .pickerStyle(.segmented)
                         if tempMediumType == "Increment" {
-                            Stepper("\(tempMediumIncrement, specifier: "%.2f")", value: $tempMediumIncrement, step: 0.05)
+                            Stepper("\(tempMediumIncrement > 0 ? "+" : "")\(tempMediumIncrement, specifier: "%.2f")", value: $tempMediumIncrement, step: 0.05)
                         } else {
-                            Stepper("\(tempMediumPercent, specifier: "%.2f")%", value: $tempMediumPercent, step: 0.05)
+                            Stepper("\(tempMediumPercent > 0 ? "+" : "")\(tempMediumPercent, specifier: "%.2f")%", value: $tempMediumPercent, step: 0.05)
                         }
                         TextEditor(text: $tempMediumText)
                             .frame(minHeight:  75)
@@ -104,9 +103,9 @@ struct SettingsView: View {
                         }
                         .pickerStyle(.segmented)
                         if tempHardType == "Increment" {
-                            Stepper("\(tempHardIncrement, specifier: "%.2f")", value: $tempHardIncrement, step: 0.05)
+                            Stepper("\(tempHardIncrement > 0 ? "+" : "")\(tempHardIncrement, specifier: "%.2f")", value: $tempHardIncrement, step: 0.05)
                         } else {
-                            Stepper("\(tempHardPercent, specifier: "%.2f")%", value: $tempHardPercent, step: 0.05)
+                            Stepper("\(tempHardPercent > 0 ? "+" : "")\(tempHardPercent, specifier: "%.2f")%", value: $tempHardPercent, step: 0.05)
                         }
                         TextEditor(text: $tempHardText)
                             .frame(minHeight:  75)
@@ -172,6 +171,9 @@ struct SettingsView: View {
                             }
                         } else {
                             NavigationLink("Enable Changes", destination: EnableChanges())
+                        }
+                        Section {
+                            NavigationLink("How To Use App", destination: TutorialView())
                         }
                     }
                 }
@@ -204,9 +206,9 @@ struct SettingsView: View {
                         }
                         .pickerStyle(.segmented)
                         if tempEasyType == "Increment" {
-                            Stepper("\(tempEasyIncrement, specifier: "%.2f")", value: $tempEasyIncrement, step: 0.05)
+                            Stepper("\(tempEasyIncrement > 0 ? "+" : "")\(tempEasyIncrement, specifier: "%.2f")", value: $tempEasyIncrement, step: 0.05)
                         } else {
-                            Stepper("\(tempEasyPercent, specifier: "%.2f")%", value: $tempEasyPercent, step: 0.05)
+                            Stepper("\(tempEasyPercent > 0 ? "+" : "")\(tempEasyPercent, specifier: "%.2f")%", value: $tempEasyPercent, step: 0.05)
                         }
                         TextEditor(text: $tempEasyText)
                             .frame(minHeight:  75)
@@ -222,9 +224,9 @@ struct SettingsView: View {
                         }
                         .pickerStyle(.segmented)
                         if tempMediumType == "Increment" {
-                            Stepper("\(tempMediumIncrement, specifier: "%.2f")", value: $tempMediumIncrement, step: 0.05)
+                            Stepper("\(tempMediumIncrement > 0 ? "+" : "")\(tempMediumIncrement, specifier: "%.2f")", value: $tempMediumIncrement, step: 0.05)
                         } else {
-                            Stepper("\(tempMediumPercent, specifier: "%.2f")%", value: $tempMediumPercent, step: 0.05)
+                            Stepper("\(tempMediumPercent > 0 ? "+" : "")\(tempMediumPercent, specifier: "%.2f")%", value: $tempMediumPercent, step: 0.05)
                         }
                         TextEditor(text: $tempMediumText)
                             .frame(minHeight:  75)
@@ -241,9 +243,9 @@ struct SettingsView: View {
                         }
                         .pickerStyle(.segmented)
                         if tempHardType == "Increment" {
-                            Stepper("\(tempHardIncrement, specifier: "%.2f")", value: $tempHardIncrement, step: 0.05)
+                            Stepper("\(tempHardIncrement > 0 ? "+" : "")\(tempHardIncrement, specifier: "%.2f")", value: $tempHardIncrement, step: 0.05)
                         } else {
-                            Stepper("\(tempHardPercent, specifier: "%.2f")%", value: $tempHardPercent, step: 0.05)
+                            Stepper("\(tempHardPercent > 0 ? "+" : "")\(tempHardPercent, specifier: "%.2f")%", value: $tempHardPercent, step: 0.05)
                         }
                         TextEditor(text: $tempHardText)
                             .frame(minHeight:  75)
@@ -311,11 +313,9 @@ struct SettingsView: View {
                             NavigationLink("Enable Changes", destination: EnableChanges())
                         }
                     }
-//                    Section {
-//                        Button("View Walkthrough") {
-//                            hasLaunchedBefore = false
-//                        }
-//                    }
+                    Section {
+                        NavigationLink("How To Use App", destination: TutorialView())
+                    }
                 }
                 .onAppear {
                     print("Hold Duration: \(holdDuration)")

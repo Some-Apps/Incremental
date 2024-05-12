@@ -13,6 +13,9 @@
 		C00ECE4E2B9669C300A2CD21 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE492B9669C300A2CD21 /* Log.swift */; };
 		C00ECE4F2B9669C300A2CD21 /* Muscle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE4A2B9669C300A2CD21 /* Muscle.swift */; };
 		C00ECE502B9669C300A2CD21 /* Muscle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE4A2B9669C300A2CD21 /* Muscle.swift */; };
+		C029BCA42BF151B400113844 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C029BCA32BF151B400113844 /* TutorialView.swift */; };
+		C029BCA72BF1587400113844 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = C029BCA62BF1587400113844 /* PopupView */; };
+		C029BCA92BF158E300113844 /* FirstLauchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C029BCA82BF158E300113844 /* FirstLauchView.swift */; };
 		C0360AE22A2DFA5A00E8CA37 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */; };
 		C0360AE42A2E0CFA00E8CA37 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0360AE32A2E0CFA00E8CA37 /* Models.swift */; };
 		C0360AE62A2E0F8500E8CA37 /* CurrentExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0360AE52A2E0F8500E8CA37 /* CurrentExerciseView.swift */; };
@@ -81,6 +84,8 @@
 		C00ECE482B9669C300A2CD21 /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
 		C00ECE492B9669C300A2CD21 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		C00ECE4A2B9669C300A2CD21 /* Muscle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Muscle.swift; sourceTree = "<group>"; };
+		C029BCA32BF151B400113844 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		C029BCA82BF158E300113844 /* FirstLauchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLauchView.swift; sourceTree = "<group>"; };
 		C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C0360AE32A2E0CFA00E8CA37 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		C0360AE52A2E0F8500E8CA37 /* CurrentExerciseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentExerciseView.swift; sourceTree = "<group>"; };
@@ -138,6 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C029BCA72BF1587400113844 /* PopupView in Frameworks */,
 				C0589F202BE59EF700F19B7B /* GoogleMobileAds in Frameworks */,
 				C03FE2082A2FB5A500C9FD3D /* AlertToast in Frameworks */,
 			);
@@ -158,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				C0CB957C29C6445A0099974B /* ContentView.swift */,
+				C029BCA82BF158E300113844 /* FirstLauchView.swift */,
 				C0589F232BE6725400F19B7B /* DefaultsManager.swift */,
 				C0589F1A2BE5844900F19B7B /* StashedExereciseView.swift */,
 				C0A65C5B29D9D7B9001EAA5A /* ExerciseView */,
@@ -181,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */,
+				C029BCA32BF151B400113844 /* TutorialView.swift */,
 				C0FCBDD32BD5560800288BFE /* EnableChanges.swift */,
 				C0589F212BE5A16B00F19B7B /* AdManager.swift */,
 			);
@@ -333,6 +341,7 @@
 			packageProductDependencies = (
 				C03FE2072A2FB5A500C9FD3D /* AlertToast */,
 				C0589F1F2BE59EF700F19B7B /* GoogleMobileAds */,
+				C029BCA62BF1587400113844 /* PopupView */,
 			);
 			productName = Calisthenics;
 			productReference = C0CB957729C6445A0099974B /* Calisthenics.app */;
@@ -372,6 +381,7 @@
 			packageReferences = (
 				C03FE2062A2FB5A500C9FD3D /* XCRemoteSwiftPackageReference "AlertToast" */,
 				C0589F1E2BE59EF700F19B7B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				C029BCA52BF1587400113844 /* XCRemoteSwiftPackageReference "PopupView" */,
 			);
 			productRefGroup = C0CB957829C6445A0099974B /* Products */;
 			projectDirPath = "";
@@ -446,6 +456,7 @@
 				C00ECE4B2B9669C300A2CD21 /* Exercise.swift in Sources */,
 				C00ECE4F2B9669C300A2CD21 /* Muscle.swift in Sources */,
 				C0360AE22A2DFA5A00E8CA37 /* SettingsView.swift in Sources */,
+				C029BCA42BF151B400113844 /* TutorialView.swift in Sources */,
 				C03FE20A2A2FB6C500C9FD3D /* ExerciseViewModel.swift in Sources */,
 				C0CB957D29C6445A0099974B /* ContentView.swift in Sources */,
 				C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */,
@@ -459,6 +470,7 @@
 				C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */,
 				C0CB957B29C6445A0099974B /* CalisthenicsApp.swift in Sources */,
 				C0BDACB329CF3FBF006B19F9 /* CalisthenicsWidget.swift in Sources */,
+				C029BCA92BF158E300113844 /* FirstLauchView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -822,6 +834,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C029BCA52BF1587400113844 /* XCRemoteSwiftPackageReference "PopupView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/PopupView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.2;
+			};
+		};
 		C03FE2062A2FB5A500C9FD3D /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
@@ -841,6 +861,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C029BCA62BF1587400113844 /* PopupView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C029BCA52BF1587400113844 /* XCRemoteSwiftPackageReference "PopupView" */;
+			productName = PopupView;
+		};
 		C03FE2072A2FB5A500C9FD3D /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C03FE2062A2FB5A500C9FD3D /* XCRemoteSwiftPackageReference "AlertToast" */;

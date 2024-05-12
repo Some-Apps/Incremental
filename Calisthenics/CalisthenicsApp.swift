@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 @main
 struct CalisthenicsApp: App {
     
-    @AppStorage("hasLaunchedBefore") var hasLaunchedBefore: Bool = false
+    @AppStorage("firstLaunch") var firstLaunch: Bool = true
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     

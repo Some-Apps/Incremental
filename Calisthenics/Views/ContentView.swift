@@ -1,14 +1,17 @@
 import SwiftData
 import SwiftUI
 import WidgetKit
+import PopupView
 
 struct ContentView: View {
     @ObservedObject private var defaultsManager = DefaultsManager()
     
     @Query var stashedExercises: [StashedExercise]
     @Query var allExercises: [Exercise]
+    
+    @State private var showInstructions: Bool = false
 
-    @AppStorage("hasLaunchedBefore") var hasLaunchedBefore: Bool = false
+    @AppStorage("firstLaunch") var firstLaunch: Bool = true
 
     @AppStorage("randomExercise") var randomExercise: String = ""
 
@@ -83,6 +86,14 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)) { _ in
             defaultsManager.loadSettings()
         }
+        .fullScreenCover(isPresented: $firstLaunch) {
+            FirstLauchView()
+        }
+//        .sheet(isPresented: $showInstructions) {
+//            TutorialView()
+//        }
+
+        
     }
     func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
         print("LOGG: \(id.description)")
