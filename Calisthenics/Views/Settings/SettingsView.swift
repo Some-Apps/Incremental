@@ -350,7 +350,7 @@ struct SettingsView: View {
     }
     
     private func isEligibleForChange() -> Bool {
-        let eligible = holdDuration >= 600
+        let eligible = holdDuration >= 300
         print("Is eligible for change: \(eligible)")
         return eligible
     }

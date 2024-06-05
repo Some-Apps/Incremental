@@ -5,6 +5,7 @@ import SwiftData
 struct ExerciseView: View {
     @AppStorage("randomExercise") var randomExercise: String = ""
     @State private var isTextEditorSheetPresented = false
+    @ObservedObject private var defaultsManager = DefaultsManager()
 
     @Environment(\.dismiss) var dismiss
     
@@ -73,6 +74,7 @@ struct ExerciseView: View {
                 Section {
                     Button("Do Exercise") {
                         randomExercise = exercise.id!.uuidString
+                        defaultsManager.saveDataToiCloud(key: "randomExercise", value: randomExercise)
                         currentTab = 0
                     }
                 }
