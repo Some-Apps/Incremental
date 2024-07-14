@@ -1,10 +1,3 @@
-//
-//  ExercisesView.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 3/22/23.
-//
-
 import AlertToast
 import SwiftUI
 import HealthKit
@@ -17,13 +10,12 @@ struct CurrentExerciseView: View {
 
     @Query var allExercises: [Exercise]
 
-
     @Query(filter: #Predicate<Exercise> { exercise in
         exercise.isActive == true
     }) var exercises: [Exercise]
-    
+
     @Query var logs: [Log]
-    
+
     @AppStorage("randomExercise") var randomExercise: String = ""
     @AppStorage("easyType") var easyType = "Increment"
     @AppStorage("easyIncrement") var easyIncrement = 0.5
@@ -37,12 +29,12 @@ struct CurrentExerciseView: View {
 
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
     @StateObject var exerciseViewModel = ExerciseViewModel.shared
-    
+
     @State private var difficulty: Difficulty = .medium
     @State private var lastExercise: Exercise? = nil
     @State private var finishedTapped = false
     @State private var stashedExercise = false
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -59,7 +51,7 @@ struct CurrentExerciseView: View {
                                 if stashedExercise {
                                     generateRandomExercise(exercises: Array(exercises))
                                 }
-                                
+
                             }
                         Spacer()
                         StopwatchView(viewModel: stopwatchViewModel)
@@ -78,26 +70,18 @@ struct CurrentExerciseView: View {
                 } else {
                     Text("At least 2 exercises required")
                         .onAppear {
-                            print(randomExercise)
                             if exercises.isEmpty {
                                 print("No exercises available")
                             } else {
-                                
-                                print("LOG: random")
-                                print("LOG: \(randomExercise)")
                                 if randomExercise == "" {
                                     generateRandomExercise(exercises: Array(exercises))
                                 } else {
                                     if let randomExerciseUUID = UUID(uuidString: randomExercise),
                                        let newExercise = fetchExerciseById(id: randomExerciseUUID, exercises: allExercises) {
-                                        generateRandomExercise(exercises: Array(exercises))
                                         exerciseViewModel.exercise = newExercise
+                                    } else {
+                                        generateRandomExercise(exercises: Array(exercises))
                                     }
-
-//                                    if fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises) == nil {
-//                                        generateRandomExercise(exercises: Array(exercises))
-//                                    }
-//                                    exerciseViewModel.exercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: allExercises)
                                 }
                             }
                         }
@@ -105,16 +89,15 @@ struct CurrentExerciseView: View {
             }
         }
     }
-    
+
     func totalDurationToday() -> String {
-        let newLogs = logs.filter( { Calendar.autoupdatingCurrent.isDateInToday($0.timestamp!) } )
-        
+        let newLogs = logs.filter { Calendar.autoupdatingCurrent.isDateInToday($0.timestamp!) }
         let totalDuration = newLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
         let minutes = Int(totalDuration) / 60
         let seconds = Int(totalDuration) % 60
         return String(format: "%02d:%02d", minutes, seconds)
     }
-    
+
     func requestAuthorization() {
         let healthStore = HKHealthStore()
         let typesToShare: Set<HKSampleType> = [HKObjectType.workoutType()]
@@ -126,7 +109,7 @@ struct CurrentExerciseView: View {
             }
         }
     }
-    
+
     func saveWorkout(exerciseType: HKWorkoutActivityType, startDate: Date, endDate: Date, duration: TimeInterval) {
         guard HKHealthStore.isHealthDataAvailable() else {
             print("Health data not available")
@@ -134,28 +117,22 @@ struct CurrentExerciseView: View {
         }
 
         let healthStore = HKHealthStore()
-        
-        // Specify the types of data this workout will include; adjust these as needed for your app.
-        let typesToShare: Set = [
-            HKQuantityType.workoutType()
-        ]
-        
+        let typesToShare: Set = [HKQuantityType.workoutType()]
         let typesToRead: Set<HKObjectType> = []
-        
-        // Request authorization for the types of data your app needs.
+
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
             if let error = error {
                 print("Authorization error: \(error.localizedDescription)")
                 return
             }
-            
+
             if success {
                 let configuration = HKWorkoutConfiguration()
                 configuration.activityType = exerciseType
                 configuration.locationType = .unknown // Adjust this as necessary
-                
+
                 let builder = HKWorkoutBuilder(healthStore: healthStore, configuration: configuration, device: .local())
-                
+
                 builder.beginCollection(withStart: startDate) { (success, error) in
                     guard success else {
                         if let error = error {
@@ -163,8 +140,7 @@ struct CurrentExerciseView: View {
                         }
                         return
                     }
-                    
-                    // End the workout collection at the specified end date
+
                     builder.endCollection(withEnd: endDate) { (success, error) in
                         guard success else {
                             if let error = error {
@@ -172,8 +148,7 @@ struct CurrentExerciseView: View {
                             }
                             return
                         }
-                        
-                        // Finish building the workout
+
                         builder.finishWorkout { (workout, error) in
                             if let error = error {
                                 print("Error finishing workout: \(error.localizedDescription)")
@@ -183,16 +158,14 @@ struct CurrentExerciseView: View {
                         }
                     }
                 }
-                
+
             } else {
                 print("Authorization was not successful")
             }
         }
     }
 
-    
     func createLog(difficulty: Difficulty, lastExercise: Exercise) {
-        print("LOG: creating log")
         let newLog = Log(backingData: Log.createBackingData())
         newLog.id = UUID()
         newLog.duration = Int16(exactly: stopwatchViewModel.seconds)!
@@ -201,76 +174,59 @@ struct CurrentExerciseView: View {
         newLog.units = lastExercise.units
         newLog.exercises = lastExercise
 
-        print("LOG: \(difficulty)")
-
         lastExercise.difficulty = difficulty.rawValue
-        
 
         switch difficulty {
         case .easy:
             if easyType == "Increment" {
                 lastExercise.currentReps! += easyIncrement
             } else {
-                lastExercise.currentReps! *= (easyPercent/100 + 1)
+                lastExercise.currentReps! *= (easyPercent / 100 + 1)
             }
         case .medium:
             if mediumType == "Increment" {
                 lastExercise.currentReps! += mediumIncrement
             } else {
-                lastExercise.currentReps! *= (mediumPercent/100 + 1)
+                lastExercise.currentReps! *= (mediumPercent / 100 + 1)
             }
         case .hard:
             if hardType == "Increment" {
                 lastExercise.currentReps! += hardIncrement
             } else {
-                lastExercise.currentReps! *= (hardPercent/100 + 1)
+                lastExercise.currentReps! *= (hardPercent / 100 + 1)
             }
         }
+
         modelContext.insert(newLog)
         try? modelContext.save()
     }
 
     func generateRandomExercise(exercises: [Exercise]) {
-        let activeExercises = exercises.filter({ $0.isActive == true })
-        let exercisesWithoutLast = activeExercises.filter({ $0.id != exerciseViewModel.exercise?.id })
+        let activeExercises = exercises.filter { $0.isActive == true }
+        let exercisesWithoutLast = activeExercises.filter { $0.id != exerciseViewModel.exercise?.id }
         if let randomElement = exercisesWithoutLast.randomElement() {
-            print("Random exercise: \(randomElement)")
             randomExercise = randomElement.id!.uuidString
             defaultsManager.saveDataToiCloud(key: "randomExercise", value: randomExercise)
-            if let randomExerciseUUID = UUID(uuidString: randomElement.id!.uuidString),
-               let newExercise = fetchExerciseById(id: randomExerciseUUID, exercises: allExercises) {
-                exerciseViewModel.exercise = newExercise
-            }
-//            exerciseViewModel.exercise = fetchExerciseById(id: (UUID(uuidString: randomElement.id!.uuidString))!, exercises: exercises)
-
+            exerciseViewModel.exercise = randomElement
         } else {
-            print("No random exercise found")
             if let randomElement = activeExercises.randomElement() {
                 randomExercise = randomElement.id!.uuidString
-                if let newExercise = fetchExerciseById(id: UUID(uuidString: randomElement.id!.uuidString)!, exercises: exercises) {
-                    exerciseViewModel.exercise = newExercise
-
-                }
+                exerciseViewModel.exercise = randomElement
             }
-
         }
     }
-    
+
     func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
-        print("LOGG: \(id.description)")
-        print("LOGG: \(exercises)")
-        
-        return exercises.first(where: { $0.id!.description == id.description })
+        return exercises.first(where: { $0.id == id })
     }
 
-    
     func finished(exercises: [Exercise]) {
         createLog(difficulty: difficulty, lastExercise: exerciseViewModel.exercise!)
         WidgetCenter.shared.reloadAllTimelines()
 
         let exerciseType = HKWorkoutActivityType.coreTraining
         let startDate = Date()
-        let duration = TimeInterval(stopwatchViewModel.seconds) // 30 minutes
+        let duration = TimeInterval(stopwatchViewModel.seconds)
         let endDate = startDate.addingTimeInterval(duration)
 
         saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
