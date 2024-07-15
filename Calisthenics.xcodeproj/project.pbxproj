@@ -29,6 +29,7 @@
 		C0589F222BE5A16B00F19B7B /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F212BE5A16B00F19B7B /* AdManager.swift */; };
 		C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F232BE6725400F19B7B /* DefaultsManager.swift */; };
 		C0589F252BE6CA2500F19B7B /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F232BE6725400F19B7B /* DefaultsManager.swift */; };
+		C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */; };
 		C065345B2A9E6AAF001DFA7B /* CalisthenicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */; };
 		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
 		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
@@ -96,6 +97,7 @@
 		C0589F1C2BE58D0E00F19B7B /* StashedExerciseCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StashedExerciseCardView.swift; sourceTree = "<group>"; };
 		C0589F212BE5A16B00F19B7B /* AdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
 		C0589F232BE6725400F19B7B /* DefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsManager.swift; sourceTree = "<group>"; };
+		C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryView.swift; sourceTree = "<group>"; };
 		C06534582A9E6AAF001DFA7B /* CalisthenicsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalisthenicsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsTests.swift; sourceTree = "<group>"; };
 		C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calisthenics.entitlements; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */,
+				C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */,
 				C029BCA32BF151B400113844 /* TutorialView.swift */,
 				C0FCBDD32BD5560800288BFE /* EnableChanges.swift */,
 				C0589F212BE5A16B00F19B7B /* AdManager.swift */,
@@ -465,6 +468,7 @@
 				C0360AE82A2E2BA800E8CA37 /* ExerciseView.swift in Sources */,
 				C0589F222BE5A16B00F19B7B /* AdManager.swift in Sources */,
 				C04C438B2A2E830B00B48413 /* ExerciseCardView.swift in Sources */,
+				C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */,
 				C0360AE62A2E0F8500E8CA37 /* CurrentExerciseView.swift in Sources */,
 				C0589F1D2BE58D0E00F19B7B /* StashedExerciseCardView.swift in Sources */,
 				C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */,

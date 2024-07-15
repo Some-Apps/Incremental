@@ -29,6 +29,19 @@ struct ExerciseView: View {
         self._notes = State(initialValue: exercise.notes!)
     }
     
+    var totalReps: Int {
+        sortedLogs.reduce(0) { $0 + Int($1.reps!) }
+    }
+    
+    var totalDuration: TimeInterval {
+        sortedLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
+    }
+    
+    var averageTimePerRep: TimeInterval? {
+        guard totalReps > 0 else { return nil }
+        return totalDuration / Double(totalReps)
+    }
+    
     var body: some View {
         VStack {
             Text(exercise.title!)
@@ -41,12 +54,22 @@ struct ExerciseView: View {
                     .frame(height: 200)
                 }
                 Section {
+                    if exercise.units == "Reps" {
+                        Text("Total Reps: \(totalReps)")
+                        if let averageTimePerRep = averageTimePerRep {
+                            Text("Average Time Per Rep: \(averageTimePerRep, specifier: "%.2f") seconds")
+                        }
+                    } else {
+                        Text("Total Duration: \(totalDuration / 60, specifier: "%.2f") minutes")
+                    }
+                }
+                Section {
                     Toggle("Active", isOn: $isActive)
                         .onAppear {
                             isActive = exercise.isActive!
                         }
                         .disabled(randomExercise == exercise.id?.uuidString)
-                    Text("\(exercise.currentReps ?? 0, specifier: "%.2f")")
+                    Text("Current Reps: \(exercise.currentReps ?? 0, specifier: "%.2f")")
                 }
                 Section("Notes") {
                     HStack {
@@ -64,13 +87,8 @@ struct ExerciseView: View {
                             }
                             Spacer()
                         }
-                        
                     }
-                    
-                    
-
                 }
-                
                 Section {
                     Button("Do Exercise") {
                         randomExercise = exercise.id!.uuidString
@@ -126,3 +144,4 @@ struct NotesEditorView: View {
         }
     }
 }
+

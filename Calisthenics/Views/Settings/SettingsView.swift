@@ -1,10 +1,3 @@
-//
-//  SettingsView.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 6/5/23.
-//
-
 import SwiftUI
 
 struct SettingsView: View {
@@ -172,9 +165,10 @@ struct SettingsView: View {
                         } else {
                             NavigationLink("Enable Changes", destination: EnableChanges())
                         }
-                        Section {
-                            NavigationLink("How To Use App", destination: TutorialView())
-                        }
+                    }
+                    Section {
+                        NavigationLink("How To Use App", destination: TutorialView())
+                        NavigationLink("Exercise History", destination: ExerciseHistoryView())
                     }
                 }
                 .onAppear {
@@ -315,6 +309,7 @@ struct SettingsView: View {
                     }
                     Section {
                         NavigationLink("How To Use App", destination: TutorialView())
+                        NavigationLink("Exercise History", destination: ExerciseHistoryView())
                     }
                 }
                 .onAppear {
@@ -355,5 +350,3 @@ struct SettingsView: View {
         return eligible
     }
 }
-
-
