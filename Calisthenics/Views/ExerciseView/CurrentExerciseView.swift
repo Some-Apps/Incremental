@@ -197,6 +197,13 @@ struct CurrentExerciseView: View {
             }
         }
 
+        // Check for duplicate logs
+        if logs.contains(where: { log in
+            log.timestamp == newLog.timestamp && log.exercises?.id == newLog.exercises?.id
+        }) {
+            return
+        }
+
         modelContext.insert(newLog)
         try? modelContext.save()
     }
