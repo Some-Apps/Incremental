@@ -24,7 +24,7 @@ struct StashedExereciseView: View {
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
     @StateObject var exerciseViewModel = StashedExerciseViewModel.shared
     
-    @State private var difficulty: Difficulty = .medium
+    @State private var difficulty: Difficulty = .easy
     @State private var lastExercise: Exercise? = nil
     @State private var finishedTapped = false
     @State private var stashedExercise = false
@@ -185,13 +185,6 @@ struct StashedExereciseView: View {
                 exercise?.currentReps = lastExercise.currentReps! + easyIncrement
             } else {
                 exercise?.currentReps! = lastExercise.currentReps! * (easyPercent/100 + 1)
-            }
-        case .medium:
-            if mediumType == "Increment" {
-                exercise!.currentReps = lastExercise.currentReps! + mediumIncrement
-                
-            } else {
-                exercise!.currentReps = lastExercise.currentReps! * (mediumPercent/100 + 1)
             }
         case .hard:
             if hardType == "Increment" {

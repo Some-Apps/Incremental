@@ -30,7 +30,7 @@ struct CurrentExerciseView: View {
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
     @StateObject var exerciseViewModel = ExerciseViewModel.shared
 
-    @State private var difficulty: Difficulty = .medium
+    @State private var difficulty: Difficulty = .easy
     @State private var lastExercise: Exercise? = nil
     @State private var finishedTapped = false
     @State private var stashedExercise = false
@@ -176,26 +176,33 @@ struct CurrentExerciseView: View {
 
         lastExercise.difficulty = difficulty.rawValue
 
+        // Increment
         switch difficulty {
         case .easy:
-            if easyType == "Increment" {
-                lastExercise.currentReps! += easyIncrement
-            } else {
-                lastExercise.currentReps! *= (easyPercent / 100 + 1)
-            }
-        case .medium:
-            if mediumType == "Increment" {
-                lastExercise.currentReps! += mediumIncrement
-            } else {
-                lastExercise.currentReps! *= (mediumPercent / 100 + 1)
-            }
+            lastExercise.increment? += 0.1
         case .hard:
-            if hardType == "Increment" {
-                lastExercise.currentReps! += hardIncrement
-            } else {
-                lastExercise.currentReps! *= (hardPercent / 100 + 1)
-            }
+            lastExercise.increment? -= 0.1
+        default:
+            break
         }
+
+        // Fetch the last 10 logs for this exercise
+        let lastLogs = logs.filter { $0.exercises?.id == lastExercise.id }
+            .sorted(by: { $0.timestamp! > $1.timestamp! })
+            .prefix(10)
+
+        // Count how many of the last 10 logs have an "easy" difficulty
+        let easyCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.easy.rawValue }.count
+
+        // Adjust incrementIncrement based on the count
+        if easyCount >= 8 {
+            lastExercise.incrementIncrement? += 0.1
+        } else {
+            lastExercise.incrementIncrement? -= 0.1
+        }
+
+        // Update the current reps
+        lastExercise.currentReps! += lastExercise.increment ?? 0
 
         // Check for duplicate logs
         if logs.contains(where: { log in
@@ -207,6 +214,7 @@ struct CurrentExerciseView: View {
         modelContext.insert(newLog)
         try? modelContext.save()
     }
+
 
     func generateRandomExercise(exercises: [Exercise]) {
         let activeExercises = exercises.filter { $0.isActive == true }

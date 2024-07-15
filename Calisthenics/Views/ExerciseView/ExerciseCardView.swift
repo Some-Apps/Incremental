@@ -92,13 +92,10 @@ struct ExerciseCardView: View {
                     .disabled(stopwatchViewModel.isRunning)
                     switch exerciseViewModel.difficulty {
                     case .easy:
-                        Text(easyText)
-                            .foregroundColor(.secondary)
-                    case .medium:
-                        Text(mediumText)
+                        Text("Didn't have to pause")
                             .foregroundColor(.secondary)
                     case .hard:
-                        Text(hardText)
+                        Text("Had to pause")
                             .foregroundColor(.secondary)
                     }
                     Button("Finish") {
@@ -111,7 +108,7 @@ struct ExerciseCardView: View {
                     if stashedExercises.count < maxStashed {
                         Button("Stash Exercise") {
                             if let exercise = exerciseViewModel.exercise {
-                                let tempExercise = StashedExercise(currentReps: exercise.currentReps!, difficulty: exercise.difficulty!, id: exercise.id!, isActive: exercise.isActive!, notes: exercise.notes!, title: exercise.title!, units: exercise.units!)
+                                let tempExercise = StashedExercise(currentReps: exercise.currentReps!, difficulty: exercise.difficulty!, id: exercise.id!, isActive: exercise.isActive!, notes: exercise.notes!, title: exercise.title!, units: exercise.units!, increment: exercise.increment ?? 0, incrementIncrement: exercise.incrementIncrement ?? 0)
                                 modelContext.insert(tempExercise)
                                 try? modelContext.save()
                                 stashedExercise = true

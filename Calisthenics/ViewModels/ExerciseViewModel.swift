@@ -17,7 +17,7 @@ class ExerciseViewModel: ObservableObject {
     @Environment(\.modelContext) var modelContext
     
     @Published var exercise: Exercise? = nil
-    @Published var difficulty: Difficulty = .medium
+    @Published var difficulty: Difficulty = .easy
     @Published var isLoading = true
 
     let stopwatchViewModel: StopwatchViewModel
@@ -32,7 +32,7 @@ class StashedExerciseViewModel: ObservableObject {
     @Environment(\.modelContext) var modelContext
     
     @Published var exercise: StashedExercise? = nil
-    @Published var difficulty: Difficulty = .medium
+    @Published var difficulty: Difficulty = .easy
     @Published var isLoading = true
 
     let stopwatchViewModel: StopwatchViewModel

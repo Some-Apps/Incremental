@@ -29,8 +29,7 @@ struct ExerciseHistoryView: View {
 //                                Text("hi")
                                 Text("\(log.reps ?? 0)")
                             } else {
-                                Text("hi")
-                                Text(String(format: "%01d:%02d", log.reps ?? 0 / 60, log.reps ?? 0 % 60))
+                                Text(String(format: "%01d:%02d", (log.reps ?? 0) / 60, (log.reps ?? 0) % 60))
                             }
                         }
                     }

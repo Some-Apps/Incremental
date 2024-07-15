@@ -5,7 +5,7 @@ let muscleOptions = ["Abductors", "Abs", "Adductors", "Back", "Biceps", "Calves"
 let unitOptions = ["Reps", "Duration"]
 
 enum Difficulty: String, CaseIterable {
-    case easy, medium, hard
+    case easy, hard
 }
 
 enum Units: String, CaseIterable {

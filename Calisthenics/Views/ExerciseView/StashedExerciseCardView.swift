@@ -83,13 +83,10 @@ struct StashedExerciseCardView: View {
                     .disabled(stopwatchViewModel.isRunning)
                     switch exerciseViewModel.difficulty {
                     case .easy:
-                        Text(easyText)
-                            .foregroundColor(.secondary)
-                    case .medium:
-                        Text(mediumText)
+                        Text("Didn't have to pause")
                             .foregroundColor(.secondary)
                     case .hard:
-                        Text(hardText)
+                        Text("Had to pause")
                             .foregroundColor(.secondary)
                     }
                       
