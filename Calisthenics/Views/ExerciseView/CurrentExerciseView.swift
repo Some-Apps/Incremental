@@ -179,11 +179,20 @@ struct CurrentExerciseView: View {
         // Increment
         switch difficulty {
         case .easy:
-            lastExercise.increment? += 0.1
+            if (lastExercise.increment != nil) {
+                lastExercise.increment! += 0.05
+            } else {
+                lastExercise.increment = 0.05
+            }
         case .hard:
-            lastExercise.increment? -= 0.1
-        default:
-            break
+            if (lastExercise.increment != nil) {
+                if lastExercise.increment! > 0 {
+                    lastExercise.increment = 0
+                }
+                lastExercise.increment! -= 0.05
+            } else {
+                lastExercise.increment = -0.05
+            }
         }
 
         // Fetch the last 10 logs for this exercise

@@ -70,7 +70,7 @@ struct ExerciseView: View {
                         }
                         .disabled(randomExercise == exercise.id?.uuidString)
                     Text("Current Reps: \(exercise.currentReps ?? 0, specifier: "%.2f")")
-                    Text("Increment: \(exercise.increment ?? 0)")
+                    Text("Increment: \(exercise.increment ?? 0, specifier: "%.2f")")
                 }
                 Section("Notes") {
                     HStack {
@@ -90,13 +90,13 @@ struct ExerciseView: View {
                         }
                     }
                 }
-                Section {
-                    Button("Do Exercise") {
-                        randomExercise = exercise.id!.uuidString
-                        defaultsManager.saveDataToiCloud(key: "randomExercise", value: randomExercise)
-                        currentTab = 0
-                    }
-                }
+//                Section {
+//                    Button("Do Exercise") {
+//                        randomExercise = exercise.id!.uuidString
+//                        defaultsManager.saveDataToiCloud(key: "randomExercise", value: randomExercise)
+//                        currentTab = 0
+//                    }
+//                }
             }
         }
         .onDisappear() {
