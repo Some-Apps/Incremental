@@ -176,24 +176,7 @@ struct CurrentExerciseView: View {
 
         lastExercise.difficulty = difficulty.rawValue
 
-        // Increment
-        switch difficulty {
-        case .easy:
-            if (lastExercise.increment != nil) {
-                lastExercise.increment! += 0.05
-            } else {
-                lastExercise.increment = 0.05
-            }
-        case .hard:
-            if (lastExercise.increment != nil) {
-                if lastExercise.increment! > 0 {
-                    lastExercise.increment = 0
-                }
-                lastExercise.increment! -= 0.05
-            } else {
-                lastExercise.increment = -0.05
-            }
-        }
+        
 
         // Fetch the last 10 logs for this exercise
         let lastLogs = logs.filter { $0.exercises?.id == lastExercise.id }
@@ -201,17 +184,45 @@ struct CurrentExerciseView: View {
             .prefix(10)
 
         // Count how many of the last 10 logs have an "easy" difficulty
-        let easyCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.easy.rawValue }.count
+        let hardCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.hard.rawValue }.count
 
         // Adjust incrementIncrement based on the count
-        if easyCount >= 8 {
-            lastExercise.incrementIncrement? += 0.1
+        if (lastExercise.incrementIncrement != nil) {
+            if hardCount >= 2 {
+                lastExercise.incrementIncrement? -= 0.03
+            } else {
+                lastExercise.incrementIncrement? += 0.01
+            }
         } else {
-            lastExercise.incrementIncrement? -= 0.1
+            if hardCount >= 2 {
+                lastExercise.incrementIncrement = 0.03
+            } else {
+                lastExercise.incrementIncrement = 0.01
+            }
         }
+        
 
         // Update the current reps
         lastExercise.currentReps! += lastExercise.increment ?? 0
+        
+        // Increment
+        switch difficulty {
+        case .easy:
+            if (lastExercise.increment != nil) {
+                lastExercise.increment! += lastExercise.incrementIncrement!
+            } else {
+                lastExercise.increment = 0.01
+            }
+        case .hard:
+            if (lastExercise.increment != nil) {
+                if lastExercise.increment! > 0 {
+                    lastExercise.increment = 0
+                }
+                lastExercise.increment! += lastExercise.incrementIncrement!
+            } else {
+                lastExercise.increment = -0.03
+            }
+        }
 
         // Check for duplicate logs
         if logs.contains(where: { log in
