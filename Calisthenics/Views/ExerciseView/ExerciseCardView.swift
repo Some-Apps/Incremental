@@ -16,7 +16,7 @@ struct ExerciseCardView: View {
     
     @Binding var finishedTapped: Bool
     @Binding var stashedExercise: Bool
-    
+    @State private var leftRightText = ""
     @State private var showPopover = false
     @Binding var tempDifficulty: Difficulty
     @Query var stashedExercises: [StashedExercise]
@@ -45,16 +45,19 @@ struct ExerciseCardView: View {
                 VStack {
                     HStack {
                         
-                        Text(fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)!.title!)
-                            .font(.largeTitle)
-                            .fontWeight(.heavy)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                            .onAppear {
-                                if let newExercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises) {
-                                    exerciseViewModel.exercise = newExercise
+                        Text((fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)?.title ?? "") + ((exerciseViewModel.exercise?.leftRight ?? false) ? ((exerciseViewModel.exercise?.leftSide ?? false) ? " (left)" : " (right)") : ""))
+                                .font(.largeTitle)
+                                .fontWeight(.heavy)
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                                .onAppear {
+                                    if let newExercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises) {
+                                        exerciseViewModel.exercise = newExercise
+                                    }
                                 }
-                            }
+                        
+
+                            
                         if exerciseViewModel.exercise!.notes!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                             Button {
                                 showPopover.toggle()
@@ -100,6 +103,7 @@ struct ExerciseCardView: View {
                     }
                     Button("Finish") {
                         finishedTapped = true
+                        
                     }
                     .buttonStyle(.bordered)
                     .tint(.green)
@@ -108,7 +112,7 @@ struct ExerciseCardView: View {
                     if stashedExercises.count < maxStashed {
                         Button("Stash Exercise") {
                             if let exercise = exerciseViewModel.exercise {
-                                let tempExercise = StashedExercise(currentReps: exercise.currentReps!, difficulty: exercise.difficulty!, id: exercise.id!, isActive: exercise.isActive!, notes: exercise.notes!, title: exercise.title!, units: exercise.units!, increment: exercise.increment ?? 0, incrementIncrement: exercise.incrementIncrement ?? 0)
+                                let tempExercise = StashedExercise(currentReps: exercise.currentReps!, difficulty: exercise.difficulty!, id: exercise.id!, isActive: exercise.isActive!, notes: exercise.notes!, title: exercise.title!, units: exercise.units!, increment: exercise.increment ?? 0, incrementIncrement: exercise.incrementIncrement ?? 0, leftRight: exercise.leftRight ?? false, leftSide: exercise.leftSide ?? true)
                                 modelContext.insert(tempExercise)
                                 try? modelContext.save()
                                 stashedExercise = true

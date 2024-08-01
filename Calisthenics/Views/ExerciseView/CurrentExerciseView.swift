@@ -17,15 +17,6 @@ struct CurrentExerciseView: View {
     @Query var logs: [Log]
 
     @AppStorage("randomExercise") var randomExercise: String = ""
-    @AppStorage("easyType") var easyType = "Increment"
-    @AppStorage("easyIncrement") var easyIncrement = 0.5
-    @AppStorage("easyPercent") var easyPercent = 0.5
-    @AppStorage("mediumType") var mediumType = "Increment"
-    @AppStorage("mediumIncrement") var mediumIncrement =  0.1
-    @AppStorage("mediumPercent") var mediumPercent = 0.1
-    @AppStorage("hardType") var hardType = "Increment"
-    @AppStorage("hardIncrement") var hardIncrement = -2.0
-    @AppStorage("hardPercent") var hardPercent = -5.0
 
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
     @StateObject var exerciseViewModel = ExerciseViewModel.shared
@@ -218,7 +209,6 @@ struct CurrentExerciseView: View {
                 if lastExercise.increment! > 0 {
                     lastExercise.increment = 0
                 }
-                lastExercise.increment! += lastExercise.incrementIncrement!
             } else {
                 lastExercise.increment = -0.03
             }

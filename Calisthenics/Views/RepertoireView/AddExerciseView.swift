@@ -10,6 +10,7 @@ struct AddExerciseView: View {
     @State private var startingReps = 30.0
     @State private var startingDuration = 30.0
     @State private var notes = ""
+    @State private var leftRight = false
 //    @State private var selectedMuscles = Set<String>()
     @FocusState private var isTitleFocused: Bool
 
@@ -26,6 +27,7 @@ struct AddExerciseView: View {
                         Text(unit)
                     }
                 }
+                Toggle("Left/Right Exercise", isOn: $leftRight)
 //                NavigationLink {
 //                    MuscleSelectorView(muscles: $selectedMuscles)
 //                } label: {
@@ -73,7 +75,7 @@ struct AddExerciseView: View {
     }
     
     func addExercise() {
-        let newExercise = Exercise(currentReps: units == "Reps" ? Double(startingReps) : Double(startingDuration), difficulty: "medium", id: UUID(), isActive: true, notes: notes, title: title, units: units, increment: 0, incrementIncrement: 0, logs: [], muscles: [])
+        let newExercise = Exercise(currentReps: units == "Reps" ? Double(startingReps) : Double(startingDuration), difficulty: "medium", id: UUID(), isActive: true, notes: notes, title: title, units: units, increment: 0, incrementIncrement: 0, leftRight: leftRight, leftSide: true, logs: [], muscles: [])
         modelContext.insert(newExercise)
         try? modelContext.save()
         print("Saved")
