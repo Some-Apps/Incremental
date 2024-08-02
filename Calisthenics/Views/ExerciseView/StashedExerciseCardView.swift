@@ -35,7 +35,7 @@ struct StashedExerciseCardView: View {
                     .shadow(color: colorScheme == .light ? .black.opacity(0.33) : .white.opacity(0.33), radius: 3)
                 VStack {
                     HStack {
-                        Text(exercises.first?.title ?? "")
+                        Text("\(exercises.first?.title ?? "")\((exercises.first?.leftRight ?? false) ? (exercises.first?.leftSide ?? false ? " (left)" : " (right)") : "")")
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.secondary)

@@ -10,17 +10,8 @@ struct StashedExereciseView: View {
     @Query var exercises: [StashedExercise]
     @Query var originalExercises: [Exercise]
     @Query var logs: [Log]
-    
-    @AppStorage("easyType") var easyType = "Increment"
-    @AppStorage("easyIncrement") var easyIncrement = 0.5
-    @AppStorage("easyPercent") var easyPercent = 0.5
-    @AppStorage("mediumType") var mediumType = "Increment"
-    @AppStorage("mediumIncrement") var mediumIncrement =  0.1
-    @AppStorage("mediumPercent") var mediumPercent = 0.1
-    @AppStorage("hardType") var hardType = "Increment"
-    @AppStorage("hardIncrement") var hardIncrement = -2.0
-    @AppStorage("hardPercent") var hardPercent = -5.0
 
+    @AppStorage("healthActivityCategory") var healthActivityCategory: String = "Functional Strength Training"
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
     @StateObject var exerciseViewModel = StashedExerciseViewModel.shared
     
@@ -99,35 +90,49 @@ struct StashedExereciseView: View {
         }
     }
     
-    func saveWorkout(exerciseType: HKWorkoutActivityType, startDate: Date, endDate: Date, duration: TimeInterval) {
+    func saveWorkout(startDate: Date, endDate: Date, duration: TimeInterval) {
+        
+        var exerciseType: HKWorkoutActivityType
+        
+        switch healthActivityCategory {
+        case "Core Training":
+            exerciseType = HKWorkoutActivityType.coreTraining
+        case "Functional Strength Training":
+            exerciseType = HKWorkoutActivityType.functionalStrengthTraining
+        case "High-Intensity Interval Training":
+            exerciseType = HKWorkoutActivityType.highIntensityIntervalTraining
+        case "Mixed Cardio":
+            exerciseType = HKWorkoutActivityType.mixedCardio
+        case "Other":
+            exerciseType = HKWorkoutActivityType.other
+        case "Traditional Strength Training":
+            exerciseType = HKWorkoutActivityType.traditionalStrengthTraining
+        default:
+            exerciseType = HKWorkoutActivityType.functionalStrengthTraining
+        }
+        
         guard HKHealthStore.isHealthDataAvailable() else {
             print("Health data not available")
             return
         }
 
         let healthStore = HKHealthStore()
-        
-        // Specify the types of data this workout will include; adjust these as needed for your app.
-        let typesToShare: Set = [
-            HKQuantityType.workoutType()
-        ]
-        
+        let typesToShare: Set = [HKQuantityType.workoutType()]
         let typesToRead: Set<HKObjectType> = []
-        
-        // Request authorization for the types of data your app needs.
+
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
             if let error = error {
                 print("Authorization error: \(error.localizedDescription)")
                 return
             }
-            
+
             if success {
                 let configuration = HKWorkoutConfiguration()
                 configuration.activityType = exerciseType
                 configuration.locationType = .unknown // Adjust this as necessary
-                
+
                 let builder = HKWorkoutBuilder(healthStore: healthStore, configuration: configuration, device: .local())
-                
+
                 builder.beginCollection(withStart: startDate) { (success, error) in
                     guard success else {
                         if let error = error {
@@ -135,8 +140,7 @@ struct StashedExereciseView: View {
                         }
                         return
                     }
-                    
-                    // End the workout collection at the specified end date
+
                     builder.endCollection(withEnd: endDate) { (success, error) in
                         guard success else {
                             if let error = error {
@@ -144,8 +148,7 @@ struct StashedExereciseView: View {
                             }
                             return
                         }
-                        
-                        // Finish building the workout
+
                         builder.finishWorkout { (workout, error) in
                             if let error = error {
                                 print("Error finishing workout: \(error.localizedDescription)")
@@ -155,7 +158,7 @@ struct StashedExereciseView: View {
                         }
                     }
                 }
-                
+
             } else {
                 print("Authorization was not successful")
             }
@@ -177,26 +180,73 @@ struct StashedExereciseView: View {
         print("LOG: \(difficulty)")
 
         lastExercise.difficulty = difficulty.rawValue
-        
 
+        // Fetch the last 10 logs for this exercise
+        let lastLogs = logs.filter { $0.exercises?.id == lastExercise.id }
+            .sorted(by: { $0.timestamp! > $1.timestamp! })
+            .prefix(10)
+
+        // Count how many of the last 10 logs have an "easy" difficulty
+        let hardCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.hard.rawValue }.count
+
+        // Adjust incrementIncrement based on the count
+        let maxIncrement = lastExercise.currentReps! * 0.05
+        if let currentIncrementIncrement = lastExercise.incrementIncrement {
+            var newIncrementIncrement = currentIncrementIncrement
+            if hardCount >= 2 {
+                newIncrementIncrement -= 0.03
+            } else {
+                newIncrementIncrement += 0.01
+            }
+            // Ensure incrementIncrement does not affect increment beyond 5% of currentReps
+            if abs((lastExercise.increment ?? 0) + newIncrementIncrement) <= maxIncrement {
+                lastExercise.incrementIncrement = newIncrementIncrement
+            } else {
+                lastExercise.incrementIncrement = 0 // stop incrementIncrement when increment is at 5%
+                lastExercise.increment = maxIncrement // set increment to exactly 5% of currentReps
+            }
+        } else {
+            lastExercise.incrementIncrement = hardCount >= 2 ? -0.03 : 0.01
+        }
+
+        // Update the current reps
+        lastExercise.currentReps! += lastExercise.increment ?? 0
+
+        // Increment
         switch difficulty {
         case .easy:
-            if easyType == "Increment" {
-                exercise?.currentReps = lastExercise.currentReps! + easyIncrement
+            if let currentIncrement = lastExercise.increment, let incrementIncrement = lastExercise.incrementIncrement {
+                let newIncrement = currentIncrement + incrementIncrement
+                // Ensure increment does not exceed 5% of currentReps
+                if abs(newIncrement) <= maxIncrement {
+                    lastExercise.increment = newIncrement
+                } else {
+                    lastExercise.increment = maxIncrement
+                }
             } else {
-                exercise?.currentReps! = lastExercise.currentReps! * (easyPercent/100 + 1)
+                lastExercise.increment = 0.01
             }
         case .hard:
-            if hardType == "Increment" {
-                exercise!.currentReps = lastExercise.currentReps! + hardIncrement
+            if let currentIncrement = lastExercise.increment {
+                if currentIncrement > 0 {
+                    lastExercise.increment = 0
+                }
             } else {
-                exercise!.currentReps = lastExercise.currentReps! * (hardPercent/100 + 1)
+                lastExercise.increment = -0.03
             }
         }
+
+        // Check for duplicate logs
+        if logs.contains(where: { log in
+            log.timestamp == newLog.timestamp && log.exercises?.id == newLog.exercises?.id
+        }) {
+            return
+        }
+
         modelContext.insert(newLog)
-        modelContext.delete(lastExercise)
         try? modelContext.save()
     }
+
     
     func finished(exercises: [StashedExercise]) {
         guard let currentExercise = exerciseViewModel.exercise else { return }
@@ -208,7 +258,7 @@ struct StashedExereciseView: View {
         let duration = TimeInterval(stopwatchViewModel.seconds)
         let endDate = startDate.addingTimeInterval(duration)
 
-        saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
+        saveWorkout(startDate: startDate, endDate: endDate, duration: duration)
 
         // Remove the exercise from the context and save the changes.
         modelContext.delete(currentExercise)

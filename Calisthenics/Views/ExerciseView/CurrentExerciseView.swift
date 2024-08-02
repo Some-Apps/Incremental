@@ -17,7 +17,7 @@ struct CurrentExerciseView: View {
     @Query var logs: [Log]
 
     @AppStorage("randomExercise") var randomExercise: String = ""
-
+    @AppStorage("healthActivityCategory") var healthActivityCategory: String = "Functional Strength Training"
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
     @StateObject var exerciseViewModel = ExerciseViewModel.shared
 
@@ -101,7 +101,27 @@ struct CurrentExerciseView: View {
         }
     }
 
-    func saveWorkout(exerciseType: HKWorkoutActivityType, startDate: Date, endDate: Date, duration: TimeInterval) {
+    func saveWorkout(startDate: Date, endDate: Date, duration: TimeInterval) {
+        
+        var exerciseType: HKWorkoutActivityType
+        
+        switch healthActivityCategory {
+        case "Core Training":
+            exerciseType = HKWorkoutActivityType.coreTraining
+        case "Functional Strength Training":
+            exerciseType = HKWorkoutActivityType.functionalStrengthTraining
+        case "High-Intensity Interval Training":
+            exerciseType = HKWorkoutActivityType.highIntensityIntervalTraining
+        case "Mixed Cardio":
+            exerciseType = HKWorkoutActivityType.mixedCardio
+        case "Other":
+            exerciseType = HKWorkoutActivityType.other
+        case "Traditional Strength Training":
+            exerciseType = HKWorkoutActivityType.traditionalStrengthTraining
+        default:
+            exerciseType = HKWorkoutActivityType.functionalStrengthTraining
+        }
+        
         guard HKHealthStore.isHealthDataAvailable() else {
             print("Health data not available")
             return
@@ -167,8 +187,6 @@ struct CurrentExerciseView: View {
 
         lastExercise.difficulty = difficulty.rawValue
 
-        
-
         // Fetch the last 10 logs for this exercise
         let lastLogs = logs.filter { $0.exercises?.id == lastExercise.id }
             .sorted(by: { $0.timestamp! > $1.timestamp! })
@@ -178,35 +196,45 @@ struct CurrentExerciseView: View {
         let hardCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.hard.rawValue }.count
 
         // Adjust incrementIncrement based on the count
-        if (lastExercise.incrementIncrement != nil) {
+        let maxIncrement = lastExercise.currentReps! * 0.05
+        if let currentIncrementIncrement = lastExercise.incrementIncrement {
+            var newIncrementIncrement = currentIncrementIncrement
             if hardCount >= 2 {
-                lastExercise.incrementIncrement? -= 0.03
+                newIncrementIncrement -= 0.03
             } else {
-                lastExercise.incrementIncrement? += 0.01
+                newIncrementIncrement += 0.01
+            }
+            // Ensure incrementIncrement does not affect increment beyond 5% of currentReps
+            if abs((lastExercise.increment ?? 0) + newIncrementIncrement) <= maxIncrement {
+                lastExercise.incrementIncrement = newIncrementIncrement
+            } else {
+                lastExercise.incrementIncrement = 0 // stop incrementIncrement when increment is at 5%
+                lastExercise.increment = maxIncrement // set increment to exactly 5% of currentReps
             }
         } else {
-            if hardCount >= 2 {
-                lastExercise.incrementIncrement = 0.03
-            } else {
-                lastExercise.incrementIncrement = 0.01
-            }
+            lastExercise.incrementIncrement = hardCount >= 2 ? -0.03 : 0.01
         }
-        
 
         // Update the current reps
         lastExercise.currentReps! += lastExercise.increment ?? 0
-        
+
         // Increment
         switch difficulty {
         case .easy:
-            if (lastExercise.increment != nil) {
-                lastExercise.increment! += lastExercise.incrementIncrement!
+            if let currentIncrement = lastExercise.increment, let incrementIncrement = lastExercise.incrementIncrement {
+                let newIncrement = currentIncrement + incrementIncrement
+                // Ensure increment does not exceed 5% of currentReps
+                if abs(newIncrement) <= maxIncrement {
+                    lastExercise.increment = newIncrement
+                } else {
+                    lastExercise.increment = maxIncrement
+                }
             } else {
                 lastExercise.increment = 0.01
             }
         case .hard:
-            if (lastExercise.increment != nil) {
-                if lastExercise.increment! > 0 {
+            if let currentIncrement = lastExercise.increment {
+                if currentIncrement > 0 {
                     lastExercise.increment = 0
                 }
             } else {
@@ -226,16 +254,21 @@ struct CurrentExerciseView: View {
     }
 
 
+
     func generateRandomExercise(exercises: [Exercise]) {
         let activeExercises = exercises.filter { $0.isActive == true }
         let exercisesWithoutLast = activeExercises.filter { $0.id != exerciseViewModel.exercise?.id }
         if let randomElement = exercisesWithoutLast.randomElement() {
             randomExercise = randomElement.id!.uuidString
+            randomElement.leftSide?.toggle()
+            try? randomElement.modelContext?.save()
             defaultsManager.saveDataToiCloud(key: "randomExercise", value: randomExercise)
             exerciseViewModel.exercise = randomElement
         } else {
             if let randomElement = activeExercises.randomElement() {
                 randomExercise = randomElement.id!.uuidString
+                randomElement.leftSide?.toggle()
+                try? randomElement.modelContext?.save()
                 exerciseViewModel.exercise = randomElement
             }
         }
@@ -254,7 +287,7 @@ struct CurrentExerciseView: View {
         let duration = TimeInterval(stopwatchViewModel.seconds)
         let endDate = startDate.addingTimeInterval(duration)
 
-        saveWorkout(exerciseType: exerciseType, startDate: startDate, endDate: endDate, duration: duration)
+        saveWorkout(startDate: startDate, endDate: endDate, duration: duration)
         generateRandomExercise(exercises: Array(exercises))
         stopwatchViewModel.reset()
     }
