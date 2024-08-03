@@ -16,3 +16,19 @@ Contributors who make an average of 1 pull request or more per month will be giv
 
 Although not gauranteed, if I get to the point where this or other apps allow me to hire an employee, contributors will be considered first. I do not care about college degrees.
 
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/JaredDanielJones"><img src="https://avatars.githubusercontent.com/u/84288718?v=4?s=100" width="100px;" alt="Jared Jones"/><br /><sub><b>Jared Jones</b></sub></a><br /><a href="#doc-JaredDanielJones" title="Documentation">📖</a> <a href="#code-JaredDanielJones" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/rhjones777"><img src="https://avatars.githubusercontent.com/u/173035257?v=4?s=100" width="100px;" alt="rhjones777"/><br /><sub><b>rhjones777</b></sub></a><br /><a href="#design-rhjones777" title="Design">🎨</a> <a href="#doc-rhjones777" title="Documentation">📖</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
