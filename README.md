@@ -32,5 +32,3 @@ Although not gauranteed, if I get to the point where this or other apps allow me
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
