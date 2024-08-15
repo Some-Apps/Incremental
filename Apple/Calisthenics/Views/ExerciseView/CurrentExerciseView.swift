@@ -190,20 +190,42 @@ struct CurrentExerciseView: View {
         // Fetch the last 10 logs for this exercise
         let lastLogs = logs.filter { $0.exercises?.id == lastExercise.id }
             .sorted(by: { $0.timestamp! > $1.timestamp! })
-            .prefix(10)
+            .prefix(100)
 
-        // Count how many of the last 10 logs have an "easy" difficulty
+        // Count how many of the last 100 logs have a "hard" difficulty
         let hardCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.hard.rawValue }.count
+        
+        let effectiveLogCount = min(lastLogs.count, 100)
+        let totalWeight = lastLogs.enumerated().reduce(0.0) { (result, element) in
+            let (index, log) = element
+            let weight = 1.0 - (Double(index) / Double(effectiveLogCount))
+            return result + (log.exercises?.difficulty == Difficulty.hard.rawValue ? weight : 0.0)
+        }
 
         // Adjust incrementIncrement based on the count
         let maxIncrement = lastExercise.currentReps! * 0.05
         if let currentIncrementIncrement = lastExercise.incrementIncrement {
             var newIncrementIncrement = currentIncrementIncrement
-            if hardCount >= 2 {
-                newIncrementIncrement -= 0.03
-            } else {
+
+            
+            if totalWeight <= 1.0 {
+                newIncrementIncrement += 0.015
+            } else if totalWeight <= 3.0 {
                 newIncrementIncrement += 0.01
+            } else if totalWeight <= 5.0 {
+                newIncrementIncrement += 0.005
+            } else if totalWeight <= 7.0 {
+                newIncrementIncrement -= 0.01
+            } else if totalWeight <= 10.0 {
+                newIncrementIncrement -= 0.05
+            } else if totalWeight <= 25.0 {
+                newIncrementIncrement -= 0.1
+            } else {
+                newIncrementIncrement -= 0.2
             }
+
+            
+            
             // Ensure incrementIncrement does not affect increment beyond 5% of currentReps
             if abs((lastExercise.increment ?? 0) + newIncrementIncrement) <= maxIncrement {
                 lastExercise.incrementIncrement = newIncrementIncrement
@@ -212,11 +234,9 @@ struct CurrentExerciseView: View {
                 lastExercise.increment = maxIncrement // set increment to exactly 5% of currentReps
             }
         } else {
-            lastExercise.incrementIncrement = hardCount >= 2 ? -0.03 : 0.01
+            lastExercise.incrementIncrement = 0.01
         }
 
-        // Update the current reps
-        lastExercise.currentReps! += lastExercise.increment ?? 0
 
         // Increment
         switch difficulty {
@@ -238,9 +258,13 @@ struct CurrentExerciseView: View {
                     lastExercise.increment = 0
                 }
             } else {
-                lastExercise.increment = -0.03
+                lastExercise.increment = 0.015
             }
         }
+        
+        // Update the current reps
+        lastExercise.currentReps! += lastExercise.increment ?? 0
+
 
         // Check for duplicate logs
         if logs.contains(where: { log in

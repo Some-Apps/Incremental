@@ -127,18 +127,7 @@ struct ExerciseCardView: View {
             }
     }
     func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
-        print("LOGG: \(id.description)")
-        print("LOGG: \(exercises)")
-        
         return exercises.first(where: { $0.id!.description == id.description })
     }
     
 }
-
-
-
-//struct ExerciseCardView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ExerciseCardView(exercise: Exercise.preview())
-//    }
-//}

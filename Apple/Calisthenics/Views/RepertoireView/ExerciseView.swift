@@ -70,7 +70,7 @@ struct ExerciseView: View {
                         }
                         .disabled(randomExercise == exercise.id?.uuidString)
                     Text("Current Reps: \(exercise.currentReps ?? 0, specifier: "%.2f")")
-                    Text("Increment: \(exercise.increment ?? 0, specifier: "%.2f")")
+                    Text("Last Increment: \(exercise.increment ?? 0, specifier: "%.2f")")
                 }
                 Section("Notes") {
                     HStack {
