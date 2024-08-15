@@ -1,7 +1,6 @@
 import SwiftData
 import SwiftUI
 import WidgetKit
-import PopupView
 
 struct ContentView: View {
     @ObservedObject private var defaultsManager = DefaultsManager()

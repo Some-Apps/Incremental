@@ -96,8 +96,8 @@ struct ExerciseCardView: View {
                     }
                     Button("Finish") {
                         finishedTapped = true
-                        
                     }
+                    .sensoryFeedback(.success, trigger: finishedTapped)
                     .buttonStyle(.bordered)
                     .tint(.green)
                     .font(.title)
