@@ -101,7 +101,7 @@ struct ExerciseCardView: View {
                     .buttonStyle(.bordered)
                     .tint(.green)
                     .font(.title)
-                    .disabled(stopwatchViewModel.seconds < 5 || stopwatchViewModel.isRunning)
+                    .disabled(stopwatchViewModel.seconds < 3 || stopwatchViewModel.isRunning)
                     if stashedExercises.count < 10 {
                         Button("Stash Exercise") {
                             if let exercise = exerciseViewModel.exercise {
@@ -112,9 +112,8 @@ struct ExerciseCardView: View {
                             }
                             
                         }
-                        .disabled(stopwatchViewModel.seconds >= 5 || stashedExercise)
+                        .disabled(stopwatchViewModel.seconds >= 3 || stashedExercise)
                     }
-                    
                 }
                 .padding()
             }
