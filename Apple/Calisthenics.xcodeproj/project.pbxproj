@@ -8,11 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C00ECE4B2B9669C300A2CD21 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE482B9669C300A2CD21 /* Exercise.swift */; };
-		C00ECE4C2B9669C300A2CD21 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE482B9669C300A2CD21 /* Exercise.swift */; };
 		C00ECE4D2B9669C300A2CD21 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE492B9669C300A2CD21 /* Log.swift */; };
-		C00ECE4E2B9669C300A2CD21 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE492B9669C300A2CD21 /* Log.swift */; };
 		C00ECE4F2B9669C300A2CD21 /* Muscle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE4A2B9669C300A2CD21 /* Muscle.swift */; };
-		C00ECE502B9669C300A2CD21 /* Muscle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE4A2B9669C300A2CD21 /* Muscle.swift */; };
 		C029BCA42BF151B400113844 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C029BCA32BF151B400113844 /* TutorialView.swift */; };
 		C029BCA72BF1587400113844 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = C029BCA62BF1587400113844 /* PopupView */; };
 		C029BCA92BF158E300113844 /* FirstLauchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C029BCA82BF158E300113844 /* FirstLauchView.swift */; };
@@ -26,9 +23,7 @@
 		C0589F1B2BE5844900F19B7B /* StashedExereciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F1A2BE5844900F19B7B /* StashedExereciseView.swift */; };
 		C0589F1D2BE58D0E00F19B7B /* StashedExerciseCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F1C2BE58D0E00F19B7B /* StashedExerciseCardView.swift */; };
 		C0589F202BE59EF700F19B7B /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = C0589F1F2BE59EF700F19B7B /* GoogleMobileAds */; };
-		C0589F222BE5A16B00F19B7B /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F212BE5A16B00F19B7B /* AdManager.swift */; };
 		C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F232BE6725400F19B7B /* DefaultsManager.swift */; };
-		C0589F252BE6CA2500F19B7B /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F232BE6725400F19B7B /* DefaultsManager.swift */; };
 		C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */; };
 		C065345B2A9E6AAF001DFA7B /* CalisthenicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */; };
 		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
@@ -47,7 +42,6 @@
 		C0CB957D29C6445A0099974B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB957C29C6445A0099974B /* ContentView.swift */; };
 		C0CB957F29C6445B0099974B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB957E29C6445B0099974B /* Assets.xcassets */; };
 		C0CB958229C6445B0099974B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB958129C6445B0099974B /* Preview Assets.xcassets */; };
-		C0FCBDD42BD5560800288BFE /* EnableChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FCBDD32BD5560800288BFE /* EnableChanges.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,7 +89,6 @@
 		C04C438A2A2E830B00B48413 /* ExerciseCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCardView.swift; sourceTree = "<group>"; };
 		C0589F1A2BE5844900F19B7B /* StashedExereciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StashedExereciseView.swift; sourceTree = "<group>"; };
 		C0589F1C2BE58D0E00F19B7B /* StashedExerciseCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StashedExerciseCardView.swift; sourceTree = "<group>"; };
-		C0589F212BE5A16B00F19B7B /* AdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
 		C0589F232BE6725400F19B7B /* DefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsManager.swift; sourceTree = "<group>"; };
 		C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryView.swift; sourceTree = "<group>"; };
 		C06534582A9E6AAF001DFA7B /* CalisthenicsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalisthenicsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,7 +114,6 @@
 		C0CB957C29C6445A0099974B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C0CB957E29C6445B0099974B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0CB958129C6445B0099974B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C0FCBDD32BD5560800288BFE /* EnableChanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableChanges.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,7 +159,6 @@
 			children = (
 				C0CB957C29C6445A0099974B /* ContentView.swift */,
 				C029BCA82BF158E300113844 /* FirstLauchView.swift */,
-				C0589F232BE6725400F19B7B /* DefaultsManager.swift */,
 				C0589F1A2BE5844900F19B7B /* StashedExereciseView.swift */,
 				C0A65C5B29D9D7B9001EAA5A /* ExerciseView */,
 				C0A65C5C29D9D7D8001EAA5A /* RepertoireView */,
@@ -192,8 +183,6 @@
 				C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */,
 				C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */,
 				C029BCA32BF151B400113844 /* TutorialView.swift */,
-				C0FCBDD32BD5560800288BFE /* EnableChanges.swift */,
-				C0589F212BE5A16B00F19B7B /* AdManager.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -243,9 +232,6 @@
 		C0CB956E29C6445A0099974B = {
 			isa = PBXGroup;
 			children = (
-				C00ECE482B9669C300A2CD21 /* Exercise.swift */,
-				C00ECE492B9669C300A2CD21 /* Log.swift */,
-				C00ECE4A2B9669C300A2CD21 /* Muscle.swift */,
 				C08FA54D29CF39D0002CA6AF /* CalisthenicsWidgetExtension.entitlements */,
 				C0CB957929C6445A0099974B /* Calisthenics */,
 				C0BDACA529CF3ECE006B19F9 /* CalisthenicsWidget */,
@@ -268,10 +254,14 @@
 		C0CB957929C6445A0099974B /* Calisthenics */ = {
 			isa = PBXGroup;
 			children = (
+				C00ECE482B9669C300A2CD21 /* Exercise.swift */,
+				C00ECE492B9669C300A2CD21 /* Log.swift */,
+				C00ECE4A2B9669C300A2CD21 /* Muscle.swift */,
 				C0BB509A2A7C07D2007513F3 /* Info.plist */,
 				C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */,
 				C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */,
 				C0360AE32A2E0CFA00E8CA37 /* Models.swift */,
+				C0589F232BE6725400F19B7B /* DefaultsManager.swift */,
 				C0A65C5D29D9DAB3001EAA5A /* ViewModels */,
 				C08FA4F929CB957A002CA6AF /* Views */,
 				C0CB957E29C6445B0099974B /* Assets.xcassets */,
@@ -437,11 +427,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C00ECE4C2B9669C300A2CD21 /* Exercise.swift in Sources */,
-				C0589F252BE6CA2500F19B7B /* DefaultsManager.swift in Sources */,
-				C00ECE4E2B9669C300A2CD21 /* Log.swift in Sources */,
 				C0BDACA729CF3ECE006B19F9 /* CalisthenicsWidgetBundle.swift in Sources */,
-				C00ECE502B9669C300A2CD21 /* Muscle.swift in Sources */,
 				C0BDACA929CF3ECE006B19F9 /* CalisthenicsWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,7 +441,6 @@
 				C00ECE4D2B9669C300A2CD21 /* Log.swift in Sources */,
 				C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */,
 				C0589F1B2BE5844900F19B7B /* StashedExereciseView.swift in Sources */,
-				C0FCBDD42BD5560800288BFE /* EnableChanges.swift in Sources */,
 				C00ECE4B2B9669C300A2CD21 /* Exercise.swift in Sources */,
 				C00ECE4F2B9669C300A2CD21 /* Muscle.swift in Sources */,
 				C0360AE22A2DFA5A00E8CA37 /* SettingsView.swift in Sources */,
@@ -466,7 +451,6 @@
 				C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */,
 				C0C78F8629DCBFF200F26A41 /* PreventSleep.swift in Sources */,
 				C0360AE82A2E2BA800E8CA37 /* ExerciseView.swift in Sources */,
-				C0589F222BE5A16B00F19B7B /* AdManager.swift in Sources */,
 				C04C438B2A2E830B00B48413 /* ExerciseCardView.swift in Sources */,
 				C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */,
 				C0360AE62A2E0F8500E8CA37 /* CurrentExerciseView.swift in Sources */,

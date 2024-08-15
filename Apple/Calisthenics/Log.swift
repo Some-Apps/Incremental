@@ -1,11 +1,3 @@
-//
-//  Log.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 3/4/24.
-//
-//
-
 import Foundation
 import SwiftData
 

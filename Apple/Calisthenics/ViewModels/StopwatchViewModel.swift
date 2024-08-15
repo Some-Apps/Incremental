@@ -1,10 +1,3 @@
-//
-//  StopwatchViewModel.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 3/25/23.
-//
-
 import Combine
 import SwiftUI
 

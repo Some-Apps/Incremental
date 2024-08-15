@@ -1,10 +1,3 @@
-//
-//  PreventSleep.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 4/4/23.
-//
-
 import SwiftUI
 import UIKit
 
