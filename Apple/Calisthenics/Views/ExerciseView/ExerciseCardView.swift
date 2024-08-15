@@ -24,13 +24,6 @@ struct ExerciseCardView: View {
     
     @AppStorage("randomExercise") var randomExercise: String = ""
     
-    @AppStorage("easyText") var easyText = "Didn't have to pause"
-    
-    @AppStorage("mediumText") var mediumText = "Had to pause but didn't have to take a break"
-
-    @AppStorage("hardText") var hardText = "Had to take a break or 3 pauses"
-    @AppStorage("maxStashed") var maxStashed = 10
-
     
     @Query(filter: #Predicate<Exercise> { item in
         item.isActive == true
@@ -109,7 +102,7 @@ struct ExerciseCardView: View {
                     .tint(.green)
                     .font(.title)
                     .disabled(stopwatchViewModel.seconds < 5 || stopwatchViewModel.isRunning)
-                    if stashedExercises.count < maxStashed {
+                    if stashedExercises.count < 10 {
                         Button("Stash Exercise") {
                             if let exercise = exerciseViewModel.exercise {
                                 let tempExercise = StashedExercise(currentReps: exercise.currentReps!, difficulty: exercise.difficulty!, id: exercise.id!, isActive: exercise.isActive!, notes: exercise.notes!, title: exercise.title!, units: exercise.units!, increment: exercise.increment ?? 0, incrementIncrement: exercise.incrementIncrement ?? 0, leftRight: exercise.leftRight ?? false, leftSide: exercise.leftSide ?? true)

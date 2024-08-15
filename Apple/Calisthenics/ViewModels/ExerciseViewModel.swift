@@ -1,10 +1,3 @@
-//
-//  ExerciseViewModel.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 6/6/23.
-//
-
 import AlertToast
 import CoreData
 import SwiftUI

@@ -1,10 +1,3 @@
-//
-//  FirstLauchView.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 5/12/24.
-//
-
 import SwiftUI
 
 struct FirstLauchView: View {

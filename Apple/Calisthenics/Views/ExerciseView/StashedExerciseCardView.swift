@@ -19,11 +19,7 @@ struct StashedExerciseCardView: View {
     
     @State private var showPopover = false
     @Binding var tempDifficulty: Difficulty
-    @AppStorage("easyText") var easyText = "Didn't have to pause"
-    
-    @AppStorage("mediumText") var mediumText = "Had to pause but didn't have to take a break"
 
-    @AppStorage("hardText") var hardText = "Had to take a break or 3 pauses"
         
     @Query var exercises: [StashedExercise]
     
