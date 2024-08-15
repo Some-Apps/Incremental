@@ -232,6 +232,9 @@
 		C0CB956E29C6445A0099974B = {
 			isa = PBXGroup;
 			children = (
+				C00ECE482B9669C300A2CD21 /* Exercise.swift */,
+				C00ECE492B9669C300A2CD21 /* Log.swift */,
+				C00ECE4A2B9669C300A2CD21 /* Muscle.swift */,
 				C08FA54D29CF39D0002CA6AF /* CalisthenicsWidgetExtension.entitlements */,
 				C0CB957929C6445A0099974B /* Calisthenics */,
 				C0BDACA529CF3ECE006B19F9 /* CalisthenicsWidget */,
@@ -254,9 +257,6 @@
 		C0CB957929C6445A0099974B /* Calisthenics */ = {
 			isa = PBXGroup;
 			children = (
-				C00ECE482B9669C300A2CD21 /* Exercise.swift */,
-				C00ECE492B9669C300A2CD21 /* Log.swift */,
-				C00ECE4A2B9669C300A2CD21 /* Muscle.swift */,
 				C0BB509A2A7C07D2007513F3 /* Info.plist */,
 				C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */,
 				C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */,
