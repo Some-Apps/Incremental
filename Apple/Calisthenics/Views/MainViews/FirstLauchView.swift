@@ -2,7 +2,6 @@ import SwiftUI
 
 struct FirstLauchView: View {
     @Environment(\.dismiss) var dismiss
-    @AppStorage("firstLaunch") var firstLaunch: Bool = true
     
     var body: some View {
         ScrollView {

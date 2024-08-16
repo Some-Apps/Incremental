@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 import WidgetKit
+import TipKit
 
 struct ContentView: View {
     @ObservedObject private var defaultsManager = DefaultsManager()
@@ -10,15 +11,15 @@ struct ContentView: View {
     
     @State private var showInstructions: Bool = false
 
-    @AppStorage("firstLaunch") var firstLaunch: Bool = true
-
+    @AppStorage("showTips") var showTips: Bool = true
     @AppStorage("randomExercise") var randomExercise: String = ""
 
     @AppStorage("currentTab") var currentTab: Int = 0
     
     @StateObject var exerciseViewModel = ExerciseViewModel.shared
-    
+        
     var body: some View {
+        
         TabView(selection: $currentTab) {
             CurrentExerciseView()
                 .tabItem {
@@ -52,7 +53,7 @@ struct ContentView: View {
             defaultsManager.loadSettings()
             
             
-            if let randomExerciseUUID = UUID(uuidString: defaultsManager.getDataFromiCloud(key: "randomExercise") as! String),
+            if let randomExerciseUUID = UUID(uuidString: defaultsManager.getDataFromiCloud(key: "randomExercise") as? String ?? ""),
                let newExercise = fetchExerciseById(id: randomExerciseUUID, exercises: allExercises) {
                 exerciseViewModel.exercise = newExercise
             }
@@ -61,14 +62,8 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)) { _ in
             defaultsManager.loadSettings()
         }
-        .fullScreenCover(isPresented: $firstLaunch) {
-            FirstLauchView()
-        }
     }
     func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
-        print("LOGG: \(id.description)")
-        print("LOGG: \(exercises)")
-        
         return exercises.first(where: { $0.id!.description == id.description })
     }
 }

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @AppStorage("firstLaunch") var firstLaunch: Bool = true
     @AppStorage("healthActivityCategory") var healthActivityCategory: String = "Functional Strength Training"
     
     private var idiom : UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }

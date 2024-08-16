@@ -3,6 +3,7 @@ import SwiftUI
 import HealthKit
 import WidgetKit
 import SwiftData
+import TipKit
 
 struct CurrentExerciseView: View {
     @Environment(\.modelContext) private var modelContext
@@ -25,6 +26,9 @@ struct CurrentExerciseView: View {
     @State private var lastExercise: Exercise? = nil
     @State private var finishedTapped = false
     @State private var stashedExercise = false
+    
+    private var tip = MyPopoverTip()
+    private var tip2 = MyPopoverTip2()
 
     var body: some View {
         NavigationStack {
@@ -76,7 +80,10 @@ struct CurrentExerciseView: View {
                                 }
                             }
                         }
+                        .popoverTip(tip)
+                        .popoverTip(tip2)
                 }
+
             }
         }
     }
@@ -193,7 +200,7 @@ struct CurrentExerciseView: View {
             .prefix(100)
 
         // Count how many of the last 100 logs have a "hard" difficulty
-        let hardCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.hard.rawValue }.count
+//        let hardCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.hard.rawValue }.count
         
         let effectiveLogCount = min(lastLogs.count, 100)
         let totalWeight = lastLogs.enumerated().reduce(0.0) { (result, element) in
@@ -306,7 +313,7 @@ struct CurrentExerciseView: View {
         createLog(difficulty: difficulty, lastExercise: exerciseViewModel.exercise!)
         WidgetCenter.shared.reloadAllTimelines()
 
-        let exerciseType = HKWorkoutActivityType.coreTraining
+//        let exerciseType = HKWorkoutActivityType.coreTraining
         let startDate = Date()
         let duration = TimeInterval(stopwatchViewModel.seconds)
         let endDate = startDate.addingTimeInterval(duration)

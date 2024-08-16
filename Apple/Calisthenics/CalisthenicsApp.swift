@@ -1,10 +1,11 @@
 import SwiftUI
 import SwiftData
+import TipKit
 
 @main
 struct CalisthenicsApp: App {
-    
-    @AppStorage("firstLaunch") var firstLaunch: Bool = true
+        
+    @AppStorage("showTips") var showTips: Bool = true
         
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -22,6 +23,11 @@ struct CalisthenicsApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
+    init() {
+        try? Tips.resetDatastore()
+        try? Tips.configure()
+    }
     
     var body: some Scene {
         WindowGroup {

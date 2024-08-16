@@ -20,7 +20,7 @@ struct ExerciseCardView: View {
     @State private var showPopover = false
     @Binding var tempDifficulty: Difficulty
     @Query var stashedExercises: [StashedExercise]
-
+    @State private var haptic = false
     
     @AppStorage("randomExercise") var randomExercise: String = ""
     
@@ -96,8 +96,9 @@ struct ExerciseCardView: View {
                     }
                     Button("Finish") {
                         finishedTapped = true
+                        haptic.toggle()
                     }
-                    .sensoryFeedback(.success, trigger: finishedTapped)
+                    .sensoryFeedback(.success, trigger: haptic)
                     .buttonStyle(.bordered)
                     .tint(.green)
                     .font(.title)
