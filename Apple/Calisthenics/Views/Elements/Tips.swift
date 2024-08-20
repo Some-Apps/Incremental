@@ -1,41 +1,30 @@
 import TipKit
 import SwiftUI
 
-struct MyPopoverTip: Tip {
-
+struct GoToRepertoireTip: Tip {
     var title: Text {
-        Text("Sorting now available")
+        Text("Add Exercises")
     }
-
+    
     var message: Text? {
-        Text("Sort the items in the list by dragging them to the desired position.")
+        Text("You can add exercises in the \"Repertoire\" tab")
     }
     
-    var actions: [Action] {
-           [
-            Action(id: "next", title: "Next", perform: nextTip),
-           ]
-       }
-    
-    func nextTip() {
-        MyPopoverTip2.showTip = true
-        self.invalidate(reason: .actionPerformed)
+    var image: Image? {
+        Image(systemName: "list.clipboard")
     }
 }
-
-struct MyPopoverTip2: Tip {
-    
-    @Parameter static var showTip: Bool = false
-
+ 
+struct AddExerciseTip: Tip {
     var title: Text {
-        Text("now available")
-    }
-
-    var message: Text? {
-        Text("Sort the items in the list by dragging them to the desired position.")
+        Text("Add Exercise")
     }
     
-    var rules: [Rule] {
-        #Rule(Self.$showTip) { $0 == true }
+    var message: Text? {
+        Text("You can add an exercise by tapping here")
+    }
+    
+    var image: Image? {
+        Image(systemName: "figure.core.training")
     }
 }

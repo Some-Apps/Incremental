@@ -27,8 +27,7 @@ struct CurrentExerciseView: View {
     @State private var finishedTapped = false
     @State private var stashedExercise = false
     
-    private var tip = MyPopoverTip()
-    private var tip2 = MyPopoverTip2()
+    let goToRepertoireTip = GoToRepertoireTip()
 
     var body: some View {
         NavigationStack {
@@ -80,8 +79,7 @@ struct CurrentExerciseView: View {
                                 }
                             }
                         }
-                        .popoverTip(tip)
-                        .popoverTip(tip2)
+                        .popoverTip(goToRepertoireTip)
                 }
 
             }

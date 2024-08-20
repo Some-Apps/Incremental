@@ -13,7 +13,6 @@ struct AddExerciseView: View {
     @State private var leftRight = false
 //    @State private var selectedMuscles = Set<String>()
     @FocusState private var isTitleFocused: Bool
-
     
     var body: some View {
         Form {
@@ -27,7 +26,16 @@ struct AddExerciseView: View {
                         Text(unit)
                     }
                 }
-                Toggle("Left/Right Exercise", isOn: $leftRight)
+                Toggle(isOn: $leftRight) {
+                    HStack {
+                        Text("Left/Right Exercise")
+                        Button {
+                            
+                        } label: {
+                            Image(systemName: "questionmark.app")
+                        }
+                    }
+                }
 //                NavigationLink {
 //                    MuscleSelectorView(muscles: $selectedMuscles)
 //                } label: {

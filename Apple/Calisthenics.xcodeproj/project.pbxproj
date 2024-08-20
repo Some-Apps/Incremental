@@ -24,6 +24,7 @@
 		C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F232BE6725400F19B7B /* DefaultsManager.swift */; };
 		C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */; };
 		C065345B2A9E6AAF001DFA7B /* CalisthenicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */; };
+		C07BABFD2C74148A00E34669 /* ProgressionPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BABFC2C74148A00E34669 /* ProgressionPhotosView.swift */; };
 		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
 		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
 		C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A4F729CF461D000CD191 /* StopwatchViewModel.swift */; };
@@ -95,6 +96,7 @@
 		C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryView.swift; sourceTree = "<group>"; };
 		C06534582A9E6AAF001DFA7B /* CalisthenicsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalisthenicsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsTests.swift; sourceTree = "<group>"; };
+		C07BABFC2C74148A00E34669 /* ProgressionPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionPhotosView.swift; sourceTree = "<group>"; };
 		C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calisthenics.entitlements; sourceTree = "<group>"; };
 		C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepertoireView.swift; sourceTree = "<group>"; };
 		C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */,
+				C07BABFC2C74148A00E34669 /* ProgressionPhotosView.swift */,
 				C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */,
 				C029BCA32BF151B400113844 /* TutorialView.swift */,
 			);
@@ -188,10 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				C0589F1A2BE5844900F19B7B /* StashedExereciseView.swift */,
-				C0A9A4F929CF4623000CD191 /* StopwatchView.swift */,
 				C0360AE52A2E0F8500E8CA37 /* CurrentExerciseView.swift */,
-				C04C438A2A2E830B00B48413 /* ExerciseCardView.swift */,
-				C0589F1C2BE58D0E00F19B7B /* StashedExerciseCardView.swift */,
 			);
 			path = ExerciseView;
 			sourceTree = "<group>";
@@ -261,6 +261,7 @@
 				C0360AE32A2E0CFA00E8CA37 /* Models.swift */,
 				C0589F232BE6725400F19B7B /* DefaultsManager.swift */,
 				C0A65C5D29D9DAB3001EAA5A /* ViewModels */,
+				C0CB957C29C6445A0099974B /* ContentView.swift */,
 				C08FA4F929CB957A002CA6AF /* Views */,
 				C0CB957E29C6445B0099974B /* Assets.xcassets */,
 				C0CB958029C6445B0099974B /* Preview Content */,
@@ -279,6 +280,9 @@
 		C0F00AFF2C6EE00F00383DF0 /* Elements */ = {
 			isa = PBXGroup;
 			children = (
+				C0A9A4F929CF4623000CD191 /* StopwatchView.swift */,
+				C0589F1C2BE58D0E00F19B7B /* StashedExerciseCardView.swift */,
+				C04C438A2A2E830B00B48413 /* ExerciseCardView.swift */,
 				C0F00B002C6EE02000383DF0 /* Tips.swift */,
 			);
 			path = Elements;
@@ -290,7 +294,6 @@
 				C0A65C5B29D9D7B9001EAA5A /* ExerciseView */,
 				C0A65C5C29D9D7D8001EAA5A /* RepertoireView */,
 				C0A65C5629D9D241001EAA5A /* Settings */,
-				C0CB957C29C6445A0099974B /* ContentView.swift */,
 				C029BCA82BF158E300113844 /* FirstLauchView.swift */,
 			);
 			path = MainViews;
@@ -473,6 +476,7 @@
 				C0360AE62A2E0F8500E8CA37 /* CurrentExerciseView.swift in Sources */,
 				C0589F1D2BE58D0E00F19B7B /* StashedExerciseCardView.swift in Sources */,
 				C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */,
+				C07BABFD2C74148A00E34669 /* ProgressionPhotosView.swift in Sources */,
 				C0CB957B29C6445A0099974B /* CalisthenicsApp.swift in Sources */,
 				C0F00B012C6EE02000383DF0 /* Tips.swift in Sources */,
 				C0BDACB329CF3FBF006B19F9 /* CalisthenicsWidget.swift in Sources */,

@@ -1,12 +1,6 @@
-//
-//  RepertoireView.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 3/22/23.
-//
-
 import SwiftUI
 import SwiftData
+import TipKit
 
 struct RepertoireView: View {
     @Environment(\.modelContext) var modelContext
@@ -26,7 +20,8 @@ struct RepertoireView: View {
     @State private var indexSetToDelete: IndexSet?
     @AppStorage("randomExercise") var randomExercise: String = ""
 
-
+    let addExerciseTip = AddExerciseTip()
+    
     var body: some View {
         NavigationStack {
             List {
@@ -68,6 +63,10 @@ struct RepertoireView: View {
                         AddExerciseView()
                     } label: {
                         Image(systemName: "plus")
+                    }
+                    .popoverTip(addExerciseTip)
+                    .onTapGesture {
+                        addExerciseTip.invalidate(reason: .actionPerformed)
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {

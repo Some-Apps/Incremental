@@ -23,15 +23,18 @@ struct CalisthenicsApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-    
-    init() {
-        try? Tips.resetDatastore()
-        try? Tips.configure()
-    }
+
     
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .task {
+//                    try? Tips.resetDatastore()
+                    try? Tips.configure([
+//                        .displayFrequency(.immediate),
+                        .datastoreLocation(.applicationDefault)
+                    ])
+                }
         }
         .modelContainer(sharedModelContainer)
     }

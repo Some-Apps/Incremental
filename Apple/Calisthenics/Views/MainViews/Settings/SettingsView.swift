@@ -27,6 +27,7 @@ struct SettingsView: View {
             Section {
                 NavigationLink("How To Use App", destination: TutorialView())
                 NavigationLink("Exercise History", destination: ExerciseHistoryView())
+                NavigationLink("Progression Photos", destination: ProgressionPhotosView())
             }
             Section {
                 Picker("Health Category", selection: $healthActivityCategory) {
