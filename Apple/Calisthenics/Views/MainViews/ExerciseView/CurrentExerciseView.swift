@@ -208,22 +208,22 @@ struct CurrentExerciseView: View {
         }
 
         // Adjust incrementIncrement based on the count
-        let maxIncrement = lastExercise.currentReps! * 0.05
+        let maxIncrement = lastExercise.currentReps! * 0.03
         if let currentIncrementIncrement = lastExercise.incrementIncrement {
             var newIncrementIncrement = currentIncrementIncrement
 
             
             if totalWeight <= 1.0 {
                 newIncrementIncrement += 0.015
-            } else if totalWeight <= 3.0 {
+            } else if totalWeight <= 2.0 {
                 newIncrementIncrement += 0.01
-            } else if totalWeight <= 5.0 {
+            } else if totalWeight <= 3.0 {
                 newIncrementIncrement += 0.005
-            } else if totalWeight <= 7.0 {
+            } else if totalWeight <= 5.0 {
                 newIncrementIncrement -= 0.01
-            } else if totalWeight <= 10.0 {
+            } else if totalWeight <= 7.0 {
                 newIncrementIncrement -= 0.05
-            } else if totalWeight <= 25.0 {
+            } else if totalWeight <= 15.0 {
                 newIncrementIncrement -= 0.1
             } else {
                 newIncrementIncrement -= 0.2
@@ -248,7 +248,7 @@ struct CurrentExerciseView: View {
         case .easy:
             if let currentIncrement = lastExercise.increment, let incrementIncrement = lastExercise.incrementIncrement {
                 let newIncrement = currentIncrement + incrementIncrement
-                // Ensure increment does not exceed 5% of currentReps
+                // Ensure increment does not exceed 3% of currentReps
                 if abs(newIncrement) <= maxIncrement {
                     lastExercise.increment = newIncrement
                 } else {
@@ -261,9 +261,10 @@ struct CurrentExerciseView: View {
             if let currentIncrement = lastExercise.increment {
                 if currentIncrement > 0 {
                     lastExercise.increment = 0
+                    lastExercise.currentReps = max(1, lastExercise.currentReps! - 1)
                 }
             } else {
-                lastExercise.increment = 0.015
+                lastExercise.increment = 0
             }
         }
         
