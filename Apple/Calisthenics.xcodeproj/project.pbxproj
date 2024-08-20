@@ -737,8 +737,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Calisthenics/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Calisthenics;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs your camera to add progression photos";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app needs your health data to display it";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app would like to upload your workouts to the health app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -777,8 +777,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Calisthenics/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Calisthenics;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs your camera to add progression photos";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app needs your health data to display it";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app would like to upload your workouts to the health app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

@@ -191,11 +191,14 @@ struct CurrentExerciseView: View {
         newLog.exercises = lastExercise
 
         lastExercise.difficulty = difficulty.rawValue
+        
 
         // Fetch the last 10 logs for this exercise
         let lastLogs = logs.filter { $0.exercises?.id == lastExercise.id }
             .sorted(by: { $0.timestamp! > $1.timestamp! })
             .prefix(100)
+
+        let lastEasyLog = lastLogs.first { $0.exercises?.difficulty == Difficulty.easy.rawValue }
 
         // Count how many of the last 100 logs have a "hard" difficulty
 //        let hardCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.hard.rawValue }.count
@@ -231,12 +234,12 @@ struct CurrentExerciseView: View {
 
             
             
-            // Ensure incrementIncrement does not affect increment beyond 5% of currentReps
+            // Ensure incrementIncrement does not affect increment beyond 3% of currentReps
             if abs((lastExercise.increment ?? 0) + newIncrementIncrement) <= maxIncrement {
                 lastExercise.incrementIncrement = newIncrementIncrement
             } else {
-                lastExercise.incrementIncrement = 0 // stop incrementIncrement when increment is at 5%
-                lastExercise.increment = maxIncrement // set increment to exactly 5% of currentReps
+                lastExercise.incrementIncrement = 0 // stop incrementIncrement when increment is at 3%
+                lastExercise.increment = maxIncrement // set increment to exactly 3% of currentReps
             }
         } else {
             lastExercise.incrementIncrement = 0.01
@@ -258,7 +261,10 @@ struct CurrentExerciseView: View {
                 lastExercise.increment = 0.01
             }
         case .hard:
-            if let currentIncrement = lastExercise.increment {
+            if let lastEasyLog = lastEasyLog {
+                lastExercise.currentReps = Double(lastEasyLog.reps ?? Int16(lastExercise.currentReps!))
+                lastExercise.increment = 0
+            } else if let currentIncrement = lastExercise.increment {
                 if currentIncrement > 0 {
                     lastExercise.increment = 0
                     lastExercise.currentReps = max(1, lastExercise.currentReps! - 1)
