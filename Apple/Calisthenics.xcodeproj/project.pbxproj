@@ -25,6 +25,8 @@
 		C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */; };
 		C065345B2A9E6AAF001DFA7B /* CalisthenicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */; };
 		C07BABFD2C74148A00E34669 /* ProgressionPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BABFC2C74148A00E34669 /* ProgressionPhotosView.swift */; };
+		C07BABFF2C7506A900E34669 /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BABFE2C7506A900E34669 /* Progression.swift */; };
+		C07BAC012C76A66F00E34669 /* UpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BAC002C76A66F00E34669 /* UpgradeView.swift */; };
 		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
 		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
 		C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A4F729CF461D000CD191 /* StopwatchViewModel.swift */; };
@@ -97,6 +99,9 @@
 		C06534582A9E6AAF001DFA7B /* CalisthenicsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalisthenicsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsTests.swift; sourceTree = "<group>"; };
 		C07BABFC2C74148A00E34669 /* ProgressionPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionPhotosView.swift; sourceTree = "<group>"; };
+		C07BABFE2C7506A900E34669 /* Progression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progression.swift; sourceTree = "<group>"; };
+		C07BAC002C76A66F00E34669 /* UpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeView.swift; sourceTree = "<group>"; };
+		C07BAC062C76AE4C00E34669 /* Store.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Store.storekit; sourceTree = "<group>"; };
 		C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calisthenics.entitlements; sourceTree = "<group>"; };
 		C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepertoireView.swift; sourceTree = "<group>"; };
 		C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
@@ -180,6 +185,8 @@
 			isa = PBXGroup;
 			children = (
 				C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */,
+				C07BAC002C76A66F00E34669 /* UpgradeView.swift */,
+				C07BAC062C76AE4C00E34669 /* Store.storekit */,
 				C07BABFC2C74148A00E34669 /* ProgressionPhotosView.swift */,
 				C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */,
 				C029BCA32BF151B400113844 /* TutorialView.swift */,
@@ -233,6 +240,7 @@
 				C00ECE482B9669C300A2CD21 /* Exercise.swift */,
 				C00ECE492B9669C300A2CD21 /* Log.swift */,
 				C00ECE4A2B9669C300A2CD21 /* Muscle.swift */,
+				C07BABFE2C7506A900E34669 /* Progression.swift */,
 				C08FA54D29CF39D0002CA6AF /* CalisthenicsWidgetExtension.entitlements */,
 				C0CB957929C6445A0099974B /* Calisthenics */,
 				C0BDACA529CF3ECE006B19F9 /* CalisthenicsWidget */,
@@ -460,6 +468,7 @@
 				C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */,
 				C00ECE4D2B9669C300A2CD21 /* Log.swift in Sources */,
 				C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */,
+				C07BAC012C76A66F00E34669 /* UpgradeView.swift in Sources */,
 				C0589F1B2BE5844900F19B7B /* StashedExereciseView.swift in Sources */,
 				C00ECE4B2B9669C300A2CD21 /* Exercise.swift in Sources */,
 				C00ECE4F2B9669C300A2CD21 /* Muscle.swift in Sources */,
@@ -473,6 +482,7 @@
 				C0360AE82A2E2BA800E8CA37 /* ExerciseView.swift in Sources */,
 				C04C438B2A2E830B00B48413 /* ExerciseCardView.swift in Sources */,
 				C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */,
+				C07BABFF2C7506A900E34669 /* Progression.swift in Sources */,
 				C0360AE62A2E0F8500E8CA37 /* CurrentExerciseView.swift in Sources */,
 				C0589F1D2BE58D0E00F19B7B /* StashedExerciseCardView.swift in Sources */,
 				C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */,
@@ -737,6 +747,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Calisthenics/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Incremental;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs your camera to add progression photos";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app needs your health data to display it";
@@ -777,6 +788,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Calisthenics/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Incremental;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs your camera to add progression photos";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app needs your health data to display it";

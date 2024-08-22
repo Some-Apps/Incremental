@@ -96,15 +96,23 @@ struct CameraView: UIViewControllerRepresentable {
         picker.sourceType = .camera
         picker.delegate = context.coordinator
         
-        if let overlayImage = overlayImage?.withAlpha(0.5) {
-            let overlayImageView = UIImageView(image: overlayImage)
-            overlayImageView.contentMode = .scaleAspectFit
-            overlayImageView.frame = picker.view.bounds
-            overlayImageView.alpha = 0.5 // Apply additional transparency if needed
+        DispatchQueue.main.async {
+            let screenSize = UIScreen.main.bounds.size
+            let cameraAspectRatio: CGFloat = 4.0 / 3.0
+            let cameraHeight = screenSize.width * cameraAspectRatio
+            let cameraFrame = CGRect(x: 0, y: (screenSize.height - cameraHeight) / 2, width: screenSize.width, height: cameraHeight)
             
-            picker.cameraOverlayView = overlayImageView
+            print("Screen size: \(screenSize)")
+            print("Camera frame: \(cameraFrame)")
+            
+            if let overlayImage = overlayImage?.withAlpha(0.5) {
+                let overlayImageView = UIImageView(image: overlayImage)
+                overlayImageView.contentMode = .scaleAspectFit
+                overlayImageView.frame = cameraFrame
+                picker.cameraOverlayView = overlayImageView
+            }
         }
-        
+
         return picker
     }
 
@@ -123,7 +131,8 @@ struct CameraView: UIViewControllerRepresentable {
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let image = info[.originalImage] as? UIImage {
-                parent.onPhotoCaptured(image)
+                let correctedImage = image.correctedOrientation(img: image)
+                parent.onPhotoCaptured(correctedImage)
             }
             picker.dismiss(animated: true)
         }
@@ -185,35 +194,28 @@ extension UIImage {
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage?.correctedOrientation()
+        return newImage?.correctedOrientation(img: newImage!)
     }
 }
 
 
 extension UIImage {
-    func correctedOrientation() -> UIImage? {
-        if imageOrientation == .up {
-            return self
-        }
 
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        draw(in: CGRect(origin: .zero, size: size))
-        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return normalizedImage
+    func correctedOrientation(img:UIImage) -> UIImage {
+
+        if (img.imageOrientation == UIImage.Orientation.up) {
+          return img;
+      }
+
+      UIGraphicsBeginImageContextWithOptions(img.size, false, img.scale);
+      let rect = CGRect(x: 0, y: 0, width: img.size.width, height: img.size.height)
+        img.draw(in: rect)
+
+let normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+      UIGraphicsEndImageContext();
+      return normalizedImage;
+
     }
+
 }
 
-extension UIImage {
-    func rotated(by radians: CGFloat) -> UIImage? {
-        UIGraphicsBeginImageContext(size)
-        let context = UIGraphicsGetCurrentContext()!
-        context.translateBy(x: size.width / 2, y: size.height / 2)
-        context.rotate(by: radians)
-        draw(in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height))
-        let rotatedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return rotatedImage
-    }
-}
