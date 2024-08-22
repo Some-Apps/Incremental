@@ -43,7 +43,7 @@ struct SettingsView: View {
                         .buttonStyle(.bordered)
                     }
                 }
-//                NavigationLink("Progression Photos", destination: ProgressionPhotosView())
+                NavigationLink("Progression Photos", destination: ProgressionPhotosView())
             }
             Section {
                 Picker("Health Category", selection: $healthActivityCategory) {

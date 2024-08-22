@@ -1,221 +1,171 @@
 import SwiftUI
-import Combine
-import UIKit
-
-struct ProgressionPhotosView: View {
-    @StateObject private var viewModel = ProgressionPhotosViewModel()
-    @State private var isPresentingPhotoPicker = false
-    @State private var selectedProgression: Progression?
-    @State private var progressionName: String = ""
-    
-    var body: some View {
-            List {
-                ForEach(viewModel.progressions) { progression in
-                    NavigationLink(destination: ProgressionDetailView(progression: progression, viewModel: viewModel)) {
-                        Text(progression.name)
-                    }
-                }
-            }
-            .navigationBarTitle("Progressions")
-            .navigationBarItems(trailing: Button(action: {
-                isPresentingPhotoPicker = true
-            }) {
-                Image(systemName: "plus")
-            })
-            .sheet(isPresented: $isPresentingPhotoPicker) {
-                ProgressionCreationView(viewModel: viewModel, isPresented: $isPresentingPhotoPicker)
-            }
-    }
-}
-
+import AVFoundation
+import MijickCameraView
 
 struct Progression: Identifiable {
-    let id = UUID()
+    var id = UUID()
     var name: String
     var photos: [UIImage] = []
 }
 
-class ProgressionPhotosViewModel: ObservableObject {
-    @Published var progressions: [Progression] = []
-    
-    func addProgression(name: String) {
-        let newProgression = Progression(name: name)
-        progressions.append(newProgression)
+struct ProgressionPhotosView: View {
+    @State private var progressions: [Progression] = []
+    @State private var isAddingNewProgression = false
+
+    var body: some View {
+            List {
+                ForEach(progressions) { progression in
+                    NavigationLink(destination: ProgressionDetailView(progression: progression)) {
+                        Text(progression.name)
+                    }
+                }
+            }
+            .navigationTitle("Progressions")
+            .toolbar {
+                Button(action: { isAddingNewProgression = true }) {
+                    Image(systemName: "plus")
+                }
+            }
+            .sheet(isPresented: $isAddingNewProgression) {
+                AddProgressionView(progressions: $progressions)
+            }
+        
     }
-    
-    func addPhoto(to progression: Progression, photo: UIImage) {
-        if let index = progressions.firstIndex(where: { $0.id == progression.id }) {
-            progressions[index].photos.append(photo)
+}
+
+struct AddProgressionView: View {
+    @Environment(\.dismiss) var dismiss
+    @Binding var progressions: [Progression]
+    @State private var progressionName = ""
+    @State private var selectedImage: UIImage?
+    @State private var isTakingPhoto = false
+
+    var body: some View {
+        Form {
+            Section(header: Text("Progression Name")) {
+                TextField("Enter progression name", text: $progressionName)
+            }
+
+            Section(header: Text("Take First Photo")) {
+                Button("Capture Photo") {
+                    isTakingPhoto = true
+                }
+                .sheet(isPresented: $isTakingPhoto) {
+                    CameraView()
+                }
+
+                if let selectedImage = selectedImage {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 200)
+                        .clipped()
+                }
+            }
+
+            Section {
+                Button("Save") {
+                    if !progressionName.isEmpty, let firstPhoto = selectedImage {
+                        let newProgression = Progression(name: progressionName, photos: [firstPhoto])
+                        progressions.append(newProgression)
+                        dismiss()
+                    }
+                }
+                .disabled(progressionName.isEmpty || selectedImage == nil)
+            }
         }
+        .navigationTitle("New Progression")
     }
 }
 
 struct ProgressionDetailView: View {
-    var progression: Progression
-    @ObservedObject var viewModel: ProgressionPhotosViewModel
-    @State private var isShowingCamera = false
+    @State var progression: Progression
+    @State private var isAddingNewPhoto = false
 
     var body: some View {
         VStack {
-            ScrollView {
+            List {
                 ForEach(progression.photos, id: \.self) { photo in
                     Image(uiImage: photo)
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 200)
-                        .padding()
                 }
             }
-
-            Button(action: {
-                isShowingCamera = true
-            }) {
-                Text("Add Photo")
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(8)
+            .navigationTitle(progression.name)
+            .toolbar {
+                Button(action: { isAddingNewPhoto = true }) {
+                    Image(systemName: "camera")
+                }
             }
-            .padding()
-        }
-        .navigationTitle(progression.name)
-        .sheet(isPresented: $isShowingCamera) {
-            CameraView(overlayImage: progression.photos.first, onPhotoCaptured: { image in
-                viewModel.addPhoto(to: progression, photo: image)
-            })
+            .sheet(isPresented: $isAddingNewPhoto) {
+                AddPhotoView(progression: $progression)
+            }
         }
     }
 }
 
-struct CameraView: UIViewControllerRepresentable {
-    var overlayImage: UIImage?
-    var onPhotoCaptured: (UIImage) -> Void
-
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.sourceType = .camera
-        picker.delegate = context.coordinator
-        
-        DispatchQueue.main.async {
-            let screenSize = UIScreen.main.bounds.size
-            let cameraAspectRatio: CGFloat = 4.0 / 3.0
-            let cameraHeight = screenSize.width * cameraAspectRatio
-            let cameraFrame = CGRect(x: 0, y: (screenSize.height - cameraHeight) / 2, width: screenSize.width, height: cameraHeight)
-            
-            print("Screen size: \(screenSize)")
-            print("Camera frame: \(cameraFrame)")
-            
-            if let overlayImage = overlayImage?.withAlpha(0.5) {
-                let overlayImageView = UIImageView(image: overlayImage)
-                overlayImageView.contentMode = .scaleAspectFit
-                overlayImageView.frame = cameraFrame
-                picker.cameraOverlayView = overlayImageView
-            }
-        }
-
-        return picker
-    }
-
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        var parent: CameraView
-
-        init(_ parent: CameraView) {
-            self.parent = parent
-        }
-
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            if let image = info[.originalImage] as? UIImage {
-                let correctedImage = image.correctedOrientation(img: image)
-                parent.onPhotoCaptured(correctedImage)
-            }
-            picker.dismiss(animated: true)
-        }
-    }
-}
-
-
-
-struct ProgressionCreationView: View {
-    @ObservedObject var viewModel: ProgressionPhotosViewModel
-    @Binding var isPresented: Bool
-    @State private var name: String = ""
-    @State private var isShowingCamera = false
-    @State private var firstPhoto: UIImage?
+struct AddPhotoView: View {
+    @Environment(\.dismiss) var dismiss
+    @Binding var progression: Progression
+    @State private var capturedImage: UIImage?
 
     var body: some View {
         VStack {
-            TextField("Progression Name", text: $name)
-                .padding()
-
-            Button("Take First Photo") {
-                isShowingCamera = true
+            if let firstPhoto = progression.photos.first {
+                ZStack {
+                    CameraView()
+                    Image(uiImage: firstPhoto)
+                        .resizable()
+                        .scaledToFit()
+                        .opacity(0.5)
+                        .frame(height: 300)
+                }
+            } else {
+                CameraView()
             }
-            .padding()
 
-            Spacer()
-
-            Button("Create Progression") {
-                if let firstPhoto = firstPhoto, !name.isEmpty {
-                    var progression = Progression(name: name)
-                    progression.photos.append(firstPhoto)
-                    viewModel.progressions.append(progression)
-                    isPresented = false
+            Button("Capture Photo") {
+                if let newPhoto = capturedImage {
+                    progression.photos.append(newPhoto)
+                    dismiss()
                 }
             }
-            .disabled(firstPhoto == nil || name.isEmpty)
             .padding()
         }
-        .sheet(isPresented: $isShowingCamera) {
-            CameraView(overlayImage: nil, onPhotoCaptured: { image in
-                firstPhoto = image
-            })
-        }
-    }
-}
-
-extension UIImage {
-    func withAlpha(_ alpha: CGFloat) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        let context = UIGraphicsGetCurrentContext()!
-        let rect = CGRect(origin: .zero, size: size)
-        
-        context.translateBy(x: 0, y: size.height)
-        context.scaleBy(x: 1.0, y: -1.0)
-        context.setBlendMode(.normal)
-        context.setAlpha(alpha)
-        context.draw(cgImage!, in: rect)
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage?.correctedOrientation(img: newImage!)
+        .navigationTitle("Capture Photo")
     }
 }
 
 
-extension UIImage {
+struct CameraView: View {
+    @ObservedObject private var manager: CameraManager = .init(
+        outputType: .photo,
+        cameraPosition: .back,
+//        cameraFilters: [.init(name: "CISepiaTone")!],
+        resolution: .hd4K3840x2160,
+        frameRate: 25,
+        flashMode: .off,
+        isGridVisible: false,
+        focusImageColor: .yellow,
+        focusImageSize: 92
+    )
 
-    func correctedOrientation(img:UIImage) -> UIImage {
 
-        if (img.imageOrientation == UIImage.Orientation.up) {
-          return img;
-      }
-
-      UIGraphicsBeginImageContextWithOptions(img.size, false, img.scale);
-      let rect = CGRect(x: 0, y: 0, width: img.size.width, height: img.size.height)
-        img.draw(in: rect)
-
-let normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-      UIGraphicsEndImageContext();
-      return normalizedImage;
-
+   
+    var body: some View {
+        MCameraController(manager: manager)
+            .onImageCaptured { data in
+                            print("IMAGE CAPTURED")
+                        }
+                        .onVideoCaptured { url in
+                            print("VIDEO CAPTURED")
+                        }
+                        .afterMediaCaptured { $0
+                            .closeCameraController(true)
+                            .custom { print("Media object has been successfully captured") }
+                        }
+                        .onCloseController {
+                            print("CLOSE THE CONTROLLER")
+                        }
     }
-
 }
-

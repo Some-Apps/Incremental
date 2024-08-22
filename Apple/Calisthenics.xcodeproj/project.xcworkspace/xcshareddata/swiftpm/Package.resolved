@@ -1,5 +1,5 @@
 {
-  "originHash" : "ddb94e3b3afdf5ee67c21a827f1dbd26b7c3a642a940a824d180d0926d47cf7b",
+  "originHash" : "25892abdbdfd10719785b76a4e97b7617605c473937eb3a9d13ea4ab5ffb0fc5",
   "pins" : [
     {
       "identity" : "alerttoast",
@@ -8,6 +8,24 @@
       "state" : {
         "revision" : "b39252eacd159904afd7d718bba0afabb87f2f2f",
         "version" : "1.3.9"
+      }
+    },
+    {
+      "identity" : "cameraview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Mijick/CameraView",
+      "state" : {
+        "revision" : "0ff7c42185546b13fb6d2c2f63e92fbf194ed98e",
+        "version" : "2.1.0"
+      }
+    },
+    {
+      "identity" : "timer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Mijick/Timer",
+      "state" : {
+        "revision" : "93fe777e0c7e693f388ce0ffeeec97b3dd812743",
+        "version" : "1.0.2"
       }
     }
   ],
