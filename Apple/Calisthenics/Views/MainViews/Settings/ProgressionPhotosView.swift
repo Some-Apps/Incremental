@@ -1,24 +1,39 @@
 import SwiftUI
+import SwiftData
+import AlertToast
 import AVFoundation
-import MijickCameraView
-
-struct Progression: Identifiable {
-    var id = UUID()
-    var name: String
-    var photos: [UIImage] = []
-}
+import UIKit
 
 struct ProgressionPhotosView: View {
-    @State private var progressions: [Progression] = []
+    @Environment(\.modelContext) var modelContext
+
     @State private var isAddingNewProgression = false
+    @State private var confirmDelete = false
+    @State private var indexSetToDelete: IndexSet?
+    @Query(filter: #Predicate<PhotoProgression> {item in
+        true
+    }, sort: \.name) var progressions: [PhotoProgression]
 
     var body: some View {
             List {
                 ForEach(progressions) { progression in
                     NavigationLink(destination: ProgressionDetailView(progression: progression)) {
-                        Text(progression.name)
+                        Text(progression.name ?? "")
                     }
                 }
+                .onDelete(perform: { indexSet in
+                    indexSetToDelete = indexSet
+                    confirmDelete = true
+                })
+                
+            }
+            .confirmationDialog("Are you sure you want to delete this progression?", isPresented: $confirmDelete, titleVisibility: .visible) {
+                Button("Delete", role: .destructive) {
+                    if let indexSet = indexSetToDelete {
+                        deleteProgression(at: indexSet)
+                    }
+                }
+                Button("Cancel", role: .cancel) { }
             }
             .navigationTitle("Progressions")
             .toolbar {
@@ -27,18 +42,35 @@ struct ProgressionPhotosView: View {
                 }
             }
             .sheet(isPresented: $isAddingNewProgression) {
-                AddProgressionView(progressions: $progressions)
+                AddProgressionView()
             }
+    }
+    
+    private func deleteProgression(at offsets: IndexSet) {
+        for index in offsets {
+            let progression = progressions[index]
+            modelContext.delete(progression)
+        }
         
+        do {
+            try modelContext.save()
+            indexSetToDelete = nil
+        } catch {
+            print("Failed to save context after deleting progression: \(error)")
+        }
     }
 }
 
+
 struct AddProgressionView: View {
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
-    @Binding var progressions: [Progression]
     @State private var progressionName = ""
     @State private var selectedImage: UIImage?
     @State private var isTakingPhoto = false
+    @State private var showCamera = false
+    @State private var isSaving = false
+    @State private var showToast = false
 
     var body: some View {
         Form {
@@ -46,126 +78,235 @@ struct AddProgressionView: View {
                 TextField("Enter progression name", text: $progressionName)
             }
 
-            Section(header: Text("Take First Photo")) {
-                Button("Capture Photo") {
-                    isTakingPhoto = true
+            Section {
+                // Take photo
+                Button("Open Camera") {
+                    self.showCamera.toggle()
                 }
-                .sheet(isPresented: $isTakingPhoto) {
-                    CameraView()
+                .fullScreenCover(isPresented: self.$showCamera) {
+                    CustomCameraView(selectedImage: $selectedImage, overlay: nil)
+                        .ignoresSafeArea(.all)
                 }
-
-                if let selectedImage = selectedImage {
-                    Image(uiImage: selectedImage)
+                if let chosenImage = selectedImage {
+                    Image(uiImage: chosenImage)
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 200)
-                        .clipped()
                 }
             }
 
             Section {
                 Button("Save") {
                     if !progressionName.isEmpty, let firstPhoto = selectedImage {
-                        let newProgression = Progression(name: progressionName, photos: [firstPhoto])
-                        progressions.append(newProgression)
-                        dismiss()
+                        isSaving = true
+                        showToast = true
+                        addProgression(firstPhoto: firstPhoto)
                     }
                 }
                 .disabled(progressionName.isEmpty || selectedImage == nil)
             }
         }
         .navigationTitle("New Progression")
+        .toast(isPresenting: $showToast) {
+            AlertToast(type: .loading, title: "Saving...")
+        }
+    }
+    
+    func addProgression(firstPhoto: UIImage) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let newProgression = PhotoProgression(name: progressionName, photos: [firstPhoto])
+            modelContext.insert(newProgression)
+            do {
+                try modelContext.save()
+                DispatchQueue.main.async {
+                    isSaving = false
+                    dismiss()
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    isSaving = false
+                    showToast = false
+                    print("Failed to save context after adding progression: \(error)")
+                }
+            }
+        }
     }
 }
 
-struct ProgressionDetailView: View {
-    @State var progression: Progression
-    @State private var isAddingNewPhoto = false
 
+
+
+struct ProgressionDetailView: View {
+    @Environment(\.modelContext) private var modelContext
+
+    @State var progression: PhotoProgression
+    @Query(filter: #Predicate<PhotoProgression> {item in
+        true
+    }, sort: \.name) var progressions: [PhotoProgression]
+    @State private var isAddingNewPhoto = false
+    
+    @State private var newPhoto: UIImage?
+    
+    var thisProgression: PhotoProgression? {
+        return progressions.first(where: { $0.id == progression.id }) ?? nil
+    }
+    
     var body: some View {
         VStack {
             List {
-                ForEach(progression.photos, id: \.self) { photo in
-                    Image(uiImage: photo)
-                        .resizable()
-                        .scaledToFit()
+                if let thisProgression = thisProgression {
+                    if let photos = thisProgression.photos {
+                        ForEach(photos, id: \.self) { photo in
+                            Image(uiImage: photo)
+                                .resizable()
+                                .scaledToFit()
+                        }
+                    }
                 }
+                
+                
             }
-            .navigationTitle(progression.name)
+            .navigationTitle(thisProgression?.name ?? "")
             .toolbar {
                 Button(action: { isAddingNewPhoto = true }) {
                     Image(systemName: "camera")
                 }
+                .fullScreenCover(isPresented: self.$isAddingNewPhoto) {
+                    if let thisProgression = thisProgression {
+                        if let firstPhoto = thisProgression.photos?.first {
+                            CustomCameraView(selectedImage: $newPhoto, overlay: firstPhoto)
+                        }
+                    }
+                    
+                }
             }
-            .sheet(isPresented: $isAddingNewPhoto) {
-                AddPhotoView(progression: $progression)
+        }
+        .onChange(of: newPhoto) {
+            if let newPhoto = newPhoto {
+                progression.photos?.append(newPhoto)
+                try? modelContext.save()
             }
         }
     }
 }
 
-struct AddPhotoView: View {
-    @Environment(\.dismiss) var dismiss
-    @Binding var progression: Progression
-    @State private var capturedImage: UIImage?
+
+
+
+struct CustomCameraView: View {
+    @StateObject private var camera = CameraViewModel()
+    @Binding var selectedImage: UIImage?
+    let overlay: UIImage?
+    @Environment(\.presentationMode) var isPresented
 
     var body: some View {
-        VStack {
-            if let firstPhoto = progression.photos.first {
-                ZStack {
-                    CameraView()
-                    Image(uiImage: firstPhoto)
+        ZStack {
+            CameraPreview(session: camera.session)
+                .ignoresSafeArea(.all)
+                .scaledToFit()
+            if let overlay = overlay {
+                Image(uiImage: overlay)
+                    .resizable()
+                    .scaledToFit()
+                    .opacity(0.5)
+                    .ignoresSafeArea(.all)
+            }
+            
+            VStack {
+                Spacer()
+                
+                Button(action: {
+                    camera.takePhoto()
+                }) {
+                    Image(systemName: "camera.circle")
                         .resizable()
-                        .scaledToFit()
-                        .opacity(0.5)
-                        .frame(height: 300)
-                }
-            } else {
-                CameraView()
-            }
-
-            Button("Capture Photo") {
-                if let newPhoto = capturedImage {
-                    progression.photos.append(newPhoto)
-                    dismiss()
+                        .frame(width: 70, height: 70)
+                        .foregroundColor(.white)
+                        .padding(.bottom, 20)
                 }
             }
-            .padding()
         }
-        .navigationTitle("Capture Photo")
+        .onAppear {
+            camera.configure()
+        }
+        .onDisappear {
+            camera.stopSession()
+        }
+        .onChange(of: camera.capturedImage) {
+            if let image = camera.capturedImage {
+                selectedImage = image
+                isPresented.wrappedValue.dismiss()
+            }
+        }
+    }
+}
+
+class CameraViewModel: NSObject, ObservableObject {
+    @Published var session = AVCaptureSession()
+    @Published var capturedImage: UIImage?
+    private var output = AVCapturePhotoOutput()
+    
+    func configure() {
+        session.beginConfiguration()
+        
+        guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
+              let input = try? AVCaptureDeviceInput(device: camera) else {
+            return
+        }
+        
+        if session.canAddInput(input) {
+            session.addInput(input)
+        }
+        
+        if session.canAddOutput(output) {
+            session.addOutput(output)
+        }
+        
+        session.commitConfiguration()
+        
+        startSession()
+    }
+    
+    func startSession() {
+        session.startRunning()
+    }
+    
+    func stopSession() {
+        session.stopRunning()
+    }
+    
+    func takePhoto() {
+        let settings = AVCapturePhotoSettings()
+        output.capturePhoto(with: settings, delegate: self)
+    }
+}
+
+extension CameraViewModel: AVCapturePhotoCaptureDelegate {
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        guard let imageData = photo.fileDataRepresentation(),
+              let image = UIImage(data: imageData) else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.capturedImage = image
+        }
     }
 }
 
 
-struct CameraView: View {
-    @ObservedObject private var manager: CameraManager = .init(
-        outputType: .photo,
-        cameraPosition: .back,
-//        cameraFilters: [.init(name: "CISepiaTone")!],
-        resolution: .hd4K3840x2160,
-        frameRate: 25,
-        flashMode: .off,
-        isGridVisible: false,
-        focusImageColor: .yellow,
-        focusImageSize: 92
-    )
-
-
-   
-    var body: some View {
-        MCameraController(manager: manager)
-            .onImageCaptured { data in
-                            print("IMAGE CAPTURED")
-                        }
-                        .onVideoCaptured { url in
-                            print("VIDEO CAPTURED")
-                        }
-                        .afterMediaCaptured { $0
-                            .closeCameraController(true)
-                            .custom { print("Media object has been successfully captured") }
-                        }
-                        .onCloseController {
-                            print("CLOSE THE CONTROLLER")
-                        }
+struct CameraPreview: UIViewRepresentable {
+    var session: AVCaptureSession
+    
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView(frame: UIScreen.main.bounds)
+        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
+        previewLayer.videoGravity = .resizeAspectFill
+        previewLayer.frame = view.frame
+        view.layer.addSublayer(previewLayer)
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {
+        // Update if necessary
     }
 }

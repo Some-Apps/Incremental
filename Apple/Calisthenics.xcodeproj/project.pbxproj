@@ -27,6 +27,8 @@
 		C07BABFD2C74148A00E34669 /* ProgressionPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BABFC2C74148A00E34669 /* ProgressionPhotosView.swift */; };
 		C07BABFF2C7506A900E34669 /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BABFE2C7506A900E34669 /* Progression.swift */; };
 		C07BAC012C76A66F00E34669 /* UpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BAC002C76A66F00E34669 /* UpgradeView.swift */; };
+		C08DFACF2C7A383200F7EBCD /* PhotoProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08DFACE2C7A380400F7EBCD /* PhotoProgression.swift */; };
+		C08DFAD02C7A383300F7EBCD /* PhotoProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08DFACE2C7A380400F7EBCD /* PhotoProgression.swift */; };
 		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
 		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
 		C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A4F729CF461D000CD191 /* StopwatchViewModel.swift */; };
@@ -103,6 +105,7 @@
 		C07BABFE2C7506A900E34669 /* Progression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progression.swift; sourceTree = "<group>"; };
 		C07BAC002C76A66F00E34669 /* UpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeView.swift; sourceTree = "<group>"; };
 		C07BAC062C76AE4C00E34669 /* Store.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Store.storekit; sourceTree = "<group>"; };
+		C08DFACE2C7A380400F7EBCD /* PhotoProgression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoProgression.swift; sourceTree = "<group>"; };
 		C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calisthenics.entitlements; sourceTree = "<group>"; };
 		C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepertoireView.swift; sourceTree = "<group>"; };
 		C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
@@ -240,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				C00ECE482B9669C300A2CD21 /* Exercise.swift */,
+				C08DFACE2C7A380400F7EBCD /* PhotoProgression.swift */,
 				C00ECE492B9669C300A2CD21 /* Log.swift */,
 				C00ECE4A2B9669C300A2CD21 /* Muscle.swift */,
 				C07BABFE2C7506A900E34669 /* Progression.swift */,
@@ -458,6 +462,7 @@
 			files = (
 				C0BDACA729CF3ECE006B19F9 /* CalisthenicsWidgetBundle.swift in Sources */,
 				C0BDACA929CF3ECE006B19F9 /* CalisthenicsWidget.swift in Sources */,
+				C08DFAD02C7A383300F7EBCD /* PhotoProgression.swift in Sources */,
 				C0F00AFD2C6EC02D00383DF0 /* Log.swift in Sources */,
 				C0F00AFE2C6EC03000383DF0 /* Muscle.swift in Sources */,
 				C0F00AFC2C6EC02A00383DF0 /* Exercise.swift in Sources */,
@@ -490,6 +495,7 @@
 				C0360AE62A2E0F8500E8CA37 /* CurrentExerciseView.swift in Sources */,
 				C0589F1D2BE58D0E00F19B7B /* StashedExerciseCardView.swift in Sources */,
 				C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */,
+				C08DFACF2C7A383200F7EBCD /* PhotoProgression.swift in Sources */,
 				C07BABFD2C74148A00E34669 /* ProgressionPhotosView.swift in Sources */,
 				C0CB957B29C6445A0099974B /* CalisthenicsApp.swift in Sources */,
 				C0F00B012C6EE02000383DF0 /* Tips.swift in Sources */,
