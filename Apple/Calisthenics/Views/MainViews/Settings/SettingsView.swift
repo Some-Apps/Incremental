@@ -59,13 +59,22 @@ struct SettingsView: View {
                         .buttonStyle(.bordered)
                     }
                 }
-                Button("Export All Data") {
-                    // This should create a file with all the date from swiftdata in a csv.
-                    fetchAllData()
+                if isSubscribed {
+                    Button("Export All Data") {
+                        fetchAllData()
+                    }
+                } else {
+                    HStack {
+                        Text("Export All Data")
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Button("Upgrade") {
+                            showUpgrade = true
+                        }
+                        .buttonStyle(.bordered)
+                    }
                 }
-//                Button("Delete All Data") {
-//                    // This should remove all data from swiftdata/cloudkit for this app
-//                }
+                
             }
             Section {
                 Picker("Health Category", selection: $healthActivityCategory) {
@@ -98,7 +107,7 @@ struct SettingsView: View {
             UpgradeView()
         }
         .toast(isPresenting: $showLoading) {
-            AlertToast(displayMode: .alert, type: .loading)
+            AlertToast(displayMode: .alert, type: .loading, title: "Loading...")
         }
         .onAppear {
             Task {
@@ -141,13 +150,14 @@ struct SettingsView: View {
     func fetchAllData() {
         showLoading = true
         
-        var csvString = "exercise,log date, log reps\n"
+        var csvString = "exercise,log date,log reps\n"
         
         fetchAllExercises(from: exercises) { exercise in
             csvString.append(contentsOf: exercise)
                 
-            // Save CSV and present share sheet
-            saveAndShareCSV(csvString: csvString)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                saveAndShareCSV(csvString: csvString)
+            }
             
         }
         

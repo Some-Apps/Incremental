@@ -27,14 +27,7 @@ struct AddExerciseView: View {
                     }
                 }
                 Toggle(isOn: $leftRight) {
-                    HStack {
                         Text("Left/Right Exercise")
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "questionmark.app")
-                        }
-                    }
                 }
 //                NavigationLink {
 //                    MuscleSelectorView(muscles: $selectedMuscles)
