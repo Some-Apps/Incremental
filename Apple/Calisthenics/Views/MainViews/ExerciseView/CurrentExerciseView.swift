@@ -185,102 +185,122 @@ struct CurrentExerciseView: View {
         let newLog = Log(backingData: Log.createBackingData())
         newLog.id = UUID()
         newLog.duration = Int16(exactly: stopwatchViewModel.seconds)!
-        newLog.reps = Int16(exactly: lastExercise.currentReps!.rounded(.down))!
+        newLog.reps = lastExercise.currentReps
         newLog.timestamp = Date()
         newLog.units = lastExercise.units
-        newLog.exercises = lastExercise
+        newLog.difficulty = difficulty.rawValue
+        newLog.exercise = lastExercise
 
-        lastExercise.difficulty = difficulty.rawValue
+        print("[LOG] \(lastExercise.title ?? "Unknown")")
         
-
         // Fetch the last 10 logs for this exercise
-        let lastLogs = logs.filter { $0.exercises?.id == lastExercise.id }
+        var lastLogs = logs.filter { $0.exercise?.id == lastExercise.id }
             .sorted(by: { $0.timestamp! > $1.timestamp! })
-            .prefix(100)
-
-        let lastEasyLog = lastLogs.first { $0.exercises?.difficulty == Difficulty.easy.rawValue }
-
-        // Count how many of the last 100 logs have a "hard" difficulty
-//        let hardCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.hard.rawValue }.count
+            .prefix(99)
+        lastLogs.insert(newLog, at: 0)
         
+        let lastEasyLog = lastLogs.first { $0.difficulty == Difficulty.easy.rawValue }
+
+        print("[LOG] # of logs: \(lastLogs.count)")
+
         let effectiveLogCount = min(lastLogs.count, 100)
+        
+        print("[LOG] effective log count: \(effectiveLogCount)")
+        
         let totalWeight = lastLogs.enumerated().reduce(0.0) { (result, element) in
             let (index, log) = element
             let weight = 1.0 - (Double(index) / Double(effectiveLogCount))
-            return result + (log.exercises?.difficulty == Difficulty.hard.rawValue ? weight : 0.0)
+            return result + (log.difficulty == Difficulty.hard.rawValue ? weight : 0.0)
         }
 
-        // Adjust incrementIncrement based on the count
+        print("[LOG] total weight: \(totalWeight)")
+
+        // Calculate the maximum increment
         let maxIncrement = lastExercise.currentReps! * 0.03
+        print("[LOG] max increment: \(maxIncrement)")
+        
         if let currentIncrementIncrement = lastExercise.incrementIncrement {
             var newIncrementIncrement = currentIncrementIncrement
-
             
-            if totalWeight <= 1.0 {
+            if totalWeight <= 0.5 {
                 newIncrementIncrement += 0.015
-            } else if totalWeight <= 2.0 {
+            } else if totalWeight <= 1 {
                 newIncrementIncrement += 0.01
-            } else if totalWeight <= 3.0 {
-                newIncrementIncrement += 0.005
-            } else if totalWeight <= 5.0 {
+            } else if totalWeight <= 1.5 {
                 newIncrementIncrement -= 0.01
-            } else if totalWeight <= 7.0 {
+            } else if totalWeight <= 2 {
+                newIncrementIncrement -= 0.02
+            } else if totalWeight <= 2.5 {
                 newIncrementIncrement -= 0.05
-            } else if totalWeight <= 15.0 {
+            } else if totalWeight <= 3 {
                 newIncrementIncrement -= 0.1
             } else {
                 newIncrementIncrement -= 0.2
             }
-
             
+            print("[LOG] new increment based on weight: \(newIncrementIncrement)")
             
-            // Ensure incrementIncrement does not affect increment beyond 3% of currentReps
-            if abs((lastExercise.increment ?? 0) + newIncrementIncrement) <= maxIncrement {
+            // Calculate the potential new increment
+            let potentialNewIncrement = (lastExercise.increment ?? 0) + newIncrementIncrement
+            
+            // Check if the potential increment is within bounds
+            if potentialNewIncrement >= -maxIncrement && potentialNewIncrement <= maxIncrement {
                 lastExercise.incrementIncrement = newIncrementIncrement
             } else {
-                lastExercise.incrementIncrement = 0 // stop incrementIncrement when increment is at 3%
-                lastExercise.increment = maxIncrement // set increment to exactly 3% of currentReps
+                lastExercise.incrementIncrement = 0
+                lastExercise.increment = 0
             }
+            
         } else {
-            lastExercise.incrementIncrement = 0.01
+            lastExercise.incrementIncrement = 0
         }
-
+        print("[LOG] this should match the line above unless reaching the max increment: \(lastExercise.incrementIncrement ?? 0)")
 
         // Increment
         switch difficulty {
         case .easy:
             if let currentIncrement = lastExercise.increment, let incrementIncrement = lastExercise.incrementIncrement {
                 let newIncrement = currentIncrement + incrementIncrement
-                // Ensure increment does not exceed 3% of currentReps
-                if abs(newIncrement) <= maxIncrement {
-                    lastExercise.increment = newIncrement
-                } else {
-                    lastExercise.increment = maxIncrement
-                }
+                lastExercise.increment = newIncrement
             } else {
-                lastExercise.increment = 0.01
+                lastExercise.increment = 0
             }
         case .hard:
-            if let lastEasyLog = lastEasyLog {
-                lastExercise.currentReps = Double(lastEasyLog.reps ?? Int16(lastExercise.currentReps!))
-                lastExercise.increment = 0
-            } else if let currentIncrement = lastExercise.increment {
+            print("[LOG] hard")
+            if let currentIncrement = lastExercise.increment, let incrementIncrement = lastExercise.incrementIncrement {
+                print("[LOG] successfully unwrapped")
+
                 if currentIncrement > 0 {
-                    lastExercise.increment = 0
-                    lastExercise.currentReps = max(1, lastExercise.currentReps! - 1)
+                    print("[LOG] greater than 0")
+                    if let lastEasyLog = lastEasyLog {
+                        print("[LOG] went to easy log")
+                        if let currentReps = lastExercise.currentReps {
+                            let lastEasyReps = Double(lastEasyLog.reps ?? Double(lastExercise.currentReps!.rounded(.down)))
+                            lastExercise.increment = lastEasyReps - currentReps
+                            lastExercise.incrementIncrement = 0
+                        }
+                    } else {
+                        lastExercise.increment = 0
+                        lastExercise.incrementIncrement = 0
+                    }
+                } else {
+                    print("[LOG] less than 0")
+                    let newIncrement = currentIncrement + incrementIncrement
+                    lastExercise.increment = newIncrement
                 }
             } else {
+                print("[LOG] failed to unwrap")
                 lastExercise.increment = 0
             }
         }
-        
         // Update the current reps
         lastExercise.currentReps! += lastExercise.increment ?? 0
-
+        
+        print("[LOG] increment: \(lastExercise.increment ?? 100)")
 
         // Check for duplicate logs
         if logs.contains(where: { log in
-            log.timestamp == newLog.timestamp && log.exercises?.id == newLog.exercises?.id
+            log.timestamp == newLog.timestamp && log.exercise?.id == newLog.exercise?.id
         }) {
             return
         }
@@ -290,6 +310,11 @@ struct CurrentExerciseView: View {
     }
 
 
+    
+    
+    
+    
+    
 
     func generateRandomExercise(exercises: [Exercise]) {
         let activeExercises = exercises.filter { $0.isActive == true }

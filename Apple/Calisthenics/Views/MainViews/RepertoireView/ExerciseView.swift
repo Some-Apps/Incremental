@@ -22,7 +22,6 @@ struct ExerciseView: View {
 
     @Environment(\.modelContext) private var modelContext
     @AppStorage("currentTab") var currentTab: Int = 0
-
     
     let exercise: Exercise
     
@@ -51,6 +50,52 @@ struct ExerciseView: View {
         return totalDuration / Double(totalReps)
     }
     
+    var oneMonthChange: (percentage: Double, change: Int)? {
+        calculateChange(timeInterval: -30 * 24 * 60 * 60)
+    }
+    
+    var oneYearChange: (percentage: Double, change: Int)? {
+        calculateChange(timeInterval: -365 * 24 * 60 * 60)
+    }
+    
+    var allTimeChange: (percentage: Double, change: Int)? {
+        guard let firstLog = sortedLogs.first, let currentReps = exercise.currentReps else { return nil }
+        let change = Int(currentReps) - Int(firstLog.reps!)
+        let percentage = (Double(change) / Double(firstLog.reps!)) * 100
+        return (percentage, change)
+    }
+    
+    func calculateChange(timeInterval: TimeInterval) -> (percentage: Double, change: Int)? {
+        let now = Date()
+        guard let currentReps = exercise.currentReps else { return nil }
+        
+        let targetDate = now.addingTimeInterval(timeInterval)
+        let targetLog = sortedLogs.last { $0.timestamp! <= targetDate }
+        
+        guard let previousReps = targetLog?.reps else { return nil }
+        
+        let change = Int(currentReps) - Int(previousReps)
+        let percentage = (Double(change) / Double(previousReps)) * 100
+        return (percentage, change)
+    }
+    
+    func daysUntilDataAvailable(for timeInterval: TimeInterval) -> Int? {
+        let now = Date()
+        let targetDate = now.addingTimeInterval(timeInterval)
+        guard let firstLogDate = sortedLogs.first?.timestamp else { return nil }
+        
+        if firstLogDate > targetDate {
+            return Calendar.current.dateComponents([.day], from: targetDate, to: firstLogDate).day
+        } else {
+            return nil
+        }
+    }
+    
+    func formattedChangeText(percentage: Double, change: Int) -> Text {
+        let color: Color = percentage >= 0 ? .green : .red
+        let formattedText = Text("\(percentage, specifier: "%.2f")%") + Text(" (\(change))")
+        return formattedText.foregroundColor(color)
+    }
     
     let examplePoints: [ExamplePoint] = [
         ExamplePoint(reps: 10, timestamp: Date()),
@@ -74,9 +119,6 @@ struct ExerciseView: View {
         ExamplePoint(reps: 37, timestamp: Date().addingTimeInterval(1555200)),
         ExamplePoint(reps: 42, timestamp: Date().addingTimeInterval(1641600))
     ]
-
-
-
     
     var body: some View {
         VStack {
@@ -86,13 +128,13 @@ struct ExerciseView: View {
                     if isSubscribed {
                         Chart(sortedLogs, id: \.self) { log in
                             LineMark(x: .value("Date", log.timestamp!), y: .value("Reps", log.reps!))
-                                .interpolationMethod(.catmullRom)
+                                .interpolationMethod(.linear)
                         }
                         .frame(height: 200)
                     } else {
                         Chart(examplePoints, id: \.self) { log in
                             LineMark(x: .value("Date", log.timestamp), y: .value("Reps", log.reps))
-                                .interpolationMethod(.catmullRom)
+                                .interpolationMethod(.linear)
                         }
                         .frame(height: 200)
                         .blur(radius: 5)
@@ -104,8 +146,6 @@ struct ExerciseView: View {
                             .opacity(1)
                         }
                     }
-                    
-                    
                 }
                 Section {
                     Toggle("Active", isOn: $isActive)
@@ -144,22 +184,119 @@ struct ExerciseView: View {
                         } else {
                             Text("Total Duration: \(totalDuration / 60, specifier: "%.2f") minutes")
                         }
+                        
+                        if let allTimeChange = allTimeChange {
+                            Text("All Time Change: ").foregroundColor(.primary) + formattedChangeText(percentage: allTimeChange.percentage, change: allTimeChange.change)
+                        }
+                        
+                        if let oneMonthChange = oneMonthChange {
+                            Text("Month: ").foregroundColor(.primary) + formattedChangeText(percentage: oneMonthChange.percentage, change: oneMonthChange.change)
+                        } else if let daysUntilAvailable = daysUntilDataAvailable(for: -30 * 24 * 60 * 60) {
+                            Text("Month: Available in \(daysUntilAvailable) days")
+                        }
+                        
+                        if let oneYearChange = oneYearChange {
+                            Text("Year: ").foregroundColor(.primary) + formattedChangeText(percentage: oneYearChange.percentage, change: oneYearChange.change)
+                        } else if let daysUntilAvailable = daysUntilDataAvailable(for: -365 * 24 * 60 * 60) {
+                            Text("Year: Available in \(daysUntilAvailable) days")
+                        }
                     } else {
-                        Text("Time Spent: ?")
-                        Text("Total Reps: ?")
-                        Text("Average Time Per Rep: ?")
-                        Text("Record Reps Without Pausing: ?")
-                        Text("Exercise Performed Every ? Days")
+                        if exercise.units == "Reps" {
+                            
+                            HStack {
+                                Text("Total Reps: ")
+                                Text("\(totalReps)")
+                                    .blur(radius: 5)
+                                Spacer()
+                                Button("Upgrade") {
+                                    showUpgrade = true
+                                }
+                                .buttonStyle(.bordered)
+                            }
+                            
+                            
+                            if let averageTimePerRep = averageTimePerRep {
+                                HStack {
+                                    Text("Average Time Per Rep: ")
+                                    Text("\(averageTimePerRep, specifier: "%.2f") seconds")
+                                        .blur(radius: 5)
+                                    Spacer()
+                                    Button("Upgrade") {
+                                        showUpgrade = true
+                                    }
+                                    .buttonStyle(.bordered)
+                                }
+                                
+                            }
+                        } else {
+                            HStack {
+                                Text("Total Duration: ")
+                                Text("\(totalDuration / 60, specifier: "%.2f") minutes")
+                                    .blur(radius: 5)
+
+                                Spacer()
+                                Button("Upgrade") {
+                                    showUpgrade = true
+                                }
+                                .buttonStyle(.bordered)
+                            }
+                            
+                        }
+                        
+                        
+                        if let allTimeChange = allTimeChange {
+                            HStack {
+                                Text("All Time Change: ")
+                                Text("\(formattedChangeText(percentage: allTimeChange.percentage, change: allTimeChange.change))")
+                                    .blur(radius: 5)
+
+                                Spacer()
+                                Button("Upgrade") {
+                                    showUpgrade = true
+                                }
+                                .buttonStyle(.bordered)
+                            }
+                            
+                        }
+                        
+                        if let oneMonthChange = oneMonthChange {
+
+                            HStack {
+                                Text("Month Change: ")
+                                Text("\(formattedChangeText(percentage: oneMonthChange.percentage, change: oneMonthChange.change))")
+                                    .blur(radius: 5)
+
+                                Spacer()
+                                Button("Upgrade") {
+                                    showUpgrade = true
+                                }
+                                .buttonStyle(.bordered)
+                            }
+                            
+                        } else if let daysUntilAvailable = daysUntilDataAvailable(for: -30 * 24 * 60 * 60) {
+                            Text("Month Change: Available in \(daysUntilAvailable) days")
+                        }
+                        
+                        if let oneYearChange = oneYearChange {
+                            HStack {
+                                Text("Year Change: ")
+                                Text("\(formattedChangeText(percentage: oneYearChange.percentage, change: oneYearChange.change))")
+                                    .blur(radius: 5)
+
+                                Spacer()
+                                Button("Upgrade") {
+                                    showUpgrade = true
+                                }
+                                .buttonStyle(.bordered)
+                            }                       
+                        } else if let daysUntilAvailable = daysUntilDataAvailable(for: -365 * 24 * 60 * 60) {
+                                Text("Year Change: Available in \(daysUntilAvailable) days")
+                            }
                     }
                     
+                    
+                    
                 }
-//                Section {
-//                    Button("Do Exercise") {
-//                        randomExercise = exercise.id!.uuidString
-//                        defaultsManager.saveDataToiCloud(key: "randomExercise", value: randomExercise)
-//                        currentTab = 0
-//                    }
-//                }
             }
         }
         .sheet(isPresented: $showUpgrade) {
@@ -247,4 +384,3 @@ struct NotesEditorView: View {
         }
     }
 }
-

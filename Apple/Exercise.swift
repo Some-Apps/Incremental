@@ -13,7 +13,7 @@ import SwiftData
     var incrementIncrement: Double?
     var leftRight: Bool?
     var leftSide: Bool?
-    @Relationship(inverse: \Log.exercises) var logs: [Log]?
+    @Relationship(inverse: \Log.exercise) var logs: [Log]?
     @Relationship(inverse: \Muscle.exercises) var muscles: [Muscle]?
     
     init(currentReps: Double, difficulty: String, id: UUID, isActive: Bool, notes: String, title: String, units: String, increment: Double, incrementIncrement: Double, leftRight: Bool, leftSide: Bool, logs: [Log], muscles: [Muscle]) {

@@ -74,7 +74,6 @@ struct SettingsView: View {
                         .buttonStyle(.bordered)
                     }
                 }
-                
             }
             Section {
                 Picker("Health Category", selection: $healthActivityCategory) {

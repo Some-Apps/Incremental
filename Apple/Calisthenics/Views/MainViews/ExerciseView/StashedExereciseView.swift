@@ -172,22 +172,22 @@ struct StashedExereciseView: View {
         let newLog = Log(backingData: Log.createBackingData())
         newLog.id = UUID()
         newLog.duration = Int16(exactly: stopwatchViewModel.seconds)!
-        newLog.reps = Int16(exactly: lastExercise.currentReps!.rounded(.down))!
+        newLog.reps = lastExercise.currentReps
         newLog.timestamp = Date()
         newLog.units = lastExercise.units
-        newLog.exercises = fetchExerciseById(id: lastExercise.id!, exercises: originalExercises)
+        newLog.exercise = fetchExerciseById(id: lastExercise.id!, exercises: originalExercises)
 
         print("LOG: \(difficulty)")
 
         lastExercise.difficulty = difficulty.rawValue
 
         // Fetch the last 10 logs for this exercise
-        let lastLogs = logs.filter { $0.exercises?.id == lastExercise.id }
+        let lastLogs = logs.filter { $0.exercise?.id == lastExercise.id }
             .sorted(by: { $0.timestamp! > $1.timestamp! })
             .prefix(10)
 
         // Count how many of the last 10 logs have an "easy" difficulty
-        let hardCount = lastLogs.filter { $0.exercises?.difficulty == Difficulty.hard.rawValue }.count
+        let hardCount = lastLogs.filter { $0.exercise?.difficulty == Difficulty.hard.rawValue }.count
 
         // Adjust incrementIncrement based on the count
         let maxIncrement = lastExercise.currentReps! * 0.05
@@ -238,7 +238,7 @@ struct StashedExereciseView: View {
 
         // Check for duplicate logs
         if logs.contains(where: { log in
-            log.timestamp == newLog.timestamp && log.exercises?.id == newLog.exercises?.id
+            log.timestamp == newLog.timestamp && log.exercise?.id == newLog.exercise?.id
         }) {
             return
         }
