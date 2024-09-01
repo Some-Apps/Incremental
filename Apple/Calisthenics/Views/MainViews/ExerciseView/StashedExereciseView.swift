@@ -181,60 +181,9 @@ struct StashedExereciseView: View {
 
         lastExercise.difficulty = difficulty.rawValue
 
-        // Fetch the last 10 logs for this exercise
-        let lastLogs = logs.filter { $0.exercise?.id == lastExercise.id }
-            .sorted(by: { $0.timestamp! > $1.timestamp! })
-            .prefix(10)
-
-        // Count how many of the last 10 logs have an "easy" difficulty
-        let hardCount = lastLogs.filter { $0.exercise?.difficulty == Difficulty.hard.rawValue }.count
-
-        // Adjust incrementIncrement based on the count
-        let maxIncrement = lastExercise.currentReps! * 0.05
-        if let currentIncrementIncrement = lastExercise.incrementIncrement {
-            var newIncrementIncrement = currentIncrementIncrement
-            if hardCount >= 2 {
-                newIncrementIncrement -= 0.03
-            } else {
-                newIncrementIncrement += 0.01
-            }
-            // Ensure incrementIncrement does not affect increment beyond 5% of currentReps
-            if abs((lastExercise.increment ?? 0) + newIncrementIncrement) <= maxIncrement {
-                lastExercise.incrementIncrement = newIncrementIncrement
-            } else {
-                lastExercise.incrementIncrement = 0 // stop incrementIncrement when increment is at 5%
-                lastExercise.increment = maxIncrement // set increment to exactly 5% of currentReps
-            }
-        } else {
-            lastExercise.incrementIncrement = hardCount >= 2 ? -0.03 : 0.01
-        }
-
         // Update the current reps
-        lastExercise.currentReps! += lastExercise.increment ?? 0
+        lastExercise.currentReps! += (difficulty == .easy ? lastExercise.increment : 0) ?? 0
 
-        // Increment
-        switch difficulty {
-        case .easy:
-            if let currentIncrement = lastExercise.increment, let incrementIncrement = lastExercise.incrementIncrement {
-                let newIncrement = currentIncrement + incrementIncrement
-                // Ensure increment does not exceed 5% of currentReps
-                if abs(newIncrement) <= maxIncrement {
-                    lastExercise.increment = newIncrement
-                } else {
-                    lastExercise.increment = maxIncrement
-                }
-            } else {
-                lastExercise.increment = 0.01
-            }
-        case .hard:
-            if let currentIncrement = lastExercise.increment {
-                if currentIncrement > 0 {
-                    lastExercise.increment = 0
-                }
-            } else {
-                lastExercise.increment = -0.03
-            }
-        }
 
         // Check for duplicate logs
         if logs.contains(where: { log in

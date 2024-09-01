@@ -153,8 +153,23 @@ struct ExerciseView: View {
                             isActive = exercise.isActive!
                         }
                         .disabled(randomExercise == exercise.id?.uuidString)
-                    Text("Current Reps: \(exercise.currentReps ?? 0, specifier: "%.2f")")
-                    Text("Last Increment: \(exercise.increment ?? 0, specifier: "%.2f")")
+                    if exercise.units == "Reps" {
+                        Text("Current Reps: \(exercise.currentReps ?? 0, specifier: "%.2f")")
+                        Text("Last Increment: \(exercise.increment ?? 0, specifier: "%.2f")")
+                    } else {
+                        let currentDuration = exercise.currentReps ?? 0
+                        let lastIncrement = exercise.increment ?? 0
+                        
+                        let currentMinutes = Int(currentDuration) / 60
+                        let currentSeconds = Int(currentDuration) % 60
+                        
+                        let lastIncrementMinutes = Int(lastIncrement) / 60
+                        let lastIncrementSeconds = Int(lastIncrement) % 60
+                        
+                        Text("Current Duration: \(String(format: "%d:%02d", currentMinutes, currentSeconds))")
+                        Text("Last Increment: \(exercise.increment ?? 0, specifier: "%.2f") seconds")
+                    }
+
                 }
                 Section("Notes") {
                     HStack {
