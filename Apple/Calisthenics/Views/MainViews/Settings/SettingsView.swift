@@ -2,13 +2,16 @@ import SwiftUI
 import StoreKit
 import AlertToast
 import SwiftData
+import CloudKit
 
 struct SettingsView: View {
     @Environment(\.modelContext) var modelContext
-    @Query(filter: #Predicate<Exercise> {item in
+    @Query(filter: #Predicate<Exercise> { item in
         true
     }, sort: \.title) var exercises: [Exercise]
-
+    @Query(filter: #Predicate<Log> { item in
+        true
+    }, sort: \.timestamp) var logs: [Log]
     @State private var showUpgrade = false
     @AppStorage("isSubscribed") private var isSubscribed: Bool = false
     @State private var showLoading = false
@@ -16,7 +19,13 @@ struct SettingsView: View {
     @State private var showShareSheet = false
     @AppStorage("healthActivityCategory") var healthActivityCategory: String = "Functional Strength Training"
     
-    private var idiom : UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    // New state variables for delete confirmation
+    @State private var showDeleteConfirmation = false
+    @State private var showDeleteSuccess = false
+    @State private var showDeleteError = false
+    @State private var deleteErrorMessage: String = ""
+    
+    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     let activityCategories = ["Core Training", "Functional Strength Training", "High-Intensity Interval Training", "Mixed Cardio", "Other", "Traditional Strength Training"]
     
@@ -33,12 +42,27 @@ struct SettingsView: View {
                 }
             }
         }
-        
         .sheet(isPresented: Binding(
             get: { showShareSheet },
             set: { showShareSheet = $0 }
         )) {
             ActivityView(activityItems: shareItems)
+        }
+        // Alert for delete confirmation
+        .alert("Delete All Data", isPresented: $showDeleteConfirmation) {
+            Button("Delete", role: .destructive) {
+                deleteAllData()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Are you sure you want to delete all your data? This action cannot be undone.")
+        }
+        // Toasts for success and error
+        .toast(isPresenting: $showDeleteSuccess) {
+            AlertToast(type: .complete(Color.green), title: "All data deleted successfully.")
+        }
+        .toast(isPresenting: $showDeleteError) {
+            AlertToast(type: .error(Color.red), title: deleteErrorMessage)
         }
     }
     
@@ -74,6 +98,7 @@ struct SettingsView: View {
                         .buttonStyle(.bordered)
                     }
                 }
+                
             }
             Section {
                 Picker("Health Category", selection: $healthActivityCategory) {
@@ -96,10 +121,17 @@ struct SettingsView: View {
                     Button {
                         showUpgrade.toggle()
                     } label: {
-                            Text("Upgrade to Incremental Pro")
+                        Text("Upgrade to Incremental Pro")
                     }
                 }
-                
+            }
+            
+            Section {
+                // Updated Delete All Data Button
+                Button("Delete All Data") {
+                    showDeleteConfirmation = true
+                }
+                .foregroundColor(.red) // Highlight the delete button
             }
         }
         .sheet(isPresented: $showUpgrade) {
@@ -110,11 +142,60 @@ struct SettingsView: View {
         }
         .onAppear {
             Task {
-                try await fetchPurchases()
+                do {
+                    try await fetchPurchases()
+                } catch {
+                    print("Error fetching purchases: \(error)")
+                }
             }
         }
     }
     
+    // MARK: - Delete All Data Function
+    func deleteAllData() {
+        showLoading = true
+        
+        Task {
+            do {
+                // Delete all Exercise objects from SwiftData
+                for exercise in exercises {
+                    modelContext.delete(exercise)
+                }
+                for log in logs {
+                    modelContext.delete(log)
+                }
+                try modelContext.save()
+                
+                // Optionally, delete from CloudKit if you're managing it separately
+                // Assuming you're using a custom CloudKit setup
+                // Uncomment and modify the following lines based on your CloudKit schema
+                /*
+                let container = CKContainer.default()
+                let privateDatabase = container.privateCloudDatabase
+                let fetchOperation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [/* Your Zone IDs */])
+                
+                // Implement the necessary CloudKit deletion logic here
+                */
+                
+                // If using NSPersistentCloudKitContainer, deletion from modelContext should sync with CloudKit automatically
+                
+                DispatchQueue.main.async {
+                    showLoading = false
+                    showDeleteSuccess = true
+                }
+            } catch {
+                print("Error deleting data: \(error)")
+                DispatchQueue.main.async {
+                    showLoading = false
+                    deleteErrorMessage = "Failed to delete data: \(error.localizedDescription)"
+                    showDeleteError = true
+                }
+            }
+        }
+    }
+    
+    // Existing functions...
+
     func fetchPurchases() async throws {
         for await entitlement in Transaction.currentEntitlements {
             do {
@@ -133,6 +214,7 @@ struct SettingsView: View {
             }
         }
     }
+    
     private func verifyPurchase<T>(_ result: VerificationResult<T>) throws -> T {
         switch result {
         case .unverified:
@@ -157,9 +239,7 @@ struct SettingsView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 saveAndShareCSV(csvString: csvString)
             }
-            
         }
-        
     }
     
     func fetchAllExercises(from collection: [Exercise], completion: @escaping (String) -> Void) {
@@ -212,7 +292,6 @@ struct SettingsView: View {
         guard let logs = exercise.logs else { return "" }
         
         let sortedLogs = logs.sorted { ($0.timestamp ?? Date()) > ($1.timestamp ?? Date()) }
-
         
         // Include the exercise name in the first row, then leave it blank for subsequent rows
         for (index, log) in sortedLogs.enumerated() {
@@ -227,7 +306,6 @@ struct SettingsView: View {
         
         return csvRows.joined(separator: "\n")
     }
-
     
     func escapeCSV(_ field: String) -> String {
         var escapedField = field

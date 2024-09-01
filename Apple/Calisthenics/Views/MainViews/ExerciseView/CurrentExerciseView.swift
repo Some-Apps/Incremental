@@ -189,6 +189,7 @@ struct CurrentExerciseView: View {
         newLog.timestamp = Date()
         newLog.units = lastExercise.units
         newLog.difficulty = difficulty.rawValue
+        newLog.side = lastExercise.leftRight ?? false ? lastExercise.leftSide ?? true ? "left" : "right" : ""
         newLog.exercise = lastExercise
 
         print("[LOG] \(lastExercise.title ?? "Unknown")")

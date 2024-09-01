@@ -17,10 +17,15 @@ struct ExerciseHistoryView: View {
                     Section(header: Text(headerTitle(for: date))) {
                         ForEach(groupedLogs[date] ?? [], id: \.self) { log in
                             HStack {
-                                Text(log.exercise?.title ?? "Unknown")
+                                Text("\(log.exercise?.title ?? "Unknown")")
+                                if let side = log.side {
+                                    Text("\(side)")
+                                        .foregroundStyle(.secondary)
+                                        .italic()
+                                }
                                 Spacer()
                                 if log.exercise?.units == "Reps" {
-                                    Text("\(log.reps ?? 0)")
+                                    Text("\(Int(log.reps ?? 0))")
                                 } else {
                                     if let reps = log.reps {
                                         let minutes = Int(reps) / 60
