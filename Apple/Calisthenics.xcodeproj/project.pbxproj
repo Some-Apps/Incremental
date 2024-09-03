@@ -46,6 +46,11 @@
 		C0CB957D29C6445A0099974B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB957C29C6445A0099974B /* ContentView.swift */; };
 		C0CB957F29C6445B0099974B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB957E29C6445B0099974B /* Assets.xcassets */; };
 		C0CB958229C6445B0099974B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB958129C6445B0099974B /* Preview Assets.xcassets */; };
+		C0E00A022C86B6C6005C0AE3 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C0E00A012C86B6C6005C0AE3 /* FirebaseAuth */; };
+		C0E00A042C86B6C6005C0AE3 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C0E00A032C86B6C6005C0AE3 /* FirebaseFirestore */; };
+		C0E00A072C86B726005C0AE3 /* FirebaseAuthRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A062C86B726005C0AE3 /* FirebaseAuthRepo.swift */; };
+		C0E00A0D2C86B8D0005C0AE3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0E00A0C2C86B8D0005C0AE3 /* GoogleService-Info.plist */; };
+		C0E00A0F2C86B969005C0AE3 /* FirestoreRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A0E2C86B969005C0AE3 /* FirestoreRepo.swift */; };
 		C0F00AFC2C6EC02A00383DF0 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE482B9669C300A2CD21 /* Exercise.swift */; };
 		C0F00AFD2C6EC02D00383DF0 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE492B9669C300A2CD21 /* Log.swift */; };
 		C0F00AFE2C6EC03000383DF0 /* Muscle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE4A2B9669C300A2CD21 /* Muscle.swift */; };
@@ -127,6 +132,9 @@
 		C0CB957C29C6445A0099974B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C0CB957E29C6445B0099974B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0CB958129C6445B0099974B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C0E00A062C86B726005C0AE3 /* FirebaseAuthRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthRepo.swift; sourceTree = "<group>"; };
+		C0E00A0C2C86B8D0005C0AE3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C0E00A0E2C86B969005C0AE3 /* FirestoreRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreRepo.swift; sourceTree = "<group>"; };
 		C0F00B002C6EE02000383DF0 /* Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tips.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -152,6 +160,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C03FE2082A2FB5A500C9FD3D /* AlertToast in Frameworks */,
+				C0E00A042C86B6C6005C0AE3 /* FirebaseFirestore in Frameworks */,
+				C0E00A022C86B6C6005C0AE3 /* FirebaseAuth in Frameworks */,
 				C0AFBC192C77C4E500F36697 /* MijickCameraView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,11 +284,11 @@
 				C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */,
 				C0360AE32A2E0CFA00E8CA37 /* Models.swift */,
 				C0589F232BE6725400F19B7B /* DefaultsManager.swift */,
-				C0A65C5D29D9DAB3001EAA5A /* ViewModels */,
 				C0CB957C29C6445A0099974B /* ContentView.swift */,
+				C0E00A052C86B715005C0AE3 /* Repositories */,
+				C0A65C5D29D9DAB3001EAA5A /* ViewModels */,
 				C08FA4F929CB957A002CA6AF /* Views */,
-				C0CB957E29C6445B0099974B /* Assets.xcassets */,
-				C0CB958029C6445B0099974B /* Preview Content */,
+				C0E00A0A2C86B7CF005C0AE3 /* Resources */,
 			);
 			path = Calisthenics;
 			sourceTree = "<group>";
@@ -289,6 +299,25 @@
 				C0CB958129C6445B0099974B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C0E00A052C86B715005C0AE3 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				C0E00A062C86B726005C0AE3 /* FirebaseAuthRepo.swift */,
+				C0E00A0E2C86B969005C0AE3 /* FirestoreRepo.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		C0E00A0A2C86B7CF005C0AE3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C0E00A0C2C86B8D0005C0AE3 /* GoogleService-Info.plist */,
+				C0CB958029C6445B0099974B /* Preview Content */,
+				C0CB957E29C6445B0099974B /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		C0F00AFF2C6EE00F00383DF0 /* Elements */ = {
@@ -369,6 +398,8 @@
 			packageProductDependencies = (
 				C03FE2072A2FB5A500C9FD3D /* AlertToast */,
 				C0AFBC182C77C4E500F36697 /* MijickCameraView */,
+				C0E00A012C86B6C6005C0AE3 /* FirebaseAuth */,
+				C0E00A032C86B6C6005C0AE3 /* FirebaseFirestore */,
 			);
 			productName = Calisthenics;
 			productReference = C0CB957729C6445A0099974B /* Calisthenics.app */;
@@ -408,6 +439,7 @@
 			packageReferences = (
 				C03FE2062A2FB5A500C9FD3D /* XCRemoteSwiftPackageReference "AlertToast" */,
 				C0AFBC172C77C4E500F36697 /* XCRemoteSwiftPackageReference "CameraView" */,
+				C0E00A002C86B6C6005C0AE3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = C0CB957829C6445A0099974B /* Products */;
 			projectDirPath = "";
@@ -442,6 +474,7 @@
 			files = (
 				C0CB958229C6445B0099974B /* Preview Assets.xcassets in Resources */,
 				C0CB957F29C6445B0099974B /* Assets.xcassets in Resources */,
+				C0E00A0D2C86B8D0005C0AE3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,7 +525,9 @@
 				C04C438B2A2E830B00B48413 /* ExerciseCardView.swift in Sources */,
 				C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */,
 				C07BABFF2C7506A900E34669 /* Progression.swift in Sources */,
+				C0E00A0F2C86B969005C0AE3 /* FirestoreRepo.swift in Sources */,
 				C0360AE62A2E0F8500E8CA37 /* CurrentExerciseView.swift in Sources */,
+				C0E00A072C86B726005C0AE3 /* FirebaseAuthRepo.swift in Sources */,
 				C0589F1D2BE58D0E00F19B7B /* StashedExerciseCardView.swift in Sources */,
 				C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */,
 				C08DFACF2C7A383200F7EBCD /* PhotoProgression.swift in Sources */,
@@ -752,7 +787,7 @@
 				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -794,7 +829,7 @@
 				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -885,6 +920,14 @@
 				minimumVersion = 2.1.0;
 			};
 		};
+		C0E00A002C86B6C6005C0AE3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -897,6 +940,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C0AFBC172C77C4E500F36697 /* XCRemoteSwiftPackageReference "CameraView" */;
 			productName = MijickCameraView;
+		};
+		C0E00A012C86B6C6005C0AE3 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0E00A002C86B6C6005C0AE3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		C0E00A032C86B6C6005C0AE3 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0E00A002C86B6C6005C0AE3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

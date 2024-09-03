@@ -1,12 +1,22 @@
+import FirebaseCore
 import SwiftUI
 import SwiftData
 import TipKit
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        return true
+    }
+}
 
 @main
 struct CalisthenicsApp: App {
         
     @AppStorage("showTips") var showTips: Bool = true
-        
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Log.self,
@@ -24,19 +34,20 @@ struct CalisthenicsApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .task {
-//                    try? Tips.resetDatastore()
                     try? Tips.configure([
-//                        .displayFrequency(.immediate),
                         .datastoreLocation(.applicationDefault)
                     ])
                 }
         }
         .modelContainer(sharedModelContainer)
     }
+
+    
 }
