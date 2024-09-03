@@ -111,6 +111,8 @@ struct SettingsView: View {
             Section {
                 // Upgrade to Calisthenics Pro
                 if isSubscribed {
+//                if false {
+
                     HStack {
                         Text("Incremental Pro")
                         Spacer()

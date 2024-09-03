@@ -8,7 +8,6 @@ struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Query var stashedExercises: [StashedExercise]
     @Query var allExercises: [Exercise]
-    @StateObject var firestoreRepo = FirestoreRepo()
 
     @State private var showInstructions: Bool = false
 
@@ -49,7 +48,6 @@ struct ContentView: View {
         }
         
         .onAppear {
-            signInAnonymouslyAndMigrate()
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0
             
@@ -69,14 +67,6 @@ struct ContentView: View {
     func fetchExerciseById(id: UUID, exercises: [Exercise]) -> Exercise? {
         return exercises.first(where: { $0.id!.description == id.description })
     }
-    private func signInAnonymouslyAndMigrate() {
-        FirebaseAuthRepo().signInAnonymously { success in
-            if success {
-                firestoreRepo.migrateSwiftDataToFirestore(modelContext: modelContext)
-            } else {
-                print("Failed to sign in anonymously")
-            }
-        }
-    }
+
 }
 

@@ -48,9 +48,11 @@
 		C0CB958229C6445B0099974B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB958129C6445B0099974B /* Preview Assets.xcassets */; };
 		C0E00A022C86B6C6005C0AE3 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C0E00A012C86B6C6005C0AE3 /* FirebaseAuth */; };
 		C0E00A042C86B6C6005C0AE3 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C0E00A032C86B6C6005C0AE3 /* FirebaseFirestore */; };
-		C0E00A072C86B726005C0AE3 /* FirebaseAuthRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A062C86B726005C0AE3 /* FirebaseAuthRepo.swift */; };
 		C0E00A0D2C86B8D0005C0AE3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0E00A0C2C86B8D0005C0AE3 /* GoogleService-Info.plist */; };
-		C0E00A0F2C86B969005C0AE3 /* FirestoreRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A0E2C86B969005C0AE3 /* FirestoreRepo.swift */; };
+		C0E00A132C874BAC005C0AE3 /* PrivacyPolicyElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A122C874BAC005C0AE3 /* PrivacyPolicyElement.swift */; };
+		C0E00A152C874BBD005C0AE3 /* EULAElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A142C874BBD005C0AE3 /* EULAElement.swift */; };
+		C0E00A172C874D01005C0AE3 /* TermsAndConditionsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A162C874D01005C0AE3 /* TermsAndConditionsElement.swift */; };
+		C0E00A192C874E0C005C0AE3 /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A182C874E0C005C0AE3 /* TermsView.swift */; };
 		C0F00AFC2C6EC02A00383DF0 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE482B9669C300A2CD21 /* Exercise.swift */; };
 		C0F00AFD2C6EC02D00383DF0 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE492B9669C300A2CD21 /* Log.swift */; };
 		C0F00AFE2C6EC03000383DF0 /* Muscle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE4A2B9669C300A2CD21 /* Muscle.swift */; };
@@ -132,9 +134,11 @@
 		C0CB957C29C6445A0099974B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C0CB957E29C6445B0099974B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0CB958129C6445B0099974B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C0E00A062C86B726005C0AE3 /* FirebaseAuthRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthRepo.swift; sourceTree = "<group>"; };
 		C0E00A0C2C86B8D0005C0AE3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		C0E00A0E2C86B969005C0AE3 /* FirestoreRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreRepo.swift; sourceTree = "<group>"; };
+		C0E00A122C874BAC005C0AE3 /* PrivacyPolicyElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyElement.swift; sourceTree = "<group>"; };
+		C0E00A142C874BBD005C0AE3 /* EULAElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAElement.swift; sourceTree = "<group>"; };
+		C0E00A162C874D01005C0AE3 /* TermsAndConditionsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsElement.swift; sourceTree = "<group>"; };
+		C0E00A182C874E0C005C0AE3 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
 		C0F00B002C6EE02000383DF0 /* Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tips.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -285,6 +289,7 @@
 				C0360AE32A2E0CFA00E8CA37 /* Models.swift */,
 				C0589F232BE6725400F19B7B /* DefaultsManager.swift */,
 				C0CB957C29C6445A0099974B /* ContentView.swift */,
+				C029BCA82BF158E300113844 /* FirstLauchView.swift */,
 				C0E00A052C86B715005C0AE3 /* Repositories */,
 				C0A65C5D29D9DAB3001EAA5A /* ViewModels */,
 				C08FA4F929CB957A002CA6AF /* Views */,
@@ -304,8 +309,6 @@
 		C0E00A052C86B715005C0AE3 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				C0E00A062C86B726005C0AE3 /* FirebaseAuthRepo.swift */,
-				C0E00A0E2C86B969005C0AE3 /* FirestoreRepo.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -323,6 +326,10 @@
 		C0F00AFF2C6EE00F00383DF0 /* Elements */ = {
 			isa = PBXGroup;
 			children = (
+				C0E00A122C874BAC005C0AE3 /* PrivacyPolicyElement.swift */,
+				C0E00A182C874E0C005C0AE3 /* TermsView.swift */,
+				C0E00A162C874D01005C0AE3 /* TermsAndConditionsElement.swift */,
+				C0E00A142C874BBD005C0AE3 /* EULAElement.swift */,
 				C0A9A4F929CF4623000CD191 /* StopwatchView.swift */,
 				C0589F1C2BE58D0E00F19B7B /* StashedExerciseCardView.swift */,
 				C04C438A2A2E830B00B48413 /* ExerciseCardView.swift */,
@@ -337,7 +344,6 @@
 				C0A65C5B29D9D7B9001EAA5A /* ExerciseView */,
 				C0A65C5C29D9D7D8001EAA5A /* RepertoireView */,
 				C0A65C5629D9D241001EAA5A /* Settings */,
-				C029BCA82BF158E300113844 /* FirstLauchView.swift */,
 			);
 			path = MainViews;
 			sourceTree = "<group>";
@@ -516,20 +522,22 @@
 				C00ECE4F2B9669C300A2CD21 /* Muscle.swift in Sources */,
 				C0360AE22A2DFA5A00E8CA37 /* SettingsView.swift in Sources */,
 				C029BCA42BF151B400113844 /* TutorialView.swift in Sources */,
+				C0E00A172C874D01005C0AE3 /* TermsAndConditionsElement.swift in Sources */,
 				C03FE20A2A2FB6C500C9FD3D /* ExerciseViewModel.swift in Sources */,
 				C0CB957D29C6445A0099974B /* ContentView.swift in Sources */,
 				C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */,
 				C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */,
 				C0C78F8629DCBFF200F26A41 /* PreventSleep.swift in Sources */,
+				C0E00A192C874E0C005C0AE3 /* TermsView.swift in Sources */,
 				C0360AE82A2E2BA800E8CA37 /* ExerciseView.swift in Sources */,
 				C04C438B2A2E830B00B48413 /* ExerciseCardView.swift in Sources */,
+				C0E00A152C874BBD005C0AE3 /* EULAElement.swift in Sources */,
 				C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */,
 				C07BABFF2C7506A900E34669 /* Progression.swift in Sources */,
-				C0E00A0F2C86B969005C0AE3 /* FirestoreRepo.swift in Sources */,
 				C0360AE62A2E0F8500E8CA37 /* CurrentExerciseView.swift in Sources */,
-				C0E00A072C86B726005C0AE3 /* FirebaseAuthRepo.swift in Sources */,
 				C0589F1D2BE58D0E00F19B7B /* StashedExerciseCardView.swift in Sources */,
 				C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */,
+				C0E00A132C874BAC005C0AE3 /* PrivacyPolicyElement.swift in Sources */,
 				C08DFACF2C7A383200F7EBCD /* PhotoProgression.swift in Sources */,
 				C07BABFD2C74148A00E34669 /* ProgressionPhotosView.swift in Sources */,
 				C0CB957B29C6445A0099974B /* CalisthenicsApp.swift in Sources */,

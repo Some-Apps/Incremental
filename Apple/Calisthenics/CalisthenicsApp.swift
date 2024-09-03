@@ -1,16 +1,7 @@
-import FirebaseCore
+//import FirebaseCore
 import SwiftUI
 import SwiftData
 import TipKit
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        FirebaseApp.configure()
-        return true
-    }
-}
 
 @main
 struct CalisthenicsApp: App {
@@ -34,9 +25,7 @@ struct CalisthenicsApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-    
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
+        
     var body: some Scene {
         WindowGroup {
             ContentView()

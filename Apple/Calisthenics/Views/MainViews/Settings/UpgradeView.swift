@@ -5,7 +5,7 @@ struct UpgradeView: View {
     var body: some View {
         VStack(alignment: .center) {
             
-            SubscriptionStoreView(productIDs: ["incrementalProMonthly", "incrementalProYearly", "incrementalProLifetime"]) {
+            SubscriptionStoreView(productIDs: ["incrementalProMonthly", "incrementalProYearly"]) {
                 VStack {
                     Text("Incremental Pro")
                         .font(.largeTitle)
@@ -16,9 +16,9 @@ struct UpgradeView: View {
                 }
                 .padding()
                 .foregroundStyle(.white)
-                .containerBackground(.blue.gradient, for: .subscriptionStore)
+                .containerBackground(.orange.gradient, for: .subscriptionStore)
             }
-            .storeButton(.visible, for: .restorePurchases, .redeemCode)
+            .storeButton(.visible, for: .restorePurchases, .policies)
             .subscriptionStoreControlStyle(.prominentPicker)
         }
     }
