@@ -14,9 +14,8 @@ import SwiftData
     var leftRight: Bool?
     var leftSide: Bool?
     @Relationship(inverse: \Log.exercise) var logs: [Log]?
-    @Relationship(inverse: \Muscle.exercises) var muscles: [Muscle]?
     
-    init(currentReps: Double, difficulty: String, id: UUID, isActive: Bool, notes: String, title: String, units: String, increment: Double, incrementIncrement: Double, leftRight: Bool, leftSide: Bool, logs: [Log], muscles: [Muscle]) {
+    init(currentReps: Double, difficulty: String, id: UUID, isActive: Bool, notes: String, title: String, units: String, increment: Double, incrementIncrement: Double, leftRight: Bool, leftSide: Bool, logs: [Log]) {
         self.currentReps = currentReps
         self.difficulty = difficulty
         self.id = id
@@ -29,7 +28,6 @@ import SwiftData
         self.leftRight = leftRight
         self.leftSide = leftSide
         self.logs = logs
-        self.muscles = muscles
     }
 }
 

@@ -19,9 +19,8 @@ struct ExerciseHistoryView: View {
                             HStack {
                                 Text("\(log.exercise?.title ?? "Unknown")")
                                 if let side = log.side {
-                                    Text("\(side)")
+                                    Image(systemName: side == "right" ? "arrowshape.right" : side == "left" ? "arrowshape.left" : "")
                                         .foregroundStyle(.secondary)
-                                        .italic()
                                 }
                                 Spacer()
                                 if log.exercise?.units == "Reps" {

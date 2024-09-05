@@ -66,7 +66,6 @@ struct CalisthenicsWidget: Widget {
             Log.self,
             Exercise.self,
             StashedExercise.self,
-            Muscle.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, cloudKitDatabase: .automatic)
 

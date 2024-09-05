@@ -13,8 +13,6 @@ struct CalisthenicsApp: App {
             Log.self,
             Exercise.self,
             StashedExercise.self,
-            Muscle.self,
-            PhotoProgression.self
         ])
         
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, cloudKitDatabase: .automatic)

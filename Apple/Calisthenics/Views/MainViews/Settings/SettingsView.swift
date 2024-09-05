@@ -138,6 +138,15 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $showUpgrade) {
             UpgradeView()
+                .onDisappear {
+                    Task {
+                        do {
+                            try await fetchPurchases()
+                        } catch {
+                            print("Error fetching purchases: \(error)")
+                        }
+                    }
+                }
         }
         .toast(isPresenting: $showLoading) {
             AlertToast(displayMode: .alert, type: .loading, title: "Loading...")
