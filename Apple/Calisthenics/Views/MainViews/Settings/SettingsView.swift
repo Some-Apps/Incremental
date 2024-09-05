@@ -24,6 +24,8 @@ struct SettingsView: View {
     @State private var showDeleteSuccess = false
     @State private var showDeleteError = false
     @State private var deleteErrorMessage: String = ""
+    @State private var lastSyncTime: Date? = nil
+    @State private var isSyncing = false
     
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
@@ -100,6 +102,7 @@ struct SettingsView: View {
                 }
                 
             }
+
             Section {
                 Picker("Health Category", selection: $healthActivityCategory) {
                     ForEach(activityCategories, id: \.self) { category in
@@ -161,6 +164,8 @@ struct SettingsView: View {
             }
         }
     }
+    
+ 
     
     // MARK: - Delete All Data Function
     func deleteAllData() {

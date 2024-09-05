@@ -51,6 +51,18 @@ struct ExerciseHistoryView: View {
             )
             do {
                 let fetchedLogs = try modelContext.fetch(fetchDescriptor)
+                for log in fetchedLogs {
+                    if log.exercise == nil, let exerciseId = log.exerciseId {
+                        // Try to fetch the missing Exercise by its ID
+                        let exerciseFetchDescriptor = FetchDescriptor<Exercise>(
+                            predicate: #Predicate { $0.id == exerciseId }
+                        )
+                        if let fetchedExercise = try? modelContext.fetch(exerciseFetchDescriptor).first {
+                            log.exercise = fetchedExercise  // Re-link the exercise
+                        }
+                    }
+                }
+                
                 let grouped = Dictionary(grouping: fetchedLogs) { log -> Date in
                     return Calendar.current.startOfDay(for: log.timestamp ?? Date())
                 }
@@ -67,6 +79,7 @@ struct ExerciseHistoryView: View {
             }
         }
     }
+
 
     private func headerTitle(for date: Date) -> String {
         if Calendar.current.isDateInToday(date) {
