@@ -313,7 +313,8 @@ struct SettingsView: View {
         for (index, log) in sortedLogs.enumerated() {
             let exerciseName = index == 0 ? escapeCSV(exercise.title ?? "") : ""
             
-            let row = "\(exerciseName),\(dateFormatter.string(from: log.timestamp ?? Date())),\(log.reps?.description ?? "")"
+            let repsString = log.reps != nil ? String(format: "%.2f", log.reps!) : ""
+            let row = "\(exerciseName),\(dateFormatter.string(from: log.timestamp ?? Date())),\(repsString)"
             csvRows.append(row)
         }
         
