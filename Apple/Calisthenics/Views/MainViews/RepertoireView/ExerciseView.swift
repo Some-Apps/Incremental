@@ -159,15 +159,16 @@ struct ExerciseView: View {
                     } else {
                         let currentDuration = exercise.currentReps ?? 0
                         let lastIncrement = exercise.increment ?? 0
-                        
+
                         let currentMinutes = Int(currentDuration) / 60
-                        let currentSeconds = Int(currentDuration) % 60
-                        
+                        let currentSeconds = currentDuration.truncatingRemainder(dividingBy: 60)
+
                         let lastIncrementMinutes = Int(lastIncrement) / 60
-                        let lastIncrementSeconds = Int(lastIncrement) % 60
-                        
-                        Text("Current Duration: \(String(format: "%d:%02d", currentMinutes, currentSeconds))")
-                        Text("Last Increment: \(exercise.increment ?? 0, specifier: "%.2f") seconds")
+                        let lastIncrementSeconds = lastIncrement.truncatingRemainder(dividingBy: 60)
+
+                        Text("Current Duration: \(String(format: "%d:%05.2f", currentMinutes, currentSeconds))")
+                        Text("Last Increment: \(String(format: "%.2f", lastIncrement)) seconds")
+
                     }
 
                 }
