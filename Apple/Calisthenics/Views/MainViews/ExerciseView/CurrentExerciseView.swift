@@ -296,6 +296,7 @@ struct CurrentExerciseView: View {
         }
         // Update the current reps
         lastExercise.currentReps! += lastExercise.increment ?? 0
+        lastExercise.difficulty = difficulty.rawValue
         
         print("[LOG] increment: \(lastExercise.increment ?? 100)")
 
@@ -305,6 +306,8 @@ struct CurrentExerciseView: View {
         }) {
             return
         }
+        
+        
 
         modelContext.insert(newLog)
         try? modelContext.save()

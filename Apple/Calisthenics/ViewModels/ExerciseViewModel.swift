@@ -9,7 +9,13 @@ class ExerciseViewModel: ObservableObject {
     static let shared = ExerciseViewModel(stopwatchViewModel: StopwatchViewModel.shared)
     @Environment(\.modelContext) var modelContext
     
-    @Published var exercise: Exercise? = nil
+    @Published var exercise: Exercise? = nil {
+        didSet {
+            difficulty = Difficulty(rawValue: exercise?.difficulty ?? "easy") ?? .easy
+            print("[LOG] Difficulty: \(exercise?.difficulty)")
+        }
+    }
+
     @Published var difficulty: Difficulty = .easy
     @Published var isLoading = true
 
