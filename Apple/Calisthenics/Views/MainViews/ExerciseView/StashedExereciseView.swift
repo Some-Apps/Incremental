@@ -183,6 +183,7 @@ struct StashedExereciseView: View {
 
         // Update the current reps
         lastExercise.currentReps! += (difficulty == .easy ? lastExercise.increment : 0) ?? 0
+        lastExercise.difficulty = difficulty.rawValue
 
 
         // Check for duplicate logs

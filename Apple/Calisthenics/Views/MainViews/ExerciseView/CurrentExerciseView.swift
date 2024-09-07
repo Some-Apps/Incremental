@@ -2,11 +2,15 @@ import AlertToast
 import SwiftUI
 import HealthKit
 import WidgetKit
+import StoreKit
 import SwiftData
 import TipKit
 
 struct CurrentExerciseView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.requestReview) var requestReview
+    @AppStorage("isSubscribed") private var isSubscribed: Bool = false
+
     @ObservedObject private var defaultsManager = DefaultsManager()
 
     @Query var allExercises: [Exercise]
@@ -51,6 +55,12 @@ struct CurrentExerciseView: View {
                         StopwatchView(viewModel: stopwatchViewModel)
                             .padding()
                         Spacer()
+                    }
+                    .onChange(of: logs) {
+                        print("[LOG] LOGS: \(logs.count)")
+                        if isSubscribed && logs.count % 500 == 0 {
+                            requestReview()
+                        }
                     }
                     .onAppear {
                         requestAuthorization()
