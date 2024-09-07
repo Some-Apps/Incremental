@@ -14,7 +14,14 @@ struct ExerciseHistoryView: View {
                 ProgressView("Loading...")
             } else {
                 ForEach(groupedLogs.keys.sorted(by: { $0 > $1 }), id: \.self) { date in
-                    Section(header: Text(headerTitle(for: date))) {
+                    Section(
+                        header: 
+                            HStack {
+                                Text(headerTitle(for: date))
+                                Spacer()
+                                Text(totalDurationString(for: date))
+                            }
+                    ) {
                         ForEach(groupedLogs[date] ?? [], id: \.self) { log in
                             HStack {
                                 Text("\(log.exercise?.title ?? "Unknown")")
@@ -43,6 +50,25 @@ struct ExerciseHistoryView: View {
         .navigationTitle("Exercise History")
         .onAppear(perform: loadLogs)
     }
+    
+    private func totalDurationString(for date: Date) -> String {
+        let logsForDate = groupedLogs[date] ?? []
+        let totalDurationInSeconds = logsForDate.reduce(0) { $0 + Int($1.duration ?? 0) }
+        
+        let hours = totalDurationInSeconds / 3600
+        let minutes = (totalDurationInSeconds % 3600) / 60
+        let seconds = totalDurationInSeconds % 60
+        
+        if hours > 0 {
+            // Format as hh:mm:ss if the total duration is more than 60 minutes
+            return String(format: "%01d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            // Format as mm:ss otherwise
+            return String(format: "%02d:%02d", minutes, seconds)
+        }
+    }
+
+
 
     private func loadLogs() {
         DispatchQueue.global(qos: .background).async {

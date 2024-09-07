@@ -48,6 +48,7 @@
 		C0E00A152C874BBD005C0AE3 /* EULAElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A142C874BBD005C0AE3 /* EULAElement.swift */; };
 		C0E00A172C874D01005C0AE3 /* TermsAndConditionsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A162C874D01005C0AE3 /* TermsAndConditionsElement.swift */; };
 		C0E00A192C874E0C005C0AE3 /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A182C874E0C005C0AE3 /* TermsView.swift */; };
+		C0E00A1D2C8CB11F005C0AE3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A1C2C8CB11F005C0AE3 /* StatsView.swift */; };
 		C0F00AFC2C6EC02A00383DF0 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE482B9669C300A2CD21 /* Exercise.swift */; };
 		C0F00AFD2C6EC02D00383DF0 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE492B9669C300A2CD21 /* Log.swift */; };
 		C0F00B012C6EE02000383DF0 /* Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F00B002C6EE02000383DF0 /* Tips.swift */; };
@@ -129,6 +130,7 @@
 		C0E00A142C874BBD005C0AE3 /* EULAElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAElement.swift; sourceTree = "<group>"; };
 		C0E00A162C874D01005C0AE3 /* TermsAndConditionsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsElement.swift; sourceTree = "<group>"; };
 		C0E00A182C874E0C005C0AE3 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
+		C0E00A1C2C8CB11F005C0AE3 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		C0F00B002C6EE02000383DF0 /* Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tips.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -197,6 +199,7 @@
 				C07BAC002C76A66F00E34669 /* UpgradeView.swift */,
 				C07BAC062C76AE4C00E34669 /* Store.storekit */,
 				C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */,
+				C0E00A1C2C8CB11F005C0AE3 /* StatsView.swift */,
 				C029BCA32BF151B400113844 /* TutorialView.swift */,
 			);
 			path = Settings;
@@ -499,6 +502,7 @@
 				C0360AE42A2E0CFA00E8CA37 /* Models.swift in Sources */,
 				C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */,
 				C00ECE4D2B9669C300A2CD21 /* Log.swift in Sources */,
+				C0E00A1D2C8CB11F005C0AE3 /* StatsView.swift in Sources */,
 				C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */,
 				C07BAC012C76A66F00E34669 /* UpgradeView.swift in Sources */,
 				C0589F1B2BE5844900F19B7B /* StashedExereciseView.swift in Sources */,

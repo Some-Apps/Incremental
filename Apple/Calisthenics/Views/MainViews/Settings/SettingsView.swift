@@ -86,6 +86,19 @@ struct SettingsView: View {
                     }
                 }
                 if isSubscribed {
+                    NavigationLink("Stats", destination: StatsView())
+                } else {
+                    HStack {
+                        Text("Stats")
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Button("Upgrade") {
+                            showUpgrade = true
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+                if isSubscribed {
                     Button("Export All Data") {
                         fetchAllData()
                     }
