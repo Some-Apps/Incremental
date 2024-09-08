@@ -17,16 +17,16 @@ struct ColorSchemePickerView: View {
                 }) {
                     HStack {
                         Text(scheme.name)
-                            .foregroundStyle(Color.primaryText)
+                            .foregroundStyle(colorScheme.current.primaryText)
                         Spacer()
                         ColorPreviewView(colorScheme: scheme.scheme.colorScheme)
                     }
                 }
-                .listRowBackground(Color.tertiaryBackground)
+                .listRowBackground(colorScheme.current.tertiaryBackground)
 
             }
             .scrollContentBackground(.hidden)
-            .background(Color.secondaryBackground)
+            .background(colorScheme.current.secondaryBackground)
             .navigationBarTitle("Select Color Scheme", displayMode: .inline)
         
     }

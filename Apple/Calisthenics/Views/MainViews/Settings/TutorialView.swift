@@ -18,6 +18,7 @@ struct TutorialView: View {
 }
 
 struct TutorialItem: View {
+    @EnvironmentObject var colorScheme: ColorSchemeState
 
     let title: String
     let description: String
@@ -27,7 +28,7 @@ struct TutorialItem: View {
             Text(title)
                 .font(.headline)
             Divider()
-                .foregroundStyle(Color.secondaryText)
+                .foregroundStyle(colorScheme.current.primaryText)
             Text(description)
         }
 

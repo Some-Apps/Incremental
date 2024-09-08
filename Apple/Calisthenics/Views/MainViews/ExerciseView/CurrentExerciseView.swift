@@ -7,6 +7,7 @@ import SwiftData
 import TipKit
 
 struct CurrentExerciseView: View {
+    @EnvironmentObject var colorScheme: ColorSchemeState
 
     @Environment(\.modelContext) private var modelContext
     @Environment(\.requestReview) var requestReview
@@ -94,7 +95,7 @@ struct CurrentExerciseView: View {
                 }
 
             }
-            .background(Color.primaryBackground)
+            .background(colorScheme.current.primaryBackground)
         }
     }
 

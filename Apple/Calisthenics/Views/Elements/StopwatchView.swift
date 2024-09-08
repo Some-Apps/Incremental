@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct StopwatchView: View {
+    @EnvironmentObject var colorScheme: ColorSchemeState
+
     @ObservedObject var viewModel = StopwatchViewModel.shared
 
     var seconds: String {
@@ -64,10 +66,10 @@ struct StopwatchView: View {
             .preventSleep(isRunning: $viewModel.isRunning)
         }
         .padding()
-        .background(Color.cardBackground)
+        .background(colorScheme.current.cardBackground)
         .background(.regularMaterial)
         .cornerRadius(15.0)
-        .shadow(radius: 2)
+        .shadow(color: colorScheme.current.primaryText, radius: 2)
     }
 }
 

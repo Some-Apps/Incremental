@@ -84,21 +84,20 @@ struct SettingsView: View {
             Section {
                 NavigationLink("How To Use App", 
                                destination: TutorialView()
-                                            .foregroundStyle(Color.primaryText, Color.secondaryText)
-                                            .background(Color.primaryBackground)
+                                            .foregroundStyle(colorScheme.current.primaryText, colorScheme.current.secondaryText)
+                                            .background(colorScheme.current.primaryBackground)
                 )
                 Picker("Health Category", selection: $healthActivityCategory) {
                     ForEach(activityCategories, id: \.self) { category in
                         Text(category).tag(category)
-                            .foregroundStyle(Color.secondaryText)
                     }
                 }
-                .pickerStyle(.navigationLink)
+                .pickerStyle(.menu)
             } header: {
                 Text("Setup")
-                    .foregroundStyle(Color.tertiaryText)
+                    .foregroundStyle(colorScheme.current.tertiaryText)
             }
-            .listRowBackground(Color.tertiaryBackground)
+            .listRowBackground(colorScheme.current.tertiaryBackground)
 
             Section {
                     NavigationLink("Exercise History", destination: ExerciseHistoryView())
@@ -107,47 +106,47 @@ struct SettingsView: View {
                         fetchAllData()
                     }
                     .disabled(!isSubscribed)
-                    .foregroundStyle(isSubscribed ? Color.accentText : Color.secondaryText)
+                    .foregroundStyle(isSubscribed ? colorScheme.current.accentText : colorScheme.current.secondaryText)
                     NavigationLink(destination: ColorSchemePickerView()) {
                         HStack {
                             Text("Color Scheme")
                             Spacer()
                             Text("\(colorScheme.current.title)")
-                                .foregroundStyle(Color.secondaryText)
+                                .foregroundStyle(colorScheme.current.secondaryText)
                         }
                     }
                     .disabled(!isSubscribed)
             
                 
                 if isSubscribed {
-                    HStack {
-                        Text("Incremental Pro")
-                        Spacer()
-                        Text("Subscribed")
-                            .foregroundStyle(Color.secondaryText)
-                    }
+//                    HStack {
+//                        Text("Incremental Pro")
+//                        Spacer()
+//                        Text("Subscribed")
+//                            .foregroundStyle(colorScheme.current.secondaryText)
+//                    }
                 } else {
                     Button {
                         showUpgrade.toggle()
                     } label: {
                         Text("Upgrade to Incremental Pro")
-                            .foregroundStyle(Color.accentText)
+                            .foregroundStyle(colorScheme.current.accentText)
 
                     }
                 }
             } header: {
                 Text("Incremental Pro")
-                    .foregroundStyle(Color.tertiaryText)
+                    .foregroundStyle(colorScheme.current.tertiaryText)
             }
-            .listRowBackground(Color.tertiaryBackground)
+            .listRowBackground(colorScheme.current.tertiaryBackground)
 
             Section {
                 StatsElement()
             } header: {
                 Text("Stats")
-                    .foregroundStyle(Color.tertiaryText)
+                    .foregroundStyle(colorScheme.current.tertiaryText)
             }
-            .listRowBackground(Color.tertiaryBackground)
+            .listRowBackground(colorScheme.current.tertiaryBackground)
 
             Section {
                 // Updated Delete All Data Button
@@ -157,14 +156,14 @@ struct SettingsView: View {
                 .foregroundColor(.red) // Highlight the delete button
             } header: {
                 Text("Danger Zone")
-                    .foregroundStyle(Color.tertiaryText)
+                    .foregroundStyle(colorScheme.current.tertiaryText)
             }
-            .listRowBackground(Color.tertiaryBackground)
+            .listRowBackground(colorScheme.current.tertiaryBackground)
 
         }
         .scrollContentBackground(.hidden)
-        .background(Color.secondaryBackground)
-        .foregroundStyle(Color.primaryText, Color.secondaryText)
+        .background(colorScheme.current.secondaryBackground)
+        .foregroundStyle(colorScheme.current.primaryText, colorScheme.current.secondaryText)
         .sheet(isPresented: $showUpgrade) {
             UpgradeView()
                 .onDisappear {

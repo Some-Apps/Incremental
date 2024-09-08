@@ -3,6 +3,7 @@ import SwiftUI
 import Charts
 
 struct StatsElement: View {
+    @EnvironmentObject var colorScheme: ColorSchemeState
 
     @Query(filter: #Predicate<Exercise> { item in
         true
@@ -57,10 +58,10 @@ struct StatsElement: View {
 
         Text("Total Time: ") +
         Text("\(formatTotalExerciseTime(totalExerciseTime))")
-            .foregroundStyle(Color.secondaryText)
+            .foregroundStyle(colorScheme.current.secondaryText)
         Text("Total Sets Completed: ") +
              Text("\(logs.count)")
-            .foregroundStyle(Color.secondaryText)
+            .foregroundStyle(colorScheme.current.secondaryText)
     }
 
     private func formatTotalExerciseTime(_ totalMinutes: Int) -> String {

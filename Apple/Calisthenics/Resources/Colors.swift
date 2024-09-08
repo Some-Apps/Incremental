@@ -39,49 +39,39 @@ struct MyColorScheme {
     let tertiaryText: Color
 }
 
-enum MyColorSchemeType: String, CaseIterable, RandomAccessCollection {
+enum MyColorSchemeType: String, CaseIterable {
     case main = "Default"
     case alternative = "Forest"
-
-    private static let mainCs: MyColorScheme = MyColorScheme(
-        title: "Default", 
-        primaryBackground: Color.dynamic(light: "FFFFFF", dark: "000000"),
-        secondaryBackground: Color.dynamic(light: "F5F5F5", dark: "131313"),
-        tertiaryBackground: Color.dynamic(light: "FFFFFF", dark: "232323"),
-        cardBackground: Color.dynamic(light: "FFFFFF", dark: "000000"),
-        accentText: Color.dynamic(light: "008CFF", dark: "008CFF"),
-        primaryText: Color.dynamic(light: "000000", dark: "FFFFFF"),
-        secondaryText: Color.dynamic(light: "7D7D7D", dark: "828282"),
-        tertiaryText: Color.dynamic(light: "B3B3B3", dark: "4D4D4D")
-    )
-    
-    private static let altCs: MyColorScheme = MyColorScheme(
-        title: "Forest",
-        primaryBackground: Color.dynamic(light: "FFFFFF", dark: "232323"),
-        secondaryBackground: Color.dynamic(light: "F5F5F5", dark: "000000"),
-        tertiaryBackground: Color.dynamic(light: "FFFFFF", dark: "232323"),
-        cardBackground: Color.dynamic(light: "FFFFFF", dark: "000000"),
-        accentText: Color.dynamic(light: "008CFF", dark: "008CFF"),
-        primaryText: Color.dynamic(light: "000000", dark: "FFFFFF"),
-        secondaryText: Color.dynamic(light: "7D7D7D", dark: "828282"),
-        tertiaryText: Color.dynamic(light: "B3B3B3", dark: "4D4D4D")
-    )
 
     var colorScheme: MyColorScheme {
         switch self {
         case .main:
-          return MyColorSchemeType.mainCs
+            return MyColorScheme(
+                title: "Default",
+                primaryBackground: Color(uiColor: .systemBackground),
+                secondaryBackground: Color(uiColor: .systemGroupedBackground),
+                tertiaryBackground: Color(uiColor: .secondarySystemGroupedBackground),
+                cardBackground: Color.dynamic(light: "FFFFFF", dark: "000000"),
+                accentText: .accentColor,
+                primaryText: .primary,
+                secondaryText: .secondary,
+                tertiaryText: Color(UIColor.tertiaryLabel)
+            )
         case .alternative:
-          return MyColorSchemeType.altCs
+            return MyColorScheme(
+                title: "Forest",
+                primaryBackground: Color.dynamic(light: "FFFFFF", dark: "232323"),
+                secondaryBackground: Color.dynamic(light: "F5F5F5", dark: "000000"),
+                tertiaryBackground: Color.dynamic(light: "FFFFFF", dark: "232323"),
+                cardBackground: Color.dynamic(light: "FFFFFF", dark: "000000"),
+                accentText: Color.dynamic(light: "008CFF", dark: "008CFF"),
+                primaryText: Color.dynamic(light: "000000", dark: "FFFFFF"),
+                secondaryText: Color.dynamic(light: "7D7D7D", dark: "828282"),
+                tertiaryText: Color.dynamic(light: "B3B3B3", dark: "4D4D4D")
+            )
         }
     }
 }
-
-
-
-
-
-
 
 
 extension UIColor {
@@ -123,51 +113,5 @@ extension Color {
         let l = UIColor(hex: light)
         let d = UIColor(hex: dark)
         return UIColor.dynamicColor(light: l, dark: d).toColor()
-    }
-}
-
-// Example shared instance to manage the color scheme state globally
-class ColorSchemeManager {
-    static let shared = ColorSchemeManager()
-    let colorSchemeState = ColorSchemeState() // Assuming this is the ColorSchemeState from your code
-}
-
-extension Color {
-    // Access current color scheme dynamically from ColorSchemeManager
-    static var currentScheme: MyColorScheme {
-        return ColorSchemeManager.shared.colorSchemeState.current
-    }
-
-    // Define custom color properties based on current scheme
-    static var primaryBackground: Color {
-        return currentScheme.primaryBackground
-    }
-
-    static var secondaryBackground: Color {
-        return currentScheme.secondaryBackground
-    }
-
-    static var tertiaryBackground: Color {
-        return currentScheme.tertiaryBackground
-    }
-
-    static var cardBackground: Color {
-        return currentScheme.cardBackground
-    }
-
-    static var accentText: Color {
-        return currentScheme.accentText
-    }
-
-    static var primaryText: Color {
-        return currentScheme.primaryText
-    }
-
-    static var secondaryText: Color {
-        return currentScheme.secondaryText
-    }
-
-    static var tertiaryText: Color {
-        return currentScheme.tertiaryText
     }
 }
