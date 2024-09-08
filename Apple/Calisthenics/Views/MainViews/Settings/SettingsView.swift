@@ -1,3 +1,4 @@
+import HealthKit
 import SwiftUI
 import StoreKit
 import AlertToast
@@ -6,6 +7,8 @@ import CloudKit
 
 struct SettingsView: View {
     @Environment(\.modelContext) var modelContext
+    @EnvironmentObject var colorScheme: ColorSchemeState
+
     @Query(filter: #Predicate<Exercise> { item in
         true
     }, sort: \.title) var exercises: [Exercise]
@@ -26,8 +29,16 @@ struct SettingsView: View {
     @State private var deleteErrorMessage: String = ""
     @State private var lastSyncTime: Date? = nil
     @State private var isSyncing = false
-    
+        
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    
+    private func isHealthKitAuthorized() -> Bool {
+        let healthStore = HKHealthStore()
+        let readType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+        
+        let authorizationStatus = healthStore.authorizationStatus(for: readType)
+        return authorizationStatus == .sharingAuthorized
+    }
     
     let activityCategories = ["Core Training", "Functional Strength Training", "High-Intensity Interval Training", "Mixed Cardio", "Other", "Traditional Strength Training"]
     
@@ -71,87 +82,89 @@ struct SettingsView: View {
     private var formContent: some View {
         Form {
             Section {
-                NavigationLink("How To Use App", destination: TutorialView())
-                if isSubscribed {
-                    NavigationLink("Exercise History", destination: ExerciseHistoryView())
-                } else {
-                    HStack {
-                        Text("Exercise History")
-                            .foregroundStyle(.secondary)
-                        Spacer()
-                        Button("Upgrade") {
-                            showUpgrade = true
-                        }
-                        .buttonStyle(.bordered)
-                    }
-                }
-                if isSubscribed {
-                    NavigationLink("Stats", destination: StatsView())
-                } else {
-                    HStack {
-                        Text("Stats")
-                            .foregroundStyle(.secondary)
-                        Spacer()
-                        Button("Upgrade") {
-                            showUpgrade = true
-                        }
-                        .buttonStyle(.bordered)
-                    }
-                }
-                if isSubscribed {
-                    Button("Export All Data") {
-                        fetchAllData()
-                    }
-                } else {
-                    HStack {
-                        Text("Export All Data")
-                            .foregroundStyle(.secondary)
-                        Spacer()
-                        Button("Upgrade") {
-                            showUpgrade = true
-                        }
-                        .buttonStyle(.bordered)
-                    }
-                }
-                
-            }
-
-            Section {
+                NavigationLink("How To Use App", 
+                               destination: TutorialView()
+                                            .foregroundStyle(Color.primaryText, Color.secondaryText)
+                                            .background(Color.primaryBackground)
+                )
                 Picker("Health Category", selection: $healthActivityCategory) {
                     ForEach(activityCategories, id: \.self) { category in
                         Text(category).tag(category)
+                            .foregroundStyle(Color.secondaryText)
                     }
                 }
                 .pickerStyle(.navigationLink)
+            } header: {
+                Text("Setup")
+                    .foregroundStyle(Color.tertiaryText)
             }
-            Section {
-                // Upgrade to Calisthenics Pro
-                if isSubscribed {
-//                if false {
+            .listRowBackground(Color.tertiaryBackground)
 
+            Section {
+                    NavigationLink("Exercise History", destination: ExerciseHistoryView())
+                        .disabled(!isSubscribed)
+                    Button("Export All Data") {
+                        fetchAllData()
+                    }
+                    .disabled(!isSubscribed)
+                    .foregroundStyle(isSubscribed ? Color.accentText : Color.secondaryText)
+                    NavigationLink(destination: ColorSchemePickerView()) {
+                        HStack {
+                            Text("Color Scheme")
+                            Spacer()
+                            Text("\(colorScheme.current.title)")
+                                .foregroundStyle(Color.secondaryText)
+                        }
+                    }
+                    .disabled(!isSubscribed)
+            
+                
+                if isSubscribed {
                     HStack {
                         Text("Incremental Pro")
                         Spacer()
                         Text("Subscribed")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.secondaryText)
                     }
                 } else {
                     Button {
                         showUpgrade.toggle()
                     } label: {
                         Text("Upgrade to Incremental Pro")
+                            .foregroundStyle(Color.accentText)
+
                     }
                 }
+            } header: {
+                Text("Incremental Pro")
+                    .foregroundStyle(Color.tertiaryText)
             }
-            
+            .listRowBackground(Color.tertiaryBackground)
+
+            Section {
+                StatsElement()
+            } header: {
+                Text("Stats")
+                    .foregroundStyle(Color.tertiaryText)
+            }
+            .listRowBackground(Color.tertiaryBackground)
+
             Section {
                 // Updated Delete All Data Button
                 Button("Delete All Data") {
                     showDeleteConfirmation = true
                 }
                 .foregroundColor(.red) // Highlight the delete button
+            } header: {
+                Text("Danger Zone")
+                    .foregroundStyle(Color.tertiaryText)
             }
+            .listRowBackground(Color.tertiaryBackground)
+
         }
+        .scrollContentBackground(.hidden)
+        .background(Color.secondaryBackground)
+        .foregroundStyle(Color.primaryText, Color.secondaryText)
         .sheet(isPresented: $showUpgrade) {
             UpgradeView()
                 .onDisappear {
@@ -180,7 +193,9 @@ struct SettingsView: View {
     
  
     
-    // MARK: - Delete All Data Function
+    // MARK: - Functions
+    
+    
     func deleteAllData() {
         showLoading = true
         
@@ -224,6 +239,18 @@ struct SettingsView: View {
     }
     
     // Existing functions...
+    
+    private func requestHealthAuthorization() {
+            let healthStore = HKHealthStore()
+            let typesToShare: Set<HKSampleType> = [HKObjectType.workoutType()]
+            let typesToRead: Set<HKObjectType> = [HKObjectType.workoutType(), HKObjectType.quantityType(forIdentifier: .appleExerciseTime)!]
+
+            healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
+                if let error = error {
+                    print("Error requesting authorization: \(error.localizedDescription)")
+                }
+            }
+        }
 
     func fetchPurchases() async throws {
         for await entitlement in Transaction.currentEntitlements {

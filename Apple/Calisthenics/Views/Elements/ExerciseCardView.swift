@@ -9,7 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct ExerciseCardView: View {
-    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) var modelContext
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
     @StateObject var exerciseViewModel = ExerciseViewModel.shared
@@ -33,8 +32,8 @@ struct ExerciseCardView: View {
         ScrollView {
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(colorScheme == .light ? .white : .black)
-                    .shadow(color: colorScheme == .light ? .black.opacity(0.33) : .white.opacity(0.33), radius: 3)
+                    .fill(Color.cardBackground)
+                    .shadow(radius: 2)
                 VStack {
                     HStack {
                         

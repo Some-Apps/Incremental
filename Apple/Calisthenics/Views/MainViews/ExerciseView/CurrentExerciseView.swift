@@ -7,6 +7,7 @@ import SwiftData
 import TipKit
 
 struct CurrentExerciseView: View {
+
     @Environment(\.modelContext) private var modelContext
     @Environment(\.requestReview) var requestReview
     @AppStorage("isSubscribed") private var isSubscribed: Bool = false
@@ -93,6 +94,7 @@ struct CurrentExerciseView: View {
                 }
 
             }
+            .background(Color.primaryBackground)
         }
     }
 
@@ -316,19 +318,10 @@ struct CurrentExerciseView: View {
         }) {
             return
         }
-        
-        
 
         modelContext.insert(newLog)
         try? modelContext.save()
     }
-
-
-    
-    
-    
-    
-    
 
     func generateRandomExercise(exercises: [Exercise]) {
         let activeExercises = exercises.filter { $0.isActive == true }
@@ -367,3 +360,4 @@ struct CurrentExerciseView: View {
         stopwatchViewModel.reset()
     }
 }
+

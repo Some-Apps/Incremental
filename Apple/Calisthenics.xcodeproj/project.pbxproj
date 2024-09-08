@@ -24,6 +24,8 @@
 		C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */; };
 		C065345B2A9E6AAF001DFA7B /* CalisthenicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */; };
 		C07BAC012C76A66F00E34669 /* UpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BAC002C76A66F00E34669 /* UpgradeView.swift */; };
+		C08DFAD72C8E263C00F7EBCD /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08DFAD62C8E263C00F7EBCD /* Colors.swift */; };
+		C08DFAD92C8E288300F7EBCD /* ColorSchemePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08DFAD82C8E288300F7EBCD /* ColorSchemePickerView.swift */; };
 		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
 		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
 		C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A4F729CF461D000CD191 /* StopwatchViewModel.swift */; };
@@ -48,7 +50,7 @@
 		C0E00A152C874BBD005C0AE3 /* EULAElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A142C874BBD005C0AE3 /* EULAElement.swift */; };
 		C0E00A172C874D01005C0AE3 /* TermsAndConditionsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A162C874D01005C0AE3 /* TermsAndConditionsElement.swift */; };
 		C0E00A192C874E0C005C0AE3 /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A182C874E0C005C0AE3 /* TermsView.swift */; };
-		C0E00A1D2C8CB11F005C0AE3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A1C2C8CB11F005C0AE3 /* StatsView.swift */; };
+		C0E00A1D2C8CB11F005C0AE3 /* StatsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A1C2C8CB11F005C0AE3 /* StatsElement.swift */; };
 		C0F00AFC2C6EC02A00383DF0 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE482B9669C300A2CD21 /* Exercise.swift */; };
 		C0F00AFD2C6EC02D00383DF0 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ECE492B9669C300A2CD21 /* Log.swift */; };
 		C0F00B012C6EE02000383DF0 /* Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F00B002C6EE02000383DF0 /* Tips.swift */; };
@@ -104,6 +106,8 @@
 		C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsTests.swift; sourceTree = "<group>"; };
 		C07BAC002C76A66F00E34669 /* UpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeView.swift; sourceTree = "<group>"; };
 		C07BAC062C76AE4C00E34669 /* Store.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Store.storekit; sourceTree = "<group>"; };
+		C08DFAD62C8E263C00F7EBCD /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		C08DFAD82C8E288300F7EBCD /* ColorSchemePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemePickerView.swift; sourceTree = "<group>"; };
 		C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calisthenics.entitlements; sourceTree = "<group>"; };
 		C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepertoireView.swift; sourceTree = "<group>"; };
 		C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
@@ -130,7 +134,7 @@
 		C0E00A142C874BBD005C0AE3 /* EULAElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAElement.swift; sourceTree = "<group>"; };
 		C0E00A162C874D01005C0AE3 /* TermsAndConditionsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsElement.swift; sourceTree = "<group>"; };
 		C0E00A182C874E0C005C0AE3 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
-		C0E00A1C2C8CB11F005C0AE3 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		C0E00A1C2C8CB11F005C0AE3 /* StatsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsElement.swift; sourceTree = "<group>"; };
 		C0F00B002C6EE02000383DF0 /* Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tips.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -196,10 +200,11 @@
 			isa = PBXGroup;
 			children = (
 				C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */,
+				C08DFAD82C8E288300F7EBCD /* ColorSchemePickerView.swift */,
 				C07BAC002C76A66F00E34669 /* UpgradeView.swift */,
 				C07BAC062C76AE4C00E34669 /* Store.storekit */,
 				C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */,
-				C0E00A1C2C8CB11F005C0AE3 /* StatsView.swift */,
+				C0E00A1C2C8CB11F005C0AE3 /* StatsElement.swift */,
 				C029BCA32BF151B400113844 /* TutorialView.swift */,
 			);
 			path = Settings;
@@ -308,6 +313,7 @@
 				C0E00A0C2C86B8D0005C0AE3 /* GoogleService-Info.plist */,
 				C0CB958029C6445B0099974B /* Preview Content */,
 				C0CB957E29C6445B0099974B /* Assets.xcassets */,
+				C08DFAD62C8E263C00F7EBCD /* Colors.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -500,12 +506,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0360AE42A2E0CFA00E8CA37 /* Models.swift in Sources */,
+				C08DFAD72C8E263C00F7EBCD /* Colors.swift in Sources */,
 				C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */,
 				C00ECE4D2B9669C300A2CD21 /* Log.swift in Sources */,
-				C0E00A1D2C8CB11F005C0AE3 /* StatsView.swift in Sources */,
+				C0E00A1D2C8CB11F005C0AE3 /* StatsElement.swift in Sources */,
 				C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */,
 				C07BAC012C76A66F00E34669 /* UpgradeView.swift in Sources */,
 				C0589F1B2BE5844900F19B7B /* StashedExereciseView.swift in Sources */,
+				C08DFAD92C8E288300F7EBCD /* ColorSchemePickerView.swift in Sources */,
 				C00ECE4B2B9669C300A2CD21 /* Exercise.swift in Sources */,
 				C0360AE22A2DFA5A00E8CA37 /* SettingsView.swift in Sources */,
 				C029BCA42BF151B400113844 /* TutorialView.swift in Sources */,

@@ -46,7 +46,6 @@ struct ContentView: View {
                 }
                 .tag(3)
         }
-        
         .onAppear {
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0
@@ -69,4 +68,3 @@ struct ContentView: View {
     }
 
 }
-

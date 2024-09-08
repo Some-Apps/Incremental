@@ -1,9 +1,3 @@
-//
-//  TutorialView.swift
-//  Calisthenics
-//
-//  Created by Jared Jones on 5/12/24.
-//
 
 import SwiftUI
 
@@ -24,6 +18,7 @@ struct TutorialView: View {
 }
 
 struct TutorialItem: View {
+
     let title: String
     let description: String
     
@@ -32,6 +27,7 @@ struct TutorialItem: View {
             Text(title)
                 .font(.headline)
             Divider()
+                .foregroundStyle(Color.secondaryText)
             Text(description)
         }
 

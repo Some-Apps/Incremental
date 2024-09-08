@@ -5,7 +5,7 @@ import TipKit
 
 @main
 struct CalisthenicsApp: App {
-        
+    @StateObject var colorSchemeState = ColorSchemeState()
     @AppStorage("showTips") var showTips: Bool = true
     
     var sharedModelContainer: ModelContainer = {
@@ -32,6 +32,7 @@ struct CalisthenicsApp: App {
                         .datastoreLocation(.applicationDefault)
                     ])
                 }
+                .environmentObject(colorSchemeState)
         }
         .modelContainer(sharedModelContainer)
     }
