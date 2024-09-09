@@ -3,6 +3,8 @@ import SwiftData
 import TipKit
 
 struct RepertoireView: View {
+    @EnvironmentObject var colorScheme: ColorSchemeState
+
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @ObservedObject private var defaultsManager = DefaultsManager()
@@ -25,7 +27,7 @@ struct RepertoireView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("Active") {
+                Section {
                     ForEach(activeExercises, id: \.self) { exercise in
                         NavigationLink(destination: ExerciseView(exercise: exercise)) {
                             Text(exercise.title ?? "Unknown")
@@ -35,8 +37,13 @@ struct RepertoireView: View {
                         indexSetToDelete = indexSet
                         confirmDelete = true
                     })
+                } header: {
+                    Text("Active")
+                        .foregroundStyle(colorScheme.current.secondaryText)
                 }
-                Section("Inactive") {
+                .listRowBackground(colorScheme.current.secondaryBackground)
+
+                Section {
                     ForEach(inactiveExercises, id: \.self) { exercise in
                         NavigationLink(destination: ExerciseView(exercise: exercise)) {
                             Text(exercise.title ?? "Unknown")
@@ -47,8 +54,18 @@ struct RepertoireView: View {
                         indexSetToDelete = indexSet
                         confirmDelete = true
                     })
+                } header: {
+                    Text("Inactive")
+                        .foregroundStyle(colorScheme.current.secondaryText)
+
                 }
+                .listRowBackground(colorScheme.current.secondaryBackground)
+
             }
+            .listStyle(.automatic)
+            .scrollContentBackground(.hidden)
+            .background(colorScheme.current.primaryBackground)
+            .foregroundStyle(colorScheme.current.primaryText, colorScheme.current.secondaryText)
             .confirmationDialog("Are you sure you want to delete this exercise?", isPresented: $confirmDelete, titleVisibility: .visible) {
                 Button("Delete", role: .destructive) {
                     if let indexSet = indexSetToDelete {
@@ -63,6 +80,7 @@ struct RepertoireView: View {
                         AddExerciseView()
                     } label: {
                         Image(systemName: "plus")
+                            .foregroundStyle(colorScheme.current.accentText)
                     }
                     .popoverTip(addExerciseTip)
                     .onTapGesture {
@@ -71,10 +89,11 @@ struct RepertoireView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
+                        .foregroundStyle(colorScheme.current.accentText)
                 }
             }
         }
-        
+        .background(colorScheme.current.primaryBackground)
     }
 
     private func deleteExercise(at offsets: IndexSet) {

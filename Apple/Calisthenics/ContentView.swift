@@ -4,13 +4,15 @@ import WidgetKit
 import TipKit
 
 struct ContentView: View {
+    @EnvironmentObject var colorScheme: ColorSchemeState
+
     @ObservedObject private var defaultsManager = DefaultsManager()
     @Environment(\.modelContext) var modelContext
     @Query var stashedExercises: [StashedExercise]
     @Query var allExercises: [Exercise]
 
     @State private var showInstructions: Bool = false
-
+    @AppStorage("SelectedColorScheme") var selectedColorScheme = ""
     @AppStorage("showTips") var showTips: Bool = true
     @AppStorage("randomExercise") var randomExercise: String = ""
 
@@ -46,7 +48,9 @@ struct ContentView: View {
                 }
                 .tag(3)
         }
+        .tint(colorScheme.current.accentText)
         .onAppear {
+            UITabBar.appearance().unselectedItemTintColor = UIColor(colorScheme.current.secondaryText)
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0
             

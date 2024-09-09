@@ -35,14 +35,14 @@ struct ExerciseCardView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
                     .fill(colorScheme.current.cardBackground)
-                    .shadow(color: colorScheme.current.primaryText, radius: 2)
+                    .shadow(color: colorScheme.current.primaryText.opacity(0.5), radius: 2)
                 VStack {
                     HStack {
                         
                         Text((fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises)?.title ?? "") + ((exerciseViewModel.exercise?.leftRight ?? false) ? ((exerciseViewModel.exercise?.leftSide ?? false) ? " (left)" : " (right)") : ""))
                                 .font(.largeTitle)
                                 .fontWeight(.heavy)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(colorScheme.current.secondaryText)
                                 .multilineTextAlignment(.center)
                                 .onAppear {
                                     if let newExercise = fetchExerciseById(id: UUID(uuidString: randomExercise)!, exercises: exercises) {
@@ -57,6 +57,7 @@ struct ExerciseCardView: View {
                                 showPopover.toggle()
                             } label: {
                                 Image(systemName: "questionmark.circle")
+                                    .foregroundStyle(colorScheme.current.accentText)
                             }
                             .popover(isPresented: $showPopover, content: {
                                 Text(exerciseViewModel.exercise!.notes!)
@@ -71,15 +72,18 @@ struct ExerciseCardView: View {
                         Text(String(Int(exerciseViewModel.exercise!.currentReps!)))
                             .font(.largeTitle)
                             .fontWeight(.heavy)
+                            .foregroundStyle(colorScheme.current.primaryText)
                     } else if exerciseViewModel.exercise!.units == "Duration" {
                         Text(String(format: "%01d:%02d", Int(exerciseViewModel.exercise!.currentReps!) / 60, Int(exerciseViewModel.exercise!.currentReps!) % 60))
                             .font(.largeTitle)
                             .fontWeight(.heavy)
+                            .foregroundStyle(colorScheme.current.primaryText)
                     }
                     Divider()
                     Picker("Difficulty", selection: $tempDifficulty) {
                         ForEach(Difficulty.allCases, id: \.self) {
                             Text($0.rawValue)
+                                .foregroundStyle(colorScheme.current.primaryText)
                         }
                     }
                     .onChange(of: tempDifficulty) {
@@ -90,10 +94,10 @@ struct ExerciseCardView: View {
                     switch exerciseViewModel.difficulty {
                     case .easy:
                         Text("Didn't have to pause")
-                            .foregroundColor(.secondary)
+                            .foregroundColor(colorScheme.current.secondaryText)
                     case .hard:
                         Text("Had to pause")
-                            .foregroundColor(.secondary)
+                            .foregroundColor(colorScheme.current.secondaryText)
                     }
                     Button("Finish") {
                         finishedTapped = true
@@ -101,7 +105,7 @@ struct ExerciseCardView: View {
                     }
                     .sensoryFeedback(.success, trigger: haptic)
                     .buttonStyle(.bordered)
-                    .tint(.green)
+                    .tint(colorScheme.current.successButton)
                     .font(.title)
                     .disabled(stopwatchViewModel.seconds < 3 || stopwatchViewModel.isRunning)
                     if stashedExercises.count < 10 {
@@ -115,6 +119,7 @@ struct ExerciseCardView: View {
                             
                         }
                         .disabled(stopwatchViewModel.seconds >= 3 || stashedExercise)
+                        .foregroundStyle(colorScheme.current.accentText)
                     }
                 }
                 .padding()

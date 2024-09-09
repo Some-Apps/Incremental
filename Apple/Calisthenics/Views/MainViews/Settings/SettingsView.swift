@@ -55,6 +55,7 @@ struct SettingsView: View {
                 }
             }
         }
+        .foregroundStyle(colorScheme.current.primaryText)
         .sheet(isPresented: Binding(
             get: { showShareSheet },
             set: { showShareSheet = $0 }
@@ -72,7 +73,7 @@ struct SettingsView: View {
         }
         // Toasts for success and error
         .toast(isPresenting: $showDeleteSuccess) {
-            AlertToast(type: .complete(Color.green), title: "All data deleted successfully.")
+            AlertToast(type: .complete(colorScheme.current.successButton), title: "All data deleted successfully.")
         }
         .toast(isPresenting: $showDeleteError) {
             AlertToast(type: .error(Color.red), title: deleteErrorMessage)
@@ -80,7 +81,7 @@ struct SettingsView: View {
     }
     
     private var formContent: some View {
-        Form {
+        List {
             Section {
                 NavigationLink("How To Use App", 
                                destination: TutorialView()
@@ -95,9 +96,9 @@ struct SettingsView: View {
                 .pickerStyle(.menu)
             } header: {
                 Text("Setup")
-                    .foregroundStyle(colorScheme.current.tertiaryText)
+                    .foregroundStyle(colorScheme.current.secondaryText)
             }
-            .listRowBackground(colorScheme.current.tertiaryBackground)
+            .listRowBackground(colorScheme.current.secondaryBackground)
 
             Section {
                     NavigationLink("Exercise History", destination: ExerciseHistoryView())
@@ -136,33 +137,34 @@ struct SettingsView: View {
                 }
             } header: {
                 Text("Incremental Pro")
-                    .foregroundStyle(colorScheme.current.tertiaryText)
+                    .foregroundStyle(colorScheme.current.secondaryText)
             }
-            .listRowBackground(colorScheme.current.tertiaryBackground)
+            .listRowBackground(colorScheme.current.secondaryBackground)
 
             Section {
                 StatsElement()
             } header: {
                 Text("Stats")
-                    .foregroundStyle(colorScheme.current.tertiaryText)
+                    .foregroundStyle(colorScheme.current.secondaryText)
             }
-            .listRowBackground(colorScheme.current.tertiaryBackground)
+            .listRowBackground(colorScheme.current.secondaryBackground)
 
             Section {
                 // Updated Delete All Data Button
                 Button("Delete All Data") {
                     showDeleteConfirmation = true
                 }
-                .foregroundColor(.red) // Highlight the delete button
+                .foregroundColor(colorScheme.current.failButton) // Highlight the delete button
             } header: {
                 Text("Danger Zone")
-                    .foregroundStyle(colorScheme.current.tertiaryText)
+                    .foregroundStyle(colorScheme.current.secondaryText)
             }
-            .listRowBackground(colorScheme.current.tertiaryBackground)
+            .listRowBackground(colorScheme.current.secondaryBackground)
 
         }
+        .listStyle(.automatic)
         .scrollContentBackground(.hidden)
-        .background(colorScheme.current.secondaryBackground)
+        .background(colorScheme.current.primaryBackground)
         .foregroundStyle(colorScheme.current.primaryText, colorScheme.current.secondaryText)
         .sheet(isPresented: $showUpgrade) {
             UpgradeView()

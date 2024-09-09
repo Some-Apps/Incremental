@@ -5,6 +5,8 @@ import WidgetKit
 import SwiftData
 
 struct StashedExereciseView: View {
+    @EnvironmentObject var colorScheme: ColorSchemeState
+
     @Environment(\.modelContext) private var modelContext
     
     @Query var exercises: [StashedExercise]
@@ -26,6 +28,7 @@ struct StashedExereciseView: View {
                 if let currentExercise = exerciseViewModel.exercise, exercises.count > 0 {
                     VStack {
                         Text(totalDurationToday())
+                            .foregroundStyle(colorScheme.current.primaryText)
                         StashedExerciseCardView(finishedTapped: $finishedTapped, stashedExercise: $stashedExercise, tempDifficulty: $difficulty)
                             .onChange(of: finishedTapped) {
                                 if finishedTapped {
@@ -51,23 +54,37 @@ struct StashedExereciseView: View {
                         requestAuthorization()
                     }
                     .toast(isPresenting: $finishedTapped) {
-                        AlertToast(displayMode: .hud, type: .complete(.green), title: "Exercise completed!")
+                        AlertToast(displayMode: .hud, type: .complete(colorScheme.current.successButton), title: "Exercise completed!")
                     }
                 } else {
-                    Text("No stashed exercises")
-                        .onAppear {
-                            exerciseViewModel.exercise = exercises.first
-                            for exercise in exercises {
-                                if (fetchExerciseById(id: exercise.id!, exercises: originalExercises) == nil) {
-                                    modelContext.delete(exercise)
-                                    try? modelContext.save()
+                    HStack {
+                        Spacer()
+                        VStack {
+                            Spacer()
+                            Text("No stashed exercises")
+                                .onAppear {
+                                    exerciseViewModel.exercise = exercises.first
+                                    for exercise in exercises {
+                                        if (fetchExerciseById(id: exercise.id!, exercises: originalExercises) == nil) {
+                                            modelContext.delete(exercise)
+                                            try? modelContext.save()
+                                        }
+                                    }
                                 }
-                            }
+                                .foregroundStyle(colorScheme.current.primaryText)
+                            Spacer()
                         }
+                        Spacer()
+                    }
+                    
                 }
             }
+            .background(colorScheme.current.primaryBackground)
+
         }
+        .background(colorScheme.current.primaryBackground)
     }
+    
     
     func totalDurationToday() -> String {
         let newLogs = logs.filter( { Calendar.autoupdatingCurrent.isDateInToday($0.timestamp!) } )

@@ -30,10 +30,14 @@ struct StopwatchView: View {
                 Text("\(minutes) : \(seconds)")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
+                    .foregroundStyle(colorScheme.current.primaryText)
+
             } else {
                 Text(seconds.replacingOccurrences(of: "-", with: ""))
                     .font(.largeTitle)
                     .fontWeight(.heavy)
+                    .foregroundStyle(colorScheme.current.primaryText)
+
             }
             HStack {
                 if !viewModel.isRunning && viewModel.seconds == 0 {
@@ -43,13 +47,14 @@ struct StopwatchView: View {
                     } label: {
                         Image(systemName: "clock.arrow.circlepath")
                             .font(.title)
+                            .foregroundStyle(colorScheme.current.accentText)
                     }
                 }
                                 
                 Button(viewModel.isRunning ? "Stop" : "Start") {
                     viewModel.startStop()
                 }
-                .tint(viewModel.isRunning ? .red : .green)
+                .tint(viewModel.isRunning ? colorScheme.current.failButton : colorScheme.current.successButton)
                 .font(.largeTitle)
                 .buttonStyle(.bordered)
                 Button("Reset") {
@@ -58,7 +63,7 @@ struct StopwatchView: View {
                     }
                     viewModel.reset()
                 }
-                .tint(.gray)
+                .tint(colorScheme.current.secondaryText)
                 .font(.largeTitle)
                 .buttonStyle(.bordered)
             }
@@ -67,9 +72,8 @@ struct StopwatchView: View {
         }
         .padding()
         .background(colorScheme.current.cardBackground)
-        .background(.regularMaterial)
         .cornerRadius(15.0)
-        .shadow(color: colorScheme.current.primaryText, radius: 2)
+        .shadow(color: colorScheme.current.primaryText.opacity(0.5), radius: 2)
     }
 }
 

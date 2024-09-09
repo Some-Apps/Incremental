@@ -2,6 +2,8 @@ import SwiftUI
 import SwiftData
 
 struct ExerciseHistoryView: View {
+    @EnvironmentObject var colorScheme: ColorSchemeState
+
     @Environment(\.modelContext) private var modelContext
     
     @State private var logs: [Log] = []
@@ -21,13 +23,14 @@ struct ExerciseHistoryView: View {
                                 Spacer()
                                 Text(totalDurationString(for: date))
                             }
+                            .foregroundStyle(colorScheme.current.secondaryText)
                     ) {
                         ForEach(groupedLogs[date] ?? [], id: \.self) { log in
                             HStack {
                                 Text("\(log.exercise?.title ?? "Unknown")")
                                 if let side = log.side {
                                     Image(systemName: side == "right" ? "arrowshape.right" : side == "left" ? "arrowshape.left" : "")
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(colorScheme.current.secondaryText)
                                 }
                                 Spacer()
                                 if log.exercise?.units == "Reps" {
@@ -47,6 +50,7 @@ struct ExerciseHistoryView: View {
                 }
             }
         }
+        .listStyle(.automatic)
         .navigationTitle("Exercise History")
         .onAppear(perform: loadLogs)
     }

@@ -22,11 +22,12 @@ struct ColorSchemePickerView: View {
                         ColorPreviewView(colorScheme: scheme.scheme.colorScheme)
                     }
                 }
-                .listRowBackground(colorScheme.current.tertiaryBackground)
+                .listRowBackground(colorScheme.current.secondaryBackground)
 
             }
+            .listStyle(.automatic)
             .scrollContentBackground(.hidden)
-            .background(colorScheme.current.secondaryBackground)
+            .background(colorScheme.current.primaryBackground)
             .navigationBarTitle("Select Color Scheme", displayMode: .inline)
         
     }
@@ -44,9 +45,6 @@ struct ColorPreviewView: View {
                 .fill(colorScheme.secondaryBackground)
                 .frame(width: 15, height: 30)
             Rectangle()
-                .fill(colorScheme.tertiaryBackground)
-                .frame(width: 15, height: 30)
-            Rectangle()
                 .fill(colorScheme.cardBackground)
                 .frame(width: 15, height: 30)
             Rectangle()
@@ -59,9 +57,11 @@ struct ColorPreviewView: View {
                 .fill(colorScheme.secondaryText)
                 .frame(width: 15, height: 30)
             Rectangle()
-                .fill(colorScheme.tertiaryText)
+                .fill(colorScheme.successButton)
+                .frame(width: 15, height: 30)
+            Rectangle()
+                .fill(colorScheme.failButton)
                 .frame(width: 15, height: 30)
         }
-        .border(.black)
     }
 }

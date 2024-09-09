@@ -9,7 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct StashedExerciseCardView: View {
-    @Environment(\.colorScheme) private var colorScheme
+    @EnvironmentObject var colorScheme: ColorSchemeState
+
     @Environment(\.modelContext) var modelContext
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
     @StateObject var exerciseViewModel = StashedExerciseViewModel.shared
@@ -27,14 +28,14 @@ struct StashedExerciseCardView: View {
         ScrollView {
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(colorScheme == .light ? .white : .black)
-                    .shadow(color: colorScheme == .light ? .black.opacity(0.33) : .white.opacity(0.33), radius: 3)
+                    .fill(colorScheme.current.primaryBackground)
+                    .shadow(color: colorScheme.current.primaryText.opacity(0.5), radius: 2)
                 VStack {
                     HStack {
                         Text("\(exercises.first?.title ?? "")\((exercises.first?.leftRight ?? false) ? (exercises.first?.leftSide ?? false ? " (left)" : " (right)") : "")")
                             .font(.largeTitle)
                             .fontWeight(.heavy)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(colorScheme.current.secondaryText)
                             .multilineTextAlignment(.center)
                             .onAppear {
                                 exerciseViewModel.exercise = exercises.first
@@ -80,17 +81,17 @@ struct StashedExerciseCardView: View {
                     switch exerciseViewModel.difficulty {
                     case .easy:
                         Text("Didn't have to pause")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(colorScheme.current.secondaryText)
                     case .hard:
                         Text("Had to pause")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(colorScheme.current.secondaryText)
                     }
                       
                     Button("Finish") {
                         finishedTapped = true
                     }
                     .buttonStyle(.bordered)
-                    .tint(.green)
+                    .tint(colorScheme.current.successButton)
                     .font(.title)
                     .disabled(stopwatchViewModel.seconds < 5 || stopwatchViewModel.isRunning)
 //                    .onChange(of: finishedTapped) {

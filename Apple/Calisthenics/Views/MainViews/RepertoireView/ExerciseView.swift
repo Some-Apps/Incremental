@@ -10,6 +10,8 @@ struct ExamplePoint: Identifiable, Hashable {
 }
 
 struct ExerciseView: View {
+    @EnvironmentObject var colorScheme: ColorSchemeState
+
     @AppStorage("randomExercise") var randomExercise: String = ""
     @State private var isTextEditorSheetPresented = false
     @ObservedObject private var defaultsManager = DefaultsManager()
@@ -92,7 +94,7 @@ struct ExerciseView: View {
     }
     
     func formattedChangeText(percentage: Double, change: Int) -> Text {
-        let color: Color = percentage >= 0 ? .green : .red
+        let color: Color = percentage >= 0 ? colorScheme.current.successButton : colorScheme.current.failButton
         let formattedText = Text("\(percentage, specifier: "%.2f")%") + Text(" (\(change))")
         return formattedText.foregroundColor(color)
     }
@@ -123,18 +125,21 @@ struct ExerciseView: View {
     var body: some View {
         VStack {
             Text(exercise.title!)
-            Form {
+            List {
                 Section {
                     if isSubscribed {
                         Chart(sortedLogs, id: \.self) { log in
                             LineMark(x: .value("Date", log.timestamp!), y: .value("Reps", log.reps!))
                                 .interpolationMethod(.linear)
+                                .foregroundStyle(colorScheme.current.accentText)
                         }
                         .frame(height: 200)
                     } else {
                         Chart(examplePoints, id: \.self) { log in
                             LineMark(x: .value("Date", log.timestamp), y: .value("Reps", log.reps))
                                 .interpolationMethod(.linear)
+                                .foregroundStyle(colorScheme.current.accentText)
+
                         }
                         .frame(height: 200)
                         .blur(radius: 5)
@@ -147,12 +152,15 @@ struct ExerciseView: View {
                         }
                     }
                 }
+                .listRowBackground(colorScheme.current.secondaryBackground)
+
                 Section {
                     Toggle("Active", isOn: $isActive)
                         .onAppear {
                             isActive = exercise.isActive!
                         }
                         .disabled(randomExercise == exercise.id?.uuidString)
+                        .tint(colorScheme.current.successButton)
                     if exercise.units == "Reps" {
                         Text("Current Reps: \(exercise.currentReps ?? 0, specifier: "%.2f")")
                         Text("Last Increment: \(exercise.increment ?? 0, specifier: "%.2f")")
@@ -172,6 +180,8 @@ struct ExerciseView: View {
                     }
 
                 }
+                .listRowBackground(colorScheme.current.secondaryBackground)
+
                 Section("Notes") {
                     HStack {
                         Text(notes)
@@ -181,6 +191,7 @@ struct ExerciseView: View {
                                 isTextEditorSheetPresented.toggle()
                             }) {
                                 Image(systemName: "pencil")
+                                    .foregroundStyle(colorScheme.current.accentText)
                             }
                             .padding(.top)
                             .sheet(isPresented: $isTextEditorSheetPresented) {
@@ -190,6 +201,8 @@ struct ExerciseView: View {
                         }
                     }
                 }
+                .listRowBackground(colorScheme.current.secondaryBackground)
+
                 Section("Stats") {
                     if isSubscribed {
                         if exercise.units == "Reps" {
@@ -202,17 +215,17 @@ struct ExerciseView: View {
                         }
                         
                         if let allTimeChange = allTimeChange {
-                            Text("All Time Change: ").foregroundColor(.primary) + formattedChangeText(percentage: allTimeChange.percentage, change: allTimeChange.change)
+                            Text("All Time Change: ").foregroundColor(colorScheme.current.primaryText) + formattedChangeText(percentage: allTimeChange.percentage, change: allTimeChange.change)
                         }
                         
                         if let oneMonthChange = oneMonthChange {
-                            Text("Month: ").foregroundColor(.primary) + formattedChangeText(percentage: oneMonthChange.percentage, change: oneMonthChange.change)
+                            Text("Month: ").foregroundColor(colorScheme.current.primaryText) + formattedChangeText(percentage: oneMonthChange.percentage, change: oneMonthChange.change)
                         } else if let daysUntilAvailable = daysUntilDataAvailable(for: -30 * 24 * 60 * 60) {
                             Text("Month: Available in \(daysUntilAvailable) days")
                         }
                         
                         if let oneYearChange = oneYearChange {
-                            Text("Year: ").foregroundColor(.primary) + formattedChangeText(percentage: oneYearChange.percentage, change: oneYearChange.change)
+                            Text("Year: ").foregroundColor(colorScheme.current.primaryText) + formattedChangeText(percentage: oneYearChange.percentage, change: oneYearChange.change)
                         } else if let daysUntilAvailable = daysUntilDataAvailable(for: -365 * 24 * 60 * 60) {
                             Text("Year: Available in \(daysUntilAvailable) days")
                         }
@@ -313,8 +326,15 @@ struct ExerciseView: View {
                     
                     
                 }
+                .listRowBackground(colorScheme.current.secondaryBackground)
+
             }
+            .listStyle(.automatic)
+            
         }
+        .scrollContentBackground(.hidden)
+        .background(colorScheme.current.primaryBackground)
+        .foregroundStyle(colorScheme.current.primaryText, colorScheme.current.secondaryText)
         .sheet(isPresented: $showUpgrade) {
             UpgradeView()
         }
@@ -330,6 +350,7 @@ struct ExerciseView: View {
                     dismiss()
                 }
                 .disabled(isActive == exercise.isActive && notes == exercise.notes)
+                .foregroundStyle((isActive == exercise.isActive && notes == exercise.notes) ? colorScheme.current.accentText.opacity(0.5) : colorScheme.current.accentText)
             }
         }
         .onAppear {
@@ -337,6 +358,7 @@ struct ExerciseView: View {
                 try await fetchPurchases()
             }
         }
+        .accentColor(colorScheme.current.accentText) // <- note that it's added here and not on the List like navigationBarTitle()
     }
     
     func fetchPurchases() async throws {

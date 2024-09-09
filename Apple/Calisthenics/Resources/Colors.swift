@@ -9,6 +9,7 @@ final class ColorSchemeState: ObservableObject {
         if let savedType = UserDefaults.standard.string(forKey: "SelectedColorScheme"),
            let savedSchemeType = MyColorSchemeType(rawValue: savedType) {
             self.currentColorSchemeType = savedSchemeType
+
         } else {
             self.currentColorSchemeType = .main
         }
@@ -20,6 +21,7 @@ final class ColorSchemeState: ObservableObject {
 
     func updateColorScheme(to colorSchemeType: MyColorSchemeType) {
         self.currentColorSchemeType = colorSchemeType
+
         // Save the selected color scheme type to UserDefaults
         UserDefaults.standard.set(colorSchemeType.rawValue, forKey: "SelectedColorScheme")
     }
@@ -31,12 +33,12 @@ struct MyColorScheme {
     
     let primaryBackground: Color
     let secondaryBackground: Color
-    let tertiaryBackground: Color
     let cardBackground: Color
     let accentText: Color
     let primaryText: Color
     let secondaryText: Color
-    let tertiaryText: Color
+    let successButton: Color
+    let failButton: Color
 }
 
 enum MyColorSchemeType: String, CaseIterable {
@@ -48,26 +50,26 @@ enum MyColorSchemeType: String, CaseIterable {
         case .main:
             return MyColorScheme(
                 title: "Default",
-                primaryBackground: Color(uiColor: .systemBackground),
-                secondaryBackground: Color(uiColor: .systemGroupedBackground),
-                tertiaryBackground: Color(uiColor: .secondarySystemGroupedBackground),
+                primaryBackground: Color(uiColor: .systemGroupedBackground),
+                secondaryBackground: Color(uiColor: .secondarySystemGroupedBackground),
                 cardBackground: Color.dynamic(light: "FFFFFF", dark: "000000"),
                 accentText: .accentColor,
                 primaryText: .primary,
                 secondaryText: .secondary,
-                tertiaryText: Color(UIColor.tertiaryLabel)
+                successButton: .green,
+                failButton: .red
             )
         case .alternative:
             return MyColorScheme(
                 title: "Forest",
-                primaryBackground: Color.dynamic(light: "FFFFFF", dark: "232323"),
-                secondaryBackground: Color.dynamic(light: "F5F5F5", dark: "000000"),
-                tertiaryBackground: Color.dynamic(light: "FFFFFF", dark: "232323"),
+                primaryBackground: Color.dynamic(light: "582f0e", dark: "000000"),
+                secondaryBackground: Color(uiColor: .tertiarySystemGroupedBackground),
                 cardBackground: Color.dynamic(light: "FFFFFF", dark: "000000"),
-                accentText: Color.dynamic(light: "008CFF", dark: "008CFF"),
-                primaryText: Color.dynamic(light: "000000", dark: "FFFFFF"),
-                secondaryText: Color.dynamic(light: "7D7D7D", dark: "828282"),
-                tertiaryText: Color.dynamic(light: "B3B3B3", dark: "4D4D4D")
+                accentText: .purple,
+                primaryText: .primary,
+                secondaryText: .orange,
+                successButton: .green,
+                failButton: .red
             )
         }
     }

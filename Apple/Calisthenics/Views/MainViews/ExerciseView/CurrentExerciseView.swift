@@ -41,6 +41,7 @@ struct CurrentExerciseView: View {
                 if exerciseViewModel.exercise != nil && randomExercise != "" && exercises.count > 1 {
                     VStack {
                         Text(totalDurationToday())
+                            .foregroundStyle(colorScheme.current.primaryText)
                         ExerciseCardView(finishedTapped: $finishedTapped, stashedExercise: $stashedExercise, tempDifficulty: $difficulty)
                             .onChange(of: finishedTapped) {
                                 if finishedTapped {
@@ -68,7 +69,7 @@ struct CurrentExerciseView: View {
                         requestAuthorization()
                     }
                     .toast(isPresenting: $finishedTapped) {
-                        AlertToast(displayMode: .hud, type: .complete(.green), title: "Exercise completed!")
+                        AlertToast(displayMode: .hud, type: .complete(colorScheme.current.successButton), title: "Exercise completed!")
                     }
                     .toast(isPresenting: $stashedExercise) {
                         AlertToast(displayMode: .hud, type: .complete(.orange), title: "Exercise stashed!")
