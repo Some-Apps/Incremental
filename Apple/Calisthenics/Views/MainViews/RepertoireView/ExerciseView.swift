@@ -180,7 +180,7 @@ struct ExerciseView: View {
                 }
                 .listRowBackground(colorScheme.current.secondaryBackground)
 
-                Section("Notes") {
+                Section {
                     HStack {
                         Text(notes)
                         Spacer()
@@ -197,10 +197,13 @@ struct ExerciseView: View {
                             Spacer()
                         }
                     }
+                } header: {
+                    Text("Notes")
+                        .foregroundStyle(colorScheme.current.secondaryText)
                 }
                 .listRowBackground(colorScheme.current.secondaryBackground)
 
-                Section("Stats") {
+                Section {
                     if isSubscribed {
                         if exercise.units == "Reps" {
                             Text("Total Reps: \(totalReps)")
@@ -322,6 +325,10 @@ struct ExerciseView: View {
                     
                     
                     
+                } header: {
+                    Text("Stats")
+                        .foregroundStyle(colorScheme.current.secondaryText)
+
                 }
                 .listRowBackground(colorScheme.current.secondaryBackground)
 

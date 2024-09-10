@@ -27,7 +27,7 @@ struct ExerciseHistoryView: View {
                     ) {
                         ForEach(groupedLogs[date] ?? [], id: \.self) { log in
                             HStack {
-                                Text("\(log.exercise?.title ?? log.title ?? "Unknown)")
+                                Text("\(log.exercise?.title ?? log.title ?? "Unknown")")
                                 if let side = log.side {
                                     Image(systemName: side == "right" ? "arrowshape.right" : side == "left" ? "arrowshape.left" : "")
                                         .foregroundStyle(colorScheme.current.secondaryText)

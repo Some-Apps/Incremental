@@ -231,14 +231,14 @@ struct CurrentExerciseView: View {
         print("[LOG] total weight: \(totalWeight)")
 
         // Calculate the maximum increment
-        let maxIncrement = lastExercise.currentReps! * 0.03
+        let maxIncrement = lastExercise.currentReps! * 0.05
         print("[LOG] max increment: \(maxIncrement)")
         
         if let currentIncrementIncrement = lastExercise.incrementIncrement {
             var newIncrementIncrement = currentIncrementIncrement
             
             if totalWeight <= 0.5 {
-                newIncrementIncrement += 0.015
+                newIncrementIncrement += 0.025
             } else if totalWeight <= 1 {
                 newIncrementIncrement += 0.01
             } else if totalWeight <= 1.5 {
