@@ -28,7 +28,7 @@ struct StashedExerciseCardView: View {
         ScrollView {
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(colorScheme.current.primaryBackground)
+                    .fill(colorScheme.current.secondaryBackground)
                     .shadow(color: colorScheme.current.primaryText.opacity(0.5), radius: 2)
                 VStack {
                     HStack {
@@ -91,7 +91,7 @@ struct StashedExerciseCardView: View {
                         finishedTapped = true
                     }
                     .buttonStyle(.bordered)
-                    .tint(colorScheme.current.successButton)
+                    .tint(.green)
                     .font(.title)
                     .disabled(stopwatchViewModel.seconds < 5 || stopwatchViewModel.isRunning)
 //                    .onChange(of: finishedTapped) {

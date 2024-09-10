@@ -94,7 +94,7 @@ struct ExerciseView: View {
     }
     
     func formattedChangeText(percentage: Double, change: Int) -> Text {
-        let color: Color = percentage >= 0 ? colorScheme.current.successButton : colorScheme.current.failButton
+        let color: Color = percentage >= 0 ? .green : .red
         let formattedText = Text("\(percentage, specifier: "%.2f")%") + Text(" (\(change))")
         return formattedText.foregroundColor(color)
     }
@@ -131,14 +131,12 @@ struct ExerciseView: View {
                         Chart(sortedLogs, id: \.self) { log in
                             LineMark(x: .value("Date", log.timestamp!), y: .value("Reps", log.reps!))
                                 .interpolationMethod(.linear)
-                                .foregroundStyle(colorScheme.current.accentText)
                         }
                         .frame(height: 200)
                     } else {
                         Chart(examplePoints, id: \.self) { log in
                             LineMark(x: .value("Date", log.timestamp), y: .value("Reps", log.reps))
                                 .interpolationMethod(.linear)
-                                .foregroundStyle(colorScheme.current.accentText)
 
                         }
                         .frame(height: 200)
@@ -160,7 +158,7 @@ struct ExerciseView: View {
                             isActive = exercise.isActive!
                         }
                         .disabled(randomExercise == exercise.id?.uuidString)
-                        .tint(colorScheme.current.successButton)
+                        .tint(.green)
                     if exercise.units == "Reps" {
                         Text("Current Reps: \(exercise.currentReps ?? 0, specifier: "%.2f")")
                         Text("Last Increment: \(exercise.increment ?? 0, specifier: "%.2f")")
@@ -191,7 +189,6 @@ struct ExerciseView: View {
                                 isTextEditorSheetPresented.toggle()
                             }) {
                                 Image(systemName: "pencil")
-                                    .foregroundStyle(colorScheme.current.accentText)
                             }
                             .padding(.top)
                             .sheet(isPresented: $isTextEditorSheetPresented) {
@@ -350,7 +347,6 @@ struct ExerciseView: View {
                     dismiss()
                 }
                 .disabled(isActive == exercise.isActive && notes == exercise.notes)
-                .foregroundStyle((isActive == exercise.isActive && notes == exercise.notes) ? colorScheme.current.accentText.opacity(0.5) : colorScheme.current.accentText)
             }
         }
         .onAppear {
@@ -358,7 +354,6 @@ struct ExerciseView: View {
                 try await fetchPurchases()
             }
         }
-        .accentColor(colorScheme.current.accentText) // <- note that it's added here and not on the List like navigationBarTitle()
     }
     
     func fetchPurchases() async throws {

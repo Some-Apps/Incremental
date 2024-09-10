@@ -76,7 +76,21 @@ struct AddExerciseView: View {
     }
     
     func addExercise() {
-        let newExercise = Exercise(currentReps: units == "Reps" ? Double(startingReps) : Double(startingDuration), difficulty: "easy", id: UUID(), isActive: true, notes: notes, title: title, units: units, increment: 0, incrementIncrement: 0, leftRight: leftRight, leftSide: true, logs: [])
+        let newExercise = Exercise(
+            currentReps: units == "Reps" ? Double(startingReps) : Double(startingDuration),
+            difficulty: "easy",
+            id: UUID(),
+            isActive: true,
+            notes: notes,
+            title: title,
+            units: units,
+            increment: 0,
+            incrementIncrement: 0,
+            leftRight: leftRight,
+            leftSide: Bool.random(), // This will randomly assign true or false
+            logs: []
+        )
+
         modelContext.insert(newExercise)
         try? modelContext.save()
         print("Saved")

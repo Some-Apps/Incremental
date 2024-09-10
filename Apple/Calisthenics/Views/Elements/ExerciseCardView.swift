@@ -34,7 +34,7 @@ struct ExerciseCardView: View {
         ScrollView {
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(colorScheme.current.cardBackground)
+                    .fill(colorScheme.current.secondaryBackground)
                     .shadow(color: colorScheme.current.primaryText.opacity(0.5), radius: 2)
                 VStack {
                     HStack {
@@ -57,7 +57,6 @@ struct ExerciseCardView: View {
                                 showPopover.toggle()
                             } label: {
                                 Image(systemName: "questionmark.circle")
-                                    .foregroundStyle(colorScheme.current.accentText)
                             }
                             .popover(isPresented: $showPopover, content: {
                                 Text(exerciseViewModel.exercise!.notes!)
@@ -105,7 +104,7 @@ struct ExerciseCardView: View {
                     }
                     .sensoryFeedback(.success, trigger: haptic)
                     .buttonStyle(.bordered)
-                    .tint(colorScheme.current.successButton)
+                    .tint(.green)
                     .font(.title)
                     .disabled(stopwatchViewModel.seconds < 3 || stopwatchViewModel.isRunning)
                     if stashedExercises.count < 10 {
@@ -119,7 +118,6 @@ struct ExerciseCardView: View {
                             
                         }
                         .disabled(stopwatchViewModel.seconds >= 3 || stashedExercise)
-                        .foregroundStyle(colorScheme.current.accentText)
                     }
                 }
                 .padding()

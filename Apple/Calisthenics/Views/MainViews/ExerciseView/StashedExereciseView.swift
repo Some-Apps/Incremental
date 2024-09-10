@@ -54,7 +54,7 @@ struct StashedExereciseView: View {
                         requestAuthorization()
                     }
                     .toast(isPresenting: $finishedTapped) {
-                        AlertToast(displayMode: .hud, type: .complete(colorScheme.current.successButton), title: "Exercise completed!")
+                        AlertToast(displayMode: .hud, type: .complete(.green), title: "Exercise completed!")
                     }
                 } else {
                     HStack {
@@ -79,10 +79,8 @@ struct StashedExereciseView: View {
                     
                 }
             }
-            .background(colorScheme.current.primaryBackground)
 
         }
-        .background(colorScheme.current.primaryBackground)
     }
     
     
@@ -187,6 +185,7 @@ struct StashedExereciseView: View {
         print("LOG: creating log")
         let exercise = fetchExerciseById(id: lastExercise.id!, exercises: originalExercises)
         let newLog = Log(backingData: Log.createBackingData())
+        newLog.title = lastExercise.title ?? "Unknown"
         newLog.id = UUID()
         newLog.duration = Int16(exactly: stopwatchViewModel.seconds)!
         newLog.reps = lastExercise.currentReps

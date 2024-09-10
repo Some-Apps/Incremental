@@ -47,14 +47,13 @@ struct StopwatchView: View {
                     } label: {
                         Image(systemName: "clock.arrow.circlepath")
                             .font(.title)
-                            .foregroundStyle(colorScheme.current.accentText)
                     }
                 }
                                 
                 Button(viewModel.isRunning ? "Stop" : "Start") {
                     viewModel.startStop()
                 }
-                .tint(viewModel.isRunning ? colorScheme.current.failButton : colorScheme.current.successButton)
+                .tint(viewModel.isRunning ? .red : .green)
                 .font(.largeTitle)
                 .buttonStyle(.bordered)
                 Button("Reset") {
@@ -71,7 +70,7 @@ struct StopwatchView: View {
             .preventSleep(isRunning: $viewModel.isRunning)
         }
         .padding()
-        .background(colorScheme.current.cardBackground)
+        .background(colorScheme.current.secondaryBackground)
         .cornerRadius(15.0)
         .shadow(color: colorScheme.current.primaryText.opacity(0.5), radius: 2)
     }

@@ -6,7 +6,7 @@ struct ColorSchemePickerView: View {
 
     let colorSchemes: [(name: String, scheme: MyColorSchemeType)] = [
         ("Main", .main),
-        ("Alternative", .alternative)
+        ("Incremental", .incremental),
     ]
     
     var body: some View {
@@ -39,29 +39,18 @@ struct ColorPreviewView: View {
     var body: some View {
         HStack(spacing: 0) {
             Rectangle()
-                .fill(colorScheme.primaryBackground)
-                .frame(width: 15, height: 30)
-            Rectangle()
                 .fill(colorScheme.secondaryBackground)
                 .frame(width: 15, height: 30)
             Rectangle()
-                .fill(colorScheme.cardBackground)
-                .frame(width: 15, height: 30)
-            Rectangle()
-                .fill(colorScheme.accentText)
-                .frame(width: 15, height: 30)
-            Rectangle()
-                .fill(colorScheme.primaryText)
+                .fill(colorScheme.primaryBackground)
                 .frame(width: 15, height: 30)
             Rectangle()
                 .fill(colorScheme.secondaryText)
                 .frame(width: 15, height: 30)
             Rectangle()
-                .fill(colorScheme.successButton)
+                .fill(colorScheme.primaryText)
                 .frame(width: 15, height: 30)
-            Rectangle()
-                .fill(colorScheme.failButton)
-                .frame(width: 15, height: 30)
+            
         }
     }
 }

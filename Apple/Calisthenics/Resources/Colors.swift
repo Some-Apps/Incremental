@@ -31,45 +31,33 @@ final class ColorSchemeState: ObservableObject {
 struct MyColorScheme {
     let title: String
     
-    let primaryBackground: Color
     let secondaryBackground: Color
-    let cardBackground: Color
-    let accentText: Color
-    let primaryText: Color
+    let primaryBackground: Color
     let secondaryText: Color
-    let successButton: Color
-    let failButton: Color
+    let primaryText: Color
 }
 
 enum MyColorSchemeType: String, CaseIterable {
-    case main = "Default"
-    case alternative = "Forest"
+    case main
+    case incremental
 
     var colorScheme: MyColorScheme {
         switch self {
         case .main:
             return MyColorScheme(
                 title: "Default",
-                primaryBackground: Color(uiColor: .systemGroupedBackground),
                 secondaryBackground: Color(uiColor: .secondarySystemGroupedBackground),
-                cardBackground: Color.dynamic(light: "FFFFFF", dark: "000000"),
-                accentText: .accentColor,
-                primaryText: .primary,
+                primaryBackground: Color(uiColor: .systemGroupedBackground),
                 secondaryText: .secondary,
-                successButton: .green,
-                failButton: .red
+                primaryText: .primary
             )
-        case .alternative:
+        case .incremental:
             return MyColorScheme(
-                title: "Forest",
-                primaryBackground: Color.dynamic(light: "582f0e", dark: "000000"),
-                secondaryBackground: Color(uiColor: .tertiarySystemGroupedBackground),
-                cardBackground: Color.dynamic(light: "FFFFFF", dark: "000000"),
-                accentText: .purple,
-                primaryText: .primary,
-                secondaryText: .orange,
-                successButton: .green,
-                failButton: .red
+                title: "Incremental",
+                secondaryBackground: Color.dynamic(light: "FFFEFA", dark: "f2cc8f"),
+                primaryBackground: Color.dynamic(light: "DDF3E9", dark: "000000"),
+                secondaryText: Color.dynamic(light: "8CD2B8", dark: "00b4d8"),
+                primaryText: Color.dynamic(light: "190042", dark: "283618")
             )
         }
     }

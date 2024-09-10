@@ -69,7 +69,7 @@ struct CurrentExerciseView: View {
                         requestAuthorization()
                     }
                     .toast(isPresenting: $finishedTapped) {
-                        AlertToast(displayMode: .hud, type: .complete(colorScheme.current.successButton), title: "Exercise completed!")
+                        AlertToast(displayMode: .hud, type: .complete(.green), title: "Exercise completed!")
                     }
                     .toast(isPresenting: $stashedExercise) {
                         AlertToast(displayMode: .hud, type: .complete(.orange), title: "Exercise stashed!")
@@ -96,7 +96,6 @@ struct CurrentExerciseView: View {
                 }
 
             }
-            .background(colorScheme.current.primaryBackground)
         }
     }
 
@@ -197,6 +196,7 @@ struct CurrentExerciseView: View {
 
     func createLog(difficulty: Difficulty, lastExercise: Exercise) {
         let newLog = Log(backingData: Log.createBackingData())
+        newLog.title = lastExercise.title ?? "Unknown"
         newLog.id = UUID()
         newLog.duration = Int16(exactly: stopwatchViewModel.seconds)!
         newLog.reps = lastExercise.currentReps

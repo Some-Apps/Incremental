@@ -2,6 +2,7 @@ import Foundation
 import SwiftData
 
 @Model class Log {
+    var title: String?
     var duration: Int16? = 0
     var id: UUID?
     var reps: Double? = 0

@@ -73,7 +73,7 @@ struct SettingsView: View {
         }
         // Toasts for success and error
         .toast(isPresenting: $showDeleteSuccess) {
-            AlertToast(type: .complete(colorScheme.current.successButton), title: "All data deleted successfully.")
+            AlertToast(type: .complete(.green), title: "All data deleted successfully.")
         }
         .toast(isPresenting: $showDeleteError) {
             AlertToast(type: .error(Color.red), title: deleteErrorMessage)
@@ -107,17 +107,16 @@ struct SettingsView: View {
                         fetchAllData()
                     }
                     .disabled(!isSubscribed)
-                    .foregroundStyle(isSubscribed ? colorScheme.current.accentText : colorScheme.current.secondaryText)
-                    NavigationLink(destination: ColorSchemePickerView()) {
-                        HStack {
-                            Text("Color Scheme")
-                            Spacer()
-                            Text("\(colorScheme.current.title)")
-                                .foregroundStyle(colorScheme.current.secondaryText)
-                        }
-                    }
-                    .disabled(!isSubscribed)
-            
+//                    NavigationLink(destination: ColorSchemePickerView()) {
+//                        HStack {
+//                            Text("Color Scheme")
+//                            Spacer()
+//                            Text("\(colorScheme.current.title)")
+//                                .foregroundStyle(colorScheme.current.secondaryText)
+//                        }
+//                    }
+//                    .disabled(!isSubscribed)
+//            
                 
                 if isSubscribed {
 //                    HStack {
@@ -131,7 +130,6 @@ struct SettingsView: View {
                         showUpgrade.toggle()
                     } label: {
                         Text("Upgrade to Incremental Pro")
-                            .foregroundStyle(colorScheme.current.accentText)
 
                     }
                 }
@@ -154,7 +152,7 @@ struct SettingsView: View {
                 Button("Delete All Data") {
                     showDeleteConfirmation = true
                 }
-                .foregroundColor(colorScheme.current.failButton) // Highlight the delete button
+                .foregroundColor(.red) // Highlight the delete button
             } header: {
                 Text("Danger Zone")
                     .foregroundStyle(colorScheme.current.secondaryText)

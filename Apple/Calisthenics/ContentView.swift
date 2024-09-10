@@ -37,20 +37,22 @@ struct ContentView: View {
                 }
                 .tag(1)
                 .badge(stashedExercises.count)
+
             RepertoireView()
                 .tabItem {
                     Label("Repertoire", systemImage: "list.clipboard")
                 }
                 .tag(2)
+
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.fill")
                 }
                 .tag(3)
+
         }
-        .tint(colorScheme.current.accentText)
+
         .onAppear {
-            UITabBar.appearance().unselectedItemTintColor = UIColor(colorScheme.current.secondaryText)
             WidgetCenter.shared.reloadAllTimelines()
             currentTab = 0
             

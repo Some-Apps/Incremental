@@ -80,7 +80,6 @@ struct RepertoireView: View {
                         AddExerciseView()
                     } label: {
                         Image(systemName: "plus")
-                            .foregroundStyle(colorScheme.current.accentText)
                     }
                     .popoverTip(addExerciseTip)
                     .onTapGesture {
@@ -89,7 +88,6 @@ struct RepertoireView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
-                        .foregroundStyle(colorScheme.current.accentText)
                 }
             }
         }

@@ -13,15 +13,15 @@ struct StatsElement: View {
     }, sort: \.timestamp) var logs: [Log]
     
     // Function to group logs by day and calculate total duration per day in minutes
-    private func timeSpentPerDay() -> [(date: Date, totalDuration: Int)] {
+    private func timeSpentPerDay() -> [(date: Date, totalDuration: Double)] {
         let calendar = Calendar.current
         let groupedLogs = Dictionary(grouping: logs) { log -> Date in
             return calendar.startOfDay(for: log.timestamp ?? Date())
         }
         
-        // Calculate total duration for each day in minutes
+        // Calculate total duration for each day in minutes (using Double for precision)
         let timePerDay = groupedLogs.map { (date, logsForDay) in
-            let totalDuration = logsForDay.reduce(0) { $0 + Int($1.duration ?? 0) } / 60
+            let totalDuration = logsForDay.reduce(0.0) { $0 + Double($1.duration ?? 0) } / 60.0
             return (date: date, totalDuration: totalDuration)
         }
         
@@ -30,8 +30,8 @@ struct StatsElement: View {
     }
     
     // Calculate total exercise time across all logs
-    private var totalExerciseTime: Int {
-        logs.reduce(0) { $0 + Int($1.duration ?? 0) } / 60  // In minutes
+    private var totalExerciseTime: Double {
+        logs.reduce(0.0) { $0 + Double($1.duration ?? 0) } / 60.0  // In minutes
     }
     
     // Show or hide chart based on available data
@@ -45,14 +45,13 @@ struct StatsElement: View {
                 ForEach(timeSpentPerDay(), id: \.date) { item in
                     BarMark(
                         x: .value("Date", item.date, unit: .day),
-                        y: .value("Total Time (min)", item.totalDuration)
+                        y: .value("Total Time (min)", item.totalDuration)  // Use Double here
                     )
                 }
             }
             .chartXAxisLabel("Date")
             .chartYAxisLabel("Total Duration (Minutes)")
             .frame(height: 300)
-            .foregroundStyle(colorScheme.current.accentText)
         } else {
 //            Text("No data available")
         }
@@ -65,9 +64,9 @@ struct StatsElement: View {
             .foregroundStyle(colorScheme.current.secondaryText)
     }
 
-    private func formatTotalExerciseTime(_ totalMinutes: Int) -> String {
-        let hours = totalMinutes / 60
-        let minutes = totalMinutes % 60
+    private func formatTotalExerciseTime(_ totalMinutes: Double) -> String {
+        let hours = Int(totalMinutes) / 60
+        let minutes = Int(totalMinutes) % 60
 
         if hours > 0 {
             return "\(hours) \(hours == 1 ? "hour" : "hours") \(minutes) \(minutes == 1 ? "minute" : "minutes")"
