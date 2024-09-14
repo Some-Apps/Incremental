@@ -107,6 +107,7 @@ struct SettingsView: View {
                         fetchAllData()
                     }
                     .disabled(!isSubscribed)
+                    .foregroundStyle(isSubscribed ? colorScheme.current.primaryText : colorScheme.current.secondaryText)
 //                    NavigationLink(destination: ColorSchemePickerView()) {
 //                        HStack {
 //                            Text("Color Scheme")
@@ -130,7 +131,7 @@ struct SettingsView: View {
                         showUpgrade.toggle()
                     } label: {
                         Text("Upgrade to Incremental Pro")
-
+                            .foregroundStyle(Color.accentColor)
                     }
                 }
             } header: {
