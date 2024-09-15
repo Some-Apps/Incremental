@@ -20,9 +20,9 @@ struct TutorialView: View {
 struct TutorialItem: View {
     @EnvironmentObject var colorScheme: ColorSchemeState
 
-    let title: String
-    let description: String
-    
+    let title: LocalizedStringResource
+    let description: LocalizedStringResource
+
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
@@ -31,9 +31,9 @@ struct TutorialItem: View {
                 .foregroundStyle(colorScheme.current.primaryText)
             Text(description)
         }
-
     }
 }
+
 
 #Preview {
     TutorialView()

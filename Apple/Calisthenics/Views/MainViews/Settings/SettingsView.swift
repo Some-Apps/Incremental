@@ -4,6 +4,7 @@ import StoreKit
 import AlertToast
 import SwiftData
 import CloudKit
+import Translation
 
 struct SettingsView: View {
     @Environment(\.modelContext) var modelContext
@@ -189,7 +190,9 @@ struct SettingsView: View {
                 }
             }
         }
+
     }
+
     
  
     
