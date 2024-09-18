@@ -291,7 +291,10 @@ struct CurrentExerciseView: View {
                         print("[LOG] went to easy log")
                         if let currentReps = lastExercise.currentReps {
                             let lastEasyReps = Double(lastEasyLog.reps ?? Double(lastExercise.currentReps!.rounded(.down)))
-                            lastExercise.increment = lastEasyReps - currentReps
+                            lastExercise.currentReps = lastEasyReps
+//                            lastExercise.increment = lastEasyReps - currentReps
+                            lastExercise.increment = 0
+
                             lastExercise.incrementIncrement = 0
                         }
                     } else {
