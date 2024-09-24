@@ -61,7 +61,7 @@ struct CurrentExerciseView: View {
                     }
                     .onChange(of: logs) {
                         print("[LOG] LOGS: \(logs.count)")
-                        if isSubscribed && logs.count % 500 == 0 {
+                        if isSubscribed && logs.count % 250 == 0 || (logs.count % 500 == 0) {
                             requestReview()
                         }
                     }
