@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "605020976257",
+    "project_id": "shared-cause",
+    "storage_bucket": "shared-cause.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605020976257:android:886c652bedaf1b0fa0c980",
+        "android_client_info": {
+          "package_name": "me.jareddanieljones.sharedcause"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDz6Y5v8vr7E39LYnvFSyl3RTQ5JhQ0BEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605020976257:android:6aa9e5d1b2bd33c6a0c980",
+        "android_client_info": {
+          "package_name": "me.jareddanieljones.sharedcause"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDz6Y5v8vr7E39LYnvFSyl3RTQ5JhQ0BEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
