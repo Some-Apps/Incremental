@@ -12,7 +12,7 @@ class ExerciseViewModel: ObservableObject {
     @Published var exercise: Exercise? = nil {
         didSet {
             difficulty = Difficulty(rawValue: exercise?.difficulty ?? "easy") ?? .easy
-            print("[LOG] Difficulty: \(exercise?.difficulty)")
+            print("[LOG] Difficulty: \(String(describing: exercise?.difficulty))")
         }
     }
 

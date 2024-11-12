@@ -45,7 +45,7 @@ struct CalisthenicsWidgetEntryView : View {
         
         let totalDuration = newLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
         let minutes = Int(totalDuration) / 60
-        let seconds = Int(totalDuration) % 60
+//        let seconds = Int(totalDuration) % 60
         return "\(minutes) \(minutes == 1 ? "minute" : "minutes")"
     }
     var entry: Provider.Entry

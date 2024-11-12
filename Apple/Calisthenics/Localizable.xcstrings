@@ -194,6 +194,7 @@
       }
     },
     " (%lld)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -450,6 +451,7 @@
       }
     },
     "%.2f%%" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

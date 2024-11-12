@@ -231,26 +231,26 @@ struct CurrentExerciseView: View {
         print("[LOG] total weight: \(totalWeight)")
 
         // Calculate the maximum increment
-        let maxIncrement = lastExercise.currentReps! * 0.049
+        let maxIncrement = lastExercise.currentReps! * 0.048
         print("[LOG] max increment: \(maxIncrement)")
         
         if let currentIncrementIncrement = lastExercise.incrementIncrement {
             var newIncrementIncrement = currentIncrementIncrement
             
             if totalWeight <= 0.5 {
-                newIncrementIncrement += 0.024
+                newIncrementIncrement += 0.020
             } else if totalWeight <= 1 {
-                newIncrementIncrement += 0.015
-            } else if totalWeight <= 1.5 {
                 newIncrementIncrement += 0.01
-            } else if totalWeight <= 2 {
-                newIncrementIncrement -= 0.02
-            } else if totalWeight <= 2.5 {
-                newIncrementIncrement -= 0.05
-            } else if totalWeight <= 3 {
-                newIncrementIncrement -= 0.1
+            } else if totalWeight <= 1.75 {
+                newIncrementIncrement += 0.005
+            } else if totalWeight <= 2.25 {
+                newIncrementIncrement -= 0.01
+            } else if totalWeight <= 2.75 {
+                newIncrementIncrement -= 0.04
+            } else if totalWeight <= 3.25 {
+                newIncrementIncrement -= 0.075
             } else {
-                newIncrementIncrement -= 0.2
+                newIncrementIncrement -= 0.1
             }
             
             print("[LOG] new increment based on weight: \(newIncrementIncrement)")
@@ -289,7 +289,7 @@ struct CurrentExerciseView: View {
                     print("[LOG] greater than 0")
                     if let lastEasyLog = lastEasyLog {
                         print("[LOG] went to easy log")
-                        if let currentReps = lastExercise.currentReps {
+                        if lastExercise.currentReps != nil {
                             let lastEasyReps = Double(lastEasyLog.reps ?? Double(lastExercise.currentReps!.rounded(.down)))
                             lastExercise.currentReps = lastEasyReps
 //                            lastExercise.increment = lastEasyReps - currentReps

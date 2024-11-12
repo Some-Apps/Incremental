@@ -35,14 +35,18 @@ struct RepertoireView: View {
                                 Text(exercise.title ?? "Unknown")
                                 Spacer()
                                 if isSubscribed {
-                                    if let change = oneYearChange(exercise: exercise) {
+                                    if let change = oneYearChange(exercise: exercise), change.percentage != 0 {
                                         HStack(spacing: 2) {
                                             Image(systemName: change.percentage >= 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
-                                                .foregroundColor(change.percentage >= 0 ? .green : .red).opacity(0.5)
-                                            Text(String(format: "%.2f%%", change.percentage))
-                                                .foregroundColor(change.percentage >= 0 ? .green : .red).opacity(0.5)
+                                                .foregroundColor(change.percentage >= 0 ? .green : .red)
+                                                .opacity(0.5)
+                                            Text(String(format: "%.0f%%", abs(change.percentage)))
+                                                .foregroundColor(change.percentage >= 0 ? .green : .red)
+                                                .opacity(0.5)
                                         }
                                     }
+
+
                                 }
                                 
                             }
