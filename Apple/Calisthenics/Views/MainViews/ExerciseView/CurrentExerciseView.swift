@@ -310,6 +310,7 @@ struct CurrentExerciseView: View {
                 print("[LOG] failed to unwrap")
                 lastExercise.increment = 0
             }
+            lastExercise.currentReps! -= 1
         }
         // Update the current reps
         lastExercise.currentReps! += lastExercise.increment ?? 0

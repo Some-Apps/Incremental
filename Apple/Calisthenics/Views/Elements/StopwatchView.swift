@@ -71,8 +71,12 @@ struct StopwatchView: View {
         }
         .padding()
         .background(colorScheme.current.secondaryBackground)
-        .cornerRadius(15.0)
-        .shadow(color: colorScheme.current.primaryText.opacity(0.5), radius: 2)
+        .cornerRadius(25)
+        .overlay(
+            RoundedRectangle(cornerRadius: 25)
+                .stroke(colorScheme.current.primaryText, lineWidth: 1) // Set the border color and width
+        )
+//        .shadow(color: colorScheme.current.primaryText.opacity(0.5), radius: 2)
     }
 }
 

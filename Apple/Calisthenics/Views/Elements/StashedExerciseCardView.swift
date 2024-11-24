@@ -29,7 +29,10 @@ struct StashedExerciseCardView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
                     .fill(colorScheme.current.secondaryBackground)
-                    .shadow(color: colorScheme.current.primaryText.opacity(0.5), radius: 2)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 25)
+                            .stroke(tempDifficulty == .easy ? Color.green : Color.red, lineWidth: 1) // Set the border color and width
+                    )
                 VStack {
                     HStack {
                         Text("\(exercises.first?.title ?? "")\((exercises.first?.leftRight ?? false) ? (exercises.first?.leftSide ?? false ? " (left)" : " (right)") : "")")
