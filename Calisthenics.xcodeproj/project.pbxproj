@@ -45,7 +45,6 @@
 		C0CB957D29C6445A0099974B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB957C29C6445A0099974B /* ContentView.swift */; };
 		C0CB957F29C6445B0099974B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB957E29C6445B0099974B /* Assets.xcassets */; };
 		C0CB958229C6445B0099974B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB958129C6445B0099974B /* Preview Assets.xcassets */; };
-		C0E00A0D2C86B8D0005C0AE3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0E00A0C2C86B8D0005C0AE3 /* GoogleService-Info.plist */; };
 		C0E00A132C874BAC005C0AE3 /* PrivacyPolicyElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A122C874BAC005C0AE3 /* PrivacyPolicyElement.swift */; };
 		C0E00A152C874BBD005C0AE3 /* EULAElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A142C874BBD005C0AE3 /* EULAElement.swift */; };
 		C0E00A172C874D01005C0AE3 /* TermsAndConditionsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A162C874D01005C0AE3 /* TermsAndConditionsElement.swift */; };
@@ -133,7 +132,6 @@
 		C0CB957C29C6445A0099974B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C0CB957E29C6445B0099974B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0CB958129C6445B0099974B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C0E00A0C2C86B8D0005C0AE3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C0E00A122C874BAC005C0AE3 /* PrivacyPolicyElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyElement.swift; sourceTree = "<group>"; };
 		C0E00A142C874BBD005C0AE3 /* EULAElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAElement.swift; sourceTree = "<group>"; };
 		C0E00A162C874D01005C0AE3 /* TermsAndConditionsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsElement.swift; sourceTree = "<group>"; };
@@ -171,13 +169,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C03C8E152CE3C457006D2A16 /* Repositories */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Repositories;
-			sourceTree = "<group>";
-		};
 		C06534592A9E6AAF001DFA7B /* CalisthenicsTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -294,7 +285,6 @@
 				C0589F232BE6725400F19B7B /* DefaultsManager.swift */,
 				C0CB957C29C6445A0099974B /* ContentView.swift */,
 				C029BCA82BF158E300113844 /* FirstLauchView.swift */,
-				C03C8E152CE3C457006D2A16 /* Repositories */,
 				C0A65C5D29D9DAB3001EAA5A /* ViewModels */,
 				C08FA4F929CB957A002CA6AF /* Views */,
 				C0E00A0A2C86B7CF005C0AE3 /* Resources */,
@@ -314,7 +304,6 @@
 		C0E00A0A2C86B7CF005C0AE3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C0E00A0C2C86B8D0005C0AE3 /* GoogleService-Info.plist */,
 				C0CB958029C6445B0099974B /* Preview Content */,
 				C0CB957E29C6445B0099974B /* Assets.xcassets */,
 				C08DFAD62C8E263C00F7EBCD /* Colors.swift */,
@@ -478,7 +467,6 @@
 				C0CB958229C6445B0099974B /* Preview Assets.xcassets in Resources */,
 				C0CB957F29C6445B0099974B /* Assets.xcassets in Resources */,
 				C0E00A212C975118005C0AE3 /* Localizable.xcstrings in Resources */,
-				C0E00A0D2C86B8D0005C0AE3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,7 +594,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = CalisthenicsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisthenicsWidget/Info.plist;
@@ -639,7 +627,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = CalisthenicsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisthenicsWidget/Info.plist;
@@ -793,7 +781,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				ENABLE_PREVIEWS = YES;
@@ -833,7 +821,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				ENABLE_PREVIEWS = YES;

@@ -97,7 +97,7 @@ struct StatsElement: View {
         Text("\(formatTotalExerciseTime(totalExerciseTime))")
             .foregroundStyle(colorScheme.current.secondaryText)
         Text("Total Sets Completed: ") +
-             Text("\(logs.count)")
+        Text("\(filteredLogs().count)")
             .foregroundStyle(colorScheme.current.secondaryText)
     }
 
