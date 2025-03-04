@@ -783,6 +783,9 @@
         }
       }
     },
+    "%lld reps" : {
+
+    },
     "• **Cancellation:** You may cancel your subscription at any time through your App Store account settings. No refunds will be provided for unused portions of a subscription period." : {
       "localizations" : {
         "de" : {
@@ -5136,6 +5139,9 @@
           }
         }
       }
+    },
+    "Exercise Proportions" : {
+
     },
     "Exercise Tab" : {
       "extractionState" : "manual",
@@ -10142,6 +10148,9 @@
           }
         }
       }
+    },
+    "Time Frame" : {
+
     },
     "To the fullest extent permitted by law, Licensor shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use or inability to use the App, even if advised of the possibility of such damages." : {
       "localizations" : {

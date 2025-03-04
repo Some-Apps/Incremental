@@ -84,7 +84,7 @@ struct SettingsView: View {
     private var formContent: some View {
         List {
             Section {
-                NavigationLink("How To Use App", 
+                NavigationLink("How To Use App",
                                destination: TutorialView()
                                             .foregroundStyle(colorScheme.current.primaryText, colorScheme.current.secondaryText)
                                             .background(colorScheme.current.primaryBackground)
@@ -109,6 +109,13 @@ struct SettingsView: View {
                     }
                     .disabled(!isSubscribed)
                     .foregroundStyle(isSubscribed ? colorScheme.current.primaryText : colorScheme.current.secondaryText)
+//                    Button("Share Exercise Proportions") {
+//                        let exerciseProportionsView = ExerciseProportionsView(exercises: exercises)
+//                        let image = exerciseProportionsView.asImage()
+//                        shareItems = [image]
+//                        showShareSheet = true
+//                    }
+                NavigationLink("Exercise Proportions", destination: ExerciseProportionsView(exercises: exercises))
 //                    NavigationLink(destination: ColorSchemePickerView()) {
 //                        HStack {
 //                            Text("Color Scheme")
@@ -118,7 +125,7 @@ struct SettingsView: View {
 //                        }
 //                    }
 //                    .disabled(!isSubscribed)
-//            
+//
                 
                 if isSubscribed {
 //                    HStack {
@@ -390,3 +397,4 @@ struct ActivityView: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {}
 }
+

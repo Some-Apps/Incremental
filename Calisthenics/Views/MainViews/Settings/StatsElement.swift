@@ -12,27 +12,58 @@ struct StatsElement: View {
         true
     }, sort: \.timestamp) var logs: [Log]
     
-    // Function to group logs by day and calculate total duration per day in minutes
-    private func timeSpentPerDay() -> [(date: Date, totalDuration: Double)] {
-        let calendar = Calendar.current
-        let groupedLogs = Dictionary(grouping: logs) { log -> Date in
-            return calendar.startOfDay(for: log.timestamp ?? Date())
+    @AppStorage("selectedTimeFrame") private var selectedTimeFrame: String = "All Time"
+
+        enum TimeFrame: String, CaseIterable, Identifiable {
+            case allTime = "All Time"
+            case year = "Year"
+            case sixMonths = "6 Months"
+            case month = "Month"
+            
+            var id: String { self.rawValue }
         }
-        
-        // Calculate total duration for each day in minutes (using Double for precision)
-        let timePerDay = groupedLogs.map { (date, logsForDay) in
-            let totalDuration = logsForDay.reduce(0.0) { $0 + Double($1.duration ?? 0) } / 60.0
-            return (date: date, totalDuration: totalDuration)
+    private func filteredLogs() -> [Log] {
+            let calendar = Calendar.current
+            let now = Date()
+            
+            guard let timeFrame = TimeFrame(rawValue: selectedTimeFrame) else {
+                return logs
+            }
+            
+            switch timeFrame {
+            case .allTime:
+                return logs
+            case .year:
+                let oneYearAgo = calendar.date(byAdding: .year, value: -1, to: now)!
+                return logs.filter { $0.timestamp ?? Date() >= oneYearAgo }
+            case .sixMonths:
+                let sixMonthsAgo = calendar.date(byAdding: .month, value: -6, to: now)!
+                return logs.filter { $0.timestamp ?? Date() >= sixMonthsAgo }
+            case .month:
+                let oneMonthAgo = calendar.date(byAdding: .month, value: -1, to: now)!
+                return logs.filter { $0.timestamp ?? Date() >= oneMonthAgo }
+            }
         }
-        
-        // Sort by date
-        return timePerDay.sorted { $0.date < $1.date }
-    }
     
-    // Calculate total exercise time across all logs
-    private var totalExerciseTime: Double {
-        logs.reduce(0.0) { $0 + Double($1.duration ?? 0) } / 60.0  // In minutes
-    }
+        
+        private func timeSpentPerDay() -> [(date: Date, totalDuration: Double)] {
+            let calendar = Calendar.current
+            let filteredLogs = filteredLogs()
+            let groupedLogs = Dictionary(grouping: filteredLogs) { log -> Date in
+                return calendar.startOfDay(for: log.timestamp ?? Date())
+            }
+            
+            let timePerDay = groupedLogs.map { (date, logsForDay) in
+                let totalDuration = logsForDay.reduce(0.0) { $0 + Double($1.duration ?? 0) } / 60.0
+                return (date: date, totalDuration: totalDuration)
+            }
+            
+            return timePerDay.sorted { $0.date < $1.date }
+        }
+        
+        private var totalExerciseTime: Double {
+            filteredLogs().reduce(0.0) { $0 + Double($1.duration ?? 0) } / 60.0
+        }
     
     // Show or hide chart based on available data
     private var showChart: Bool {
@@ -40,6 +71,12 @@ struct StatsElement: View {
     }
 
     var body: some View {
+        Picker("Time Frame", selection: $selectedTimeFrame) {
+            ForEach(TimeFrame.allCases) { timeFrame in
+                Text(timeFrame.rawValue).tag(timeFrame)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
         if showChart {
             Chart {
                 ForEach(timeSpentPerDay(), id: \.date) { item in

@@ -32,7 +32,6 @@
 		C08FA4FD29CB9729002CA6AF /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FC29CB9729002CA6AF /* AddExerciseView.swift */; };
 		C0A9A4F829CF461D000CD191 /* StopwatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A4F729CF461D000CD191 /* StopwatchViewModel.swift */; };
 		C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A4F929CF4623000CD191 /* StopwatchView.swift */; };
-		C0AFBC192C77C4E500F36697 /* MijickCameraView in Frameworks */ = {isa = PBXBuildFile; productRef = C0AFBC182C77C4E500F36697 /* MijickCameraView */; };
 		C0BDACA329CF3ECE006B19F9 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FA50A29CF33DF002CA6AF /* WidgetKit.framework */; };
 		C0BDACA429CF3ECE006B19F9 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08FA50C29CF33DF002CA6AF /* SwiftUI.framework */; };
 		C0BDACA729CF3ECE006B19F9 /* CalisthenicsWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BDACA629CF3ECE006B19F9 /* CalisthenicsWidgetBundle.swift */; };
@@ -40,13 +39,12 @@
 		C0BDACAB29CF3ECE006B19F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0BDACAA29CF3ECE006B19F9 /* Assets.xcassets */; };
 		C0BDACAF29CF3ECE006B19F9 /* CalisthenicsWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C0BDACA229CF3ECE006B19F9 /* CalisthenicsWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C0BDACB329CF3FBF006B19F9 /* CalisthenicsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BDACA829CF3ECE006B19F9 /* CalisthenicsWidget.swift */; };
+		C0C7579F2D77AC8600FA0968 /* ShareExerciseProportionsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C7579E2D77AC8600FA0968 /* ShareExerciseProportionsElement.swift */; };
 		C0C78F8629DCBFF200F26A41 /* PreventSleep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C78F8529DCBFF200F26A41 /* PreventSleep.swift */; };
 		C0CB957B29C6445A0099974B /* CalisthenicsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */; };
 		C0CB957D29C6445A0099974B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB957C29C6445A0099974B /* ContentView.swift */; };
 		C0CB957F29C6445B0099974B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB957E29C6445B0099974B /* Assets.xcassets */; };
 		C0CB958229C6445B0099974B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB958129C6445B0099974B /* Preview Assets.xcassets */; };
-		C0E00A022C86B6C6005C0AE3 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C0E00A012C86B6C6005C0AE3 /* FirebaseAuth */; };
-		C0E00A042C86B6C6005C0AE3 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C0E00A032C86B6C6005C0AE3 /* FirebaseFirestore */; };
 		C0E00A0D2C86B8D0005C0AE3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0E00A0C2C86B8D0005C0AE3 /* GoogleService-Info.plist */; };
 		C0E00A132C874BAC005C0AE3 /* PrivacyPolicyElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A122C874BAC005C0AE3 /* PrivacyPolicyElement.swift */; };
 		C0E00A152C874BBD005C0AE3 /* EULAElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E00A142C874BBD005C0AE3 /* EULAElement.swift */; };
@@ -128,6 +126,7 @@
 		C0BDACA829CF3ECE006B19F9 /* CalisthenicsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsWidget.swift; sourceTree = "<group>"; };
 		C0BDACAA29CF3ECE006B19F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0BDACAC29CF3ECE006B19F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C0C7579E2D77AC8600FA0968 /* ShareExerciseProportionsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExerciseProportionsElement.swift; sourceTree = "<group>"; };
 		C0C78F8529DCBFF200F26A41 /* PreventSleep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreventSleep.swift; sourceTree = "<group>"; };
 		C0CB957729C6445A0099974B /* Calisthenics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calisthenics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0CB957A29C6445A0099974B /* CalisthenicsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsApp.swift; sourceTree = "<group>"; };
@@ -166,9 +165,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C03FE2082A2FB5A500C9FD3D /* AlertToast in Frameworks */,
-				C0E00A042C86B6C6005C0AE3 /* FirebaseFirestore in Frameworks */,
-				C0E00A022C86B6C6005C0AE3 /* FirebaseAuth in Frameworks */,
-				C0AFBC192C77C4E500F36697 /* MijickCameraView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				C0E00A122C874BAC005C0AE3 /* PrivacyPolicyElement.swift */,
+				C0C7579E2D77AC8600FA0968 /* ShareExerciseProportionsElement.swift */,
 				C0E00A182C874E0C005C0AE3 /* TermsView.swift */,
 				C0E00A162C874D01005C0AE3 /* TermsAndConditionsElement.swift */,
 				C0E00A142C874BBD005C0AE3 /* EULAElement.swift */,
@@ -406,9 +403,6 @@
 			name = Calisthenics;
 			packageProductDependencies = (
 				C03FE2072A2FB5A500C9FD3D /* AlertToast */,
-				C0AFBC182C77C4E500F36697 /* MijickCameraView */,
-				C0E00A012C86B6C6005C0AE3 /* FirebaseAuth */,
-				C0E00A032C86B6C6005C0AE3 /* FirebaseFirestore */,
 			);
 			productName = Calisthenics;
 			productReference = C0CB957729C6445A0099974B /* Calisthenics.app */;
@@ -448,8 +442,6 @@
 			mainGroup = C0CB956E29C6445A0099974B;
 			packageReferences = (
 				C03FE2062A2FB5A500C9FD3D /* XCRemoteSwiftPackageReference "AlertToast" */,
-				C0AFBC172C77C4E500F36697 /* XCRemoteSwiftPackageReference "CameraView" */,
-				C0E00A002C86B6C6005C0AE3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = C0CB957829C6445A0099974B /* Products */;
 			projectDirPath = "";
@@ -525,6 +517,7 @@
 				C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */,
 				C07BAC012C76A66F00E34669 /* UpgradeView.swift in Sources */,
 				C0589F1B2BE5844900F19B7B /* StashedExereciseView.swift in Sources */,
+				C0C7579F2D77AC8600FA0968 /* ShareExerciseProportionsElement.swift in Sources */,
 				C08DFAD92C8E288300F7EBCD /* BackgroundPicker.swift in Sources */,
 				C00ECE4B2B9669C300A2CD21 /* Exercise.swift in Sources */,
 				C0360AE22A2DFA5A00E8CA37 /* SettingsView.swift in Sources */,
@@ -613,7 +606,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = CalisthenicsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisthenicsWidget/Info.plist;
@@ -626,7 +619,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.12;
+				MARKETING_VERSION = 1.1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = me.jareddanieljones.Calisthenics.CalisthenicsWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -646,7 +639,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = CalisthenicsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisthenicsWidget/Info.plist;
@@ -659,7 +652,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.12;
+				MARKETING_VERSION = 1.1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = me.jareddanieljones.Calisthenics.CalisthenicsWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -800,7 +793,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				ENABLE_PREVIEWS = YES;
@@ -821,7 +814,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.12;
+				MARKETING_VERSION = 1.1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = me.jareddanieljones.Calisthenics;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -840,7 +833,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				ENABLE_PREVIEWS = YES;
@@ -861,7 +854,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.12;
+				MARKETING_VERSION = 1.1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = me.jareddanieljones.Calisthenics;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -923,22 +916,6 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		C0AFBC172C77C4E500F36697 /* XCRemoteSwiftPackageReference "CameraView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Mijick/CameraView";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.0;
-			};
-		};
-		C0E00A002C86B6C6005C0AE3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 11.1.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -946,21 +923,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C03FE2062A2FB5A500C9FD3D /* XCRemoteSwiftPackageReference "AlertToast" */;
 			productName = AlertToast;
-		};
-		C0AFBC182C77C4E500F36697 /* MijickCameraView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AFBC172C77C4E500F36697 /* XCRemoteSwiftPackageReference "CameraView" */;
-			productName = MijickCameraView;
-		};
-		C0E00A012C86B6C6005C0AE3 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0E00A002C86B6C6005C0AE3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
-		C0E00A032C86B6C6005C0AE3 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0E00A002C86B6C6005C0AE3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
