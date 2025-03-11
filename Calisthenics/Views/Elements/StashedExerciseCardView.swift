@@ -96,7 +96,7 @@ struct StashedExerciseCardView: View {
                     .buttonStyle(.bordered)
                     .tint(.green)
                     .font(.title)
-                    .disabled(stopwatchViewModel.seconds < 5 || stopwatchViewModel.isRunning)
+                    .disabled(stopwatchViewModel.seconds < 3 || stopwatchViewModel.isRunning)
 //                    .onChange(of: finishedTapped) {
 //                        if finishedTapped {
 //                            exerciseViewModel.exercise = exercises.first

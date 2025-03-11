@@ -31,12 +31,20 @@ struct ContentView: View {
                 .onAppear {
                     defaultsManager.loadSettings()
                 }
-            StashedExereciseView()
-                .tabItem {
-                    Label("Stashed", systemImage: "clock.arrow.circlepath")
-                }
-                .badge("\(stashedExercises.count)/10")
-                .tag(1)
+            if stashedExercises.count > 0 {
+                StashedExereciseView()
+                    .tabItem {
+                        Label("Stashed", systemImage: "clock.arrow.circlepath")
+                    }
+                    .badge("\(stashedExercises.count)/10")
+                    .tag(1)
+            } else {
+                StashedExereciseView()
+                    .tabItem {
+                        Label("Stashed", systemImage: "clock.arrow.circlepath")
+                    }
+                    .tag(1)
+            }
             
             
             RepertoireView()

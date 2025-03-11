@@ -2,6 +2,7 @@ import SwiftUI
 import UIKit
 
 struct ExerciseProportionsView: View {
+    @Environment(\.colorScheme) var colorScheme
     var exercises: [Exercise]
     @State private var isShareSheetPresented = false
     @State private var shareImage: UIImage?
@@ -12,10 +13,26 @@ struct ExerciseProportionsView: View {
             ZStack {
                 ScrollView {
                     VStack(spacing: 5) {
-                        Text("Exercise Proportions")
-                            .font(.largeTitle)
-                            .bold()
-                        
+                        // Inline title and share button
+                        HStack {
+                            Text("Exercise Proportions")
+                                .font(.largeTitle)
+                                .bold()
+                            Spacer()
+                            Button(action: {
+                                // Show loading toast and delay share sheet presentation
+                                self.isLoading = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    self.shareImage = generateShareImage()
+                                    self.isLoading = false
+                                    self.isShareSheetPresented = true
+                                }
+                            }) {
+                                Image(systemName: "square.and.arrow.up")
+                            }
+                        }
+                        .padding()
+
                         ForEach(exercises, id: \.self) { exercise in
                             HStack {
                                 Text(exercise.title ?? "Unknown")
@@ -25,43 +42,26 @@ struct ExerciseProportionsView: View {
                                     .font(.subheadline)
                             }
                             .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.accentColor.opacity(0.1))
-                            )
+                            .background(colorScheme == .dark ? Color.white.opacity(0.1) : Color.black.opacity(0.1))
                             .padding(.horizontal)
                         }
                         
                         Spacer()
                     }
                     .padding()
-                    .background(Color.white)
                 }
-                .navigationBarItems(trailing: Button(action: {
-                    // Show loading toast and delay share sheet presentation
-                    self.isLoading = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self.shareImage = generateShareImage()
-                        self.isLoading = false
-                        self.isShareSheetPresented = true
-                    }
-                }) {
-                    Image(systemName: "square.and.arrow.up")
-                })
                 
                 // Loading overlay toast
                 if isLoading {
                     VStack {
                         Spacer()
-                        Text("Preparing content...")
+                        Text("Loading...")
                             .padding()
-                            .background(Color.black.opacity(0.7))
-                            .foregroundColor(.white)
                             .cornerRadius(10)
                         Spacer()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.black.opacity(0.4))
+                    .background(colorScheme == .dark ? Color.white.opacity(0.4) : Color.black.opacity(0.4))
                 }
             }
             .sheet(isPresented: $isShareSheetPresented, content: {
@@ -74,47 +74,66 @@ struct ExerciseProportionsView: View {
     
     /// Generates a custom share image containing the app logo, app name, and exercise details.
     func generateShareImage() -> UIImage {
-        let imageSize = CGSize(width: 600, height: 800)
+        // Calculate dynamic image height based on exercises count
+        let lineHeight: CGFloat = 25
+        let baseHeight: CGFloat = 130
+        let bottomPadding: CGFloat = 20
+        let exerciseCount = CGFloat(exercises.count)
+        let calculatedHeight = baseHeight + (lineHeight + 5) * exerciseCount + bottomPadding
+        let finalHeight = max(800, calculatedHeight)
+        
+        let imageSize = CGSize(width: 400, height: finalHeight)
         let renderer = UIGraphicsImageRenderer(size: imageSize)
         let image = renderer.image { context in
-            // Fill background with white
-            UIColor.white.setFill()
+            // Fill background with white or black
+            if colorScheme == .dark {
+                UIColor.black.setFill()
+            } else {
+                UIColor.white.setFill()
+            }
             context.fill(CGRect(origin: .zero, size: imageSize))
             
-            // Draw App Logo if available
-            if let logo = UIImage(named: "AppIcon") {
-                let logoRect = CGRect(x: 20, y: 20, width: 50, height: 50)
-                logo.draw(in: logoRect)
+            // Draw App Logo as a rounded icon if available
+            if let appLogo = UIImage(named: "icon") {
+                let logoSize = CGSize(width: 60, height: 60)
+                let logoRect = CGRect(x: 20, y: 20, width: logoSize.width, height: logoSize.height)
+                let path = UIBezierPath(ovalIn: logoRect)
+                context.cgContext.addPath(path.cgPath)
+                context.cgContext.clip()
+                appLogo.draw(in: logoRect)
+                context.cgContext.resetClip()
             }
             
-            // Draw App Name
-            let appName = "Incremental Calisthenics"
+            // Draw App Name centered vertically with the logo
+            let appName = "Incremental: Calisthenics"
             let appNameAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.boldSystemFont(ofSize: 24),
-                .foregroundColor: UIColor.black
+                .foregroundColor: colorScheme == .dark ? UIColor.white : UIColor.black
             ]
-            let appNameRect = CGRect(x: 80, y: 20, width: imageSize.width - 100, height: 50)
+            let textSize = (appName as NSString).size(withAttributes: appNameAttributes)
+            let appNameX: CGFloat = 20 + 60 + 10
+            let appNameY: CGFloat = 20 + (60 - textSize.height) / 2
+            let appNameRect = CGRect(x: appNameX, y: appNameY, width: imageSize.width - appNameX - 20, height: textSize.height)
             appName.draw(in: appNameRect, withAttributes: appNameAttributes)
             
             // Draw header
             let header = "Exercise Proportions"
             let headerAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.boldSystemFont(ofSize: 20),
-                .foregroundColor: UIColor.black
+                .foregroundColor: colorScheme == .dark ? UIColor.white : UIColor.black
             ]
             let headerRect = CGRect(x: 20, y: 90, width: imageSize.width - 40, height: 30)
             header.draw(in: headerRect, withAttributes: headerAttributes)
             
             // Draw each exercise detail
-            var currentY: CGFloat = 130
-            let lineHeight: CGFloat = 25
+            var currentY: CGFloat = baseHeight
             for exercise in exercises {
                 let exerciseTitle = exercise.title ?? "Unknown"
                 let reps = Int(exercise.logs?.last?.reps ?? 0)
                 let exerciseText = "\(exerciseTitle): \(reps) reps"
                 let textAttributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.systemFont(ofSize: 16),
-                    .foregroundColor: UIColor.darkGray
+                    .foregroundColor: colorScheme == .dark ? UIColor.white : UIColor.black
                 ]
                 let textRect = CGRect(x: 20, y: currentY, width: imageSize.width - 40, height: lineHeight)
                 exerciseText.draw(in: textRect, withAttributes: textAttributes)
@@ -131,8 +150,7 @@ struct ShareSheet: UIViewControllerRepresentable {
     var applicationActivities: [UIActivity]? = nil
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
-        return controller
+        UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
     }
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
