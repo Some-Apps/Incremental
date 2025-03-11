@@ -10,66 +10,62 @@ struct ExerciseProportionsView: View {
 
     var body: some View {
         NavigationView {
-            ZStack {
-                ScrollView {
-                    VStack(spacing: 5) {
-                        // Inline title and share button
-                        HStack {
-                            Text("Exercise Proportions")
-                                .font(.largeTitle)
-                                .bold()
-                            Spacer()
-                            Button(action: {
-                                // Show loading toast and delay share sheet presentation
-                                self.isLoading = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    self.shareImage = generateShareImage()
-                                    self.isLoading = false
-                                    self.isShareSheetPresented = true
-                                }
-                            }) {
-                                Image(systemName: "square.and.arrow.up")
+            List {
+                ForEach(exercises, id: \.self) { exercise in
+                    HStack {
+                        HStack(spacing: 4) {
+                            Text(exercise.title ?? "Unknown")
+                            if exercise.leftRight ?? false {
+                                Image(systemName: "arrow.left.arrow.right.square")
+                                    .opacity(0.5)
                             }
                         }
-                        .padding()
-
-                        ForEach(exercises, id: \.self) { exercise in
-                            HStack {
-                                Text(exercise.title ?? "Unknown")
-                                    .font(.headline)
-                                Spacer()
-                                Text("\(Int(exercise.logs?.last?.reps ?? 0)) reps")
-                                    .font(.subheadline)
-                            }
-                            .padding()
-                            .background(colorScheme == .dark ? Color.white.opacity(0.1) : Color.black.opacity(0.1))
-                            .padding(.horizontal)
+                        Spacer()
+                        if exercise.units == "Reps" {
+                            Text("\(Int(exercise.logs?.last?.reps ?? 0)) reps")
+                        } else {
+                            Text(String(format: "%02d:%02d",
+                                        Int(exercise.logs?.last?.reps ?? 0) / 60,
+                                        Int(exercise.logs?.last?.reps ?? 0) % 60))
                         }
-                        
-                        Spacer()
                     }
-                    .padding()
-                }
-                
-                // Loading overlay toast
-                if isLoading {
-                    VStack {
-                        Spacer()
-                        Text("Loading...")
-                            .padding()
-                            .cornerRadius(10)
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(colorScheme == .dark ? Color.white.opacity(0.4) : Color.black.opacity(0.4))
                 }
             }
-            .sheet(isPresented: $isShareSheetPresented, content: {
-                if let shareImage = shareImage {
-                    ShareSheet(activityItems: [shareImage])
+            .navigationTitle("Exercise Proportions")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(trailing:
+                Button(action: {
+                    self.isLoading = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.shareImage = generateShareImage()
+                        self.isLoading = false
+                        self.isShareSheetPresented = true
+                    }
+                }) {
+                    Image(systemName: "square.and.arrow.up")
                 }
-            })
+            )
+            .overlay(
+                Group {
+                    if isLoading {
+                        VStack {
+                            Spacer()
+                            Text("Loading...")
+                                .padding()
+                                .cornerRadius(10)
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(colorScheme == .dark ? Color.white.opacity(0.4) : Color.black.opacity(0.4))
+                    }
+                }
+            )
         }
+        .sheet(isPresented: $isShareSheetPresented, content: {
+            if let shareImage = shareImage {
+                ShareSheet(activityItems: [shareImage])
+            }
+        })
     }
     
     /// Generates a custom share image containing the app logo, app name, and exercise details.
@@ -128,15 +124,48 @@ struct ExerciseProportionsView: View {
             // Draw each exercise detail
             var currentY: CGFloat = baseHeight
             for exercise in exercises {
-                let exerciseTitle = exercise.title ?? "Unknown"
-                let reps = Int(exercise.logs?.last?.reps ?? 0)
-                let exerciseText = "\(exerciseTitle): \(reps) reps"
+                let leftMargin: CGFloat = 20
+                let rightMargin: CGFloat = 20
                 let textAttributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.systemFont(ofSize: 16),
                     .foregroundColor: colorScheme == .dark ? UIColor.white : UIColor.black
                 ]
-                let textRect = CGRect(x: 20, y: currentY, width: imageSize.width - 40, height: lineHeight)
-                exerciseText.draw(in: textRect, withAttributes: textAttributes)
+                
+                // Left part: title and optional icon
+                let titleText = exercise.title ?? "Unknown"
+                let titleSize = (titleText as NSString).size(withAttributes: textAttributes)
+                var leftX = leftMargin
+                let titleRect = CGRect(x: leftX, y: currentY, width: titleSize.width, height: lineHeight)
+                titleText.draw(in: titleRect, withAttributes: textAttributes)
+                leftX += titleSize.width
+                
+                if exercise.leftRight ?? false {
+                    let iconSpacing: CGFloat = 4
+                    leftX += iconSpacing
+                    if let iconImage = UIImage(systemName: "arrow.left.arrow.right.square") {
+                        let iconSize = CGSize(width: 16, height: 16)
+                        let iconY = currentY + (lineHeight - iconSize.height) / 2
+                        let iconRect = CGRect(x: leftX, y: iconY, width: iconSize.width, height: iconSize.height)
+                        iconImage.draw(in: iconRect, blendMode: .normal, alpha: 0.5)
+                        leftX += iconSize.width
+                    }
+                }
+                
+                // Right part: reps/duration text
+                let reps = Int(exercise.logs?.last?.reps ?? 0)
+                let rightText: String
+                if exercise.units == "Reps" {
+                    rightText = "\(reps) reps"
+                } else {
+                    let minutes = reps / 60
+                    let seconds = reps % 60
+                    rightText = String(format: "%02d:%02d", minutes, seconds)
+                }
+                let rightTextSize = (rightText as NSString).size(withAttributes: textAttributes)
+                let rightX = imageSize.width - rightMargin - rightTextSize.width
+                let rightRect = CGRect(x: rightX, y: currentY, width: rightTextSize.width, height: lineHeight)
+                rightText.draw(in: rightRect, withAttributes: textAttributes)
+                
                 currentY += lineHeight + 5
             }
         }

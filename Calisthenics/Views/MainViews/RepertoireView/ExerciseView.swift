@@ -14,13 +14,12 @@ struct ExerciseView: View {
     
     @AppStorage("randomExercise") var randomExercise: String = ""
     @State private var isTextEditorSheetPresented = false
+    @State private var showDeleteAlert = false
     @ObservedObject private var defaultsManager = DefaultsManager()
-    @AppStorage("isSubscribed") private var isSubscribed: Bool = false
     
     @Environment(\.dismiss) var dismiss
     
     @State private var notes = ""
-    @State private var showUpgrade = false
     
     @Environment(\.modelContext) private var modelContext
     @AppStorage("currentTab") var currentTab: Int = 0
@@ -128,31 +127,18 @@ struct ExerciseView: View {
         VStack {
             Text(exercise.title!)
             List {
-                Section {
-                    if isSubscribed {
+                if sortedLogs.count > 1
+                {
+                    Section {
                         Chart(sortedLogs, id: \.self) { log in
                             LineMark(x: .value("Date", log.timestamp!), y: .value("Reps", log.reps!))
                                 .interpolationMethod(.linear)
                         }
                         .frame(height: 200)
-                    } else {
-                        Chart(examplePoints, id: \.self) { log in
-                            LineMark(x: .value("Date", log.timestamp), y: .value("Reps", log.reps))
-                                .interpolationMethod(.linear)
-                            
-                        }
-                        .frame(height: 200)
-                        .blur(radius: 5)
-                        .overlay {
-                            Button("Upgrade") {
-                                showUpgrade = true
-                            }
-                            .buttonStyle(.bordered)
-                            .opacity(1)
-                        }
+                        
                     }
+                    .listRowBackground(colorScheme.current.secondaryBackground)
                 }
-                .listRowBackground(colorScheme.current.secondaryBackground)
                 
                 Section {
                     Toggle("Active", isOn: $isActive)
@@ -162,21 +148,31 @@ struct ExerciseView: View {
                         .disabled(randomExercise == exercise.id?.uuidString)
                         .tint(.green)
                     if exercise.units == "Reps" {
-                        Text("Current Reps: \(exercise.currentReps ?? 0, specifier: "%.2f")")
-                        Text("Last Increment: \(exercise.increment ?? 0, specifier: "%.2f")")
+                        HStack {
+                            Text("Current Reps:")
+                            Spacer()
+                            Text("\(exercise.currentReps ?? 0, specifier: "%.2f")")
+                        }
+                        HStack {
+                            Text("Last Increment:")
+                            Spacer()
+                            Text("\(exercise.increment ?? 0, specifier: "%.2f")")
+                        }
                     } else {
                         let currentDuration = exercise.currentReps ?? 0
                         let lastIncrement = exercise.increment ?? 0
-                        
                         let currentMinutes = Int(currentDuration) / 60
                         let currentSeconds = currentDuration.truncatingRemainder(dividingBy: 60)
-                        
-                        let lastIncrementMinutes = Int(lastIncrement) / 60
-                        let lastIncrementSeconds = lastIncrement.truncatingRemainder(dividingBy: 60)
-                        
-                        Text("Current Duration: \(String(format: "%d:%05.2f", currentMinutes, currentSeconds))")
-                        Text("Last Increment: \(String(format: "%.2f", lastIncrement)) seconds")
-                        
+                        HStack {
+                            Text("Current Duration:")
+                            Spacer()
+                            Text("\(String(format: "%d:%05.2f", currentMinutes, currentSeconds))")
+                        }
+                        HStack {
+                            Text("Last Increment:")
+                            Spacer()
+                            Text("\(String(format: "%.2f", lastIncrement)) seconds")
+                        }
                     }
                     
                 }
@@ -206,163 +202,81 @@ struct ExerciseView: View {
                 .listRowBackground(colorScheme.current.secondaryBackground)
                 
                 Section {
-                    Section {
-                        if isSubscribed {
-                            if exercise.units == "Reps" {
-                                Text("Total Reps: \(totalReps)")
-                                if let averageTimePerRep = averageTimePerRep {
-                                    Text("Average Time Per Rep: \(averageTimePerRep, specifier: "%.2f") seconds")
-                                }
-                            } else {
-                                Text("Total Duration: \(totalDuration / 60, specifier: "%.2f") minutes")
-                            }
-                            
-                            // All Time Change
-                            if let allTimeChange = allTimeChange, let formattedText = formattedChangeText(percentage: allTimeChange.percentage, change: allTimeChange.change) {
-                                HStack {
-                                    Text("All Time Change: ").foregroundColor(colorScheme.current.primaryText)
-//                                    Image(systemName: allTimeChange.percentage >= 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
-//                                        .foregroundColor(allTimeChange.percentage >= 0 ? .green : .red)
-                                    formattedText
-                                }
-                            }
-                            
-                            // One Month Change
-                            if let oneMonthChange = oneMonthChange, let formattedText = formattedChangeText(percentage: oneMonthChange.percentage, change: oneMonthChange.change) {
-                                HStack {
-                                    Text("Month: ").foregroundColor(colorScheme.current.primaryText)
-//                                    Image(systemName: oneMonthChange.percentage >= 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
-//                                        .foregroundColor(oneMonthChange.percentage >= 0 ? .green : .red)
-                                    formattedText
-                                }
-                            } else if let daysUntilAvailable = daysUntilDataAvailable(for: -30 * 24 * 60 * 60) {
-                                Text("Month: Available in \(daysUntilAvailable) days")
-                            }
-                            
-                            // One Year Change
-                            if let oneYearChange = oneYearChange, let formattedText = formattedChangeText(percentage: oneYearChange.percentage, change: oneYearChange.change) {
-                                HStack {
-                                    Text("Year: ").foregroundColor(colorScheme.current.primaryText)
-//                                    Image(systemName: oneYearChange.percentage >= 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
-//                                        .foregroundColor(oneYearChange.percentage >= 0 ? .green : .red)
-                                    formattedText
-                                }
-                            } else if let daysUntilAvailable = daysUntilDataAvailable(for: -365 * 24 * 60 * 60) {
-                                Text("Year: Available in \(daysUntilAvailable) days")
-                            }
-                        } else {
-                            if exercise.units == "Reps" {
-                                
-                                HStack {
-                                    Text("Total Reps: ")
-                                    Text("\(totalReps)")
-                                        .blur(radius: 5)
-                                    Spacer()
-                                    Button("Upgrade") {
-                                        showUpgrade = true
-                                    }
-                                    .buttonStyle(.bordered)
-                                }
-                                
-                                
-                                if let averageTimePerRep = averageTimePerRep {
-                                    HStack {
-                                        Text("Average Time Per Rep: ")
-                                        Text("\(averageTimePerRep, specifier: "%.2f") seconds")
-                                            .blur(radius: 5)
-                                        Spacer()
-                                        Button("Upgrade") {
-                                            showUpgrade = true
-                                        }
-                                        .buttonStyle(.bordered)
-                                    }
-                                    
-                                }
-                            } else {
-                                HStack {
-                                    Text("Total Duration: ")
-                                    Text("\(totalDuration / 60, specifier: "%.2f") minutes")
-                                        .blur(radius: 5)
-                                    
-                                    Spacer()
-                                    Button("Upgrade") {
-                                        showUpgrade = true
-                                    }
-                                    .buttonStyle(.bordered)
-                                }
-                                
-                            }
-                            
-                            
-                            if let allTimeChange = allTimeChange {
-                                HStack {
-                                    Text("All Time Change: ")
-                                    Text("\(String(describing: formattedChangeText(percentage: allTimeChange.percentage, change: allTimeChange.change)))")
-                                        .blur(radius: 5)
-                                    
-                                    Spacer()
-                                    Button("Upgrade") {
-                                        showUpgrade = true
-                                    }
-                                    .buttonStyle(.bordered)
-                                }
-                                
-                            }
-                            
-                            if let oneMonthChange = oneMonthChange {
-                                
-                                HStack {
-                                    Text("Month Change: ")
-                                    Text("\(String(describing: formattedChangeText(percentage: oneMonthChange.percentage, change: oneMonthChange.change)))")
-                                        .blur(radius: 5)
-                                    
-                                    Spacer()
-                                    Button("Upgrade") {
-                                        showUpgrade = true
-                                    }
-                                    .buttonStyle(.bordered)
-                                }
-                                
-                            } else if let daysUntilAvailable = daysUntilDataAvailable(for: -30 * 24 * 60 * 60) {
-                                Text("Month Change: Available in \(daysUntilAvailable) days")
-                            }
-                            
-                            if let oneYearChange = oneYearChange {
-                                HStack {
-                                    Text("Year Change: ")
-                                    Text("\(String(describing: formattedChangeText(percentage: oneYearChange.percentage, change: oneYearChange.change)))")
-                                        .blur(radius: 5)
-                                    
-                                    Spacer()
-                                    Button("Upgrade") {
-                                        showUpgrade = true
-                                    }
-                                    .buttonStyle(.bordered)
-                                }
-                            } else if let daysUntilAvailable = daysUntilDataAvailable(for: -365 * 24 * 60 * 60) {
-                                Text("Year Change: Available in \(daysUntilAvailable) days")
+                    if exercise.units == "Reps" {
+                        HStack {
+                            Text("Total Reps:")
+                            Spacer()
+                            Text("\(totalReps)")
+                        }
+                        if let averageTimePerRep = averageTimePerRep {
+                            HStack {
+                                Text("Average Time Per Rep:")
+                                Spacer()
+                                Text("\(averageTimePerRep, specifier: "%.2f") seconds")
                             }
                         }
-                        
-                        
-                        
-                    } header: {
-                        Text("Stats")
-                            .foregroundStyle(colorScheme.current.secondaryText)
-                        
+                    } else {
+                        HStack {
+                            Text("Total Duration:")
+                            Spacer()
+                            Text("\(totalDuration / 60, specifier: "%.2f") minutes")
+                        }
                     }
-                    .listRowBackground(colorScheme.current.secondaryBackground)
+                    
+                    // All Time Change
+                    if let allTimeChange = allTimeChange, let formattedText = formattedChangeText(percentage: allTimeChange.percentage, change: allTimeChange.change) {
+                        HStack {
+                            Text("All Time Change:")
+                            Spacer()
+                            formattedText
+                        }
+                    }
+                    
+                    // One Month Change
+                    if let oneMonthChange = oneMonthChange, let formattedText = formattedChangeText(percentage: oneMonthChange.percentage, change: oneMonthChange.change) {
+                        HStack {
+                            Text("Month:")
+                            Spacer()
+                            formattedText
+                        }
+                    } else if let daysUntilAvailable = daysUntilDataAvailable(for: -30 * 24 * 60 * 60) {
+                        HStack {
+                            Text("Month:")
+                            Spacer()
+                            Text("Available in \(daysUntilAvailable) days")
+                        }
+                    }
+                    
+                    // One Year Change
+                    if let oneYearChange = oneYearChange, let formattedText = formattedChangeText(percentage: oneYearChange.percentage, change: oneYearChange.change) {
+                        HStack {
+                            Text("Year:")
+                            Spacer()
+                            formattedText
+                        }
+                    } else if let daysUntilAvailable = daysUntilDataAvailable(for: -365 * 24 * 60 * 60) {
+                        HStack {
+                            Text("Year:")
+                            Spacer()
+                            Text("Available in \(daysUntilAvailable) days")
+                        }
+                    }
+                    
+                } header: {
+                    Text("Stats")
+                        .foregroundStyle(colorScheme.current.secondaryText)
                     
                 }
-                .listStyle(.automatic)
+                .listRowBackground(colorScheme.current.secondaryBackground)
                 
+                Button("Delete Exercise") {
+                    showDeleteAlert = true
+                }
+                .foregroundStyle(.red)
             }
             .scrollContentBackground(.hidden)
             .background(colorScheme.current.primaryBackground)
             .foregroundStyle(colorScheme.current.primaryText, colorScheme.current.secondaryText)
-            .sheet(isPresented: $showUpgrade) {
-                UpgradeView()
-            }
             .onDisappear() {
                 dismiss()
             }
@@ -377,72 +291,50 @@ struct ExerciseView: View {
                     .disabled(isActive == exercise.isActive && notes == exercise.notes)
                 }
             }
-            .onAppear {
-                Task {
-                    try await fetchPurchases()
-                }
+        }
+        .alert("Delete Exercise", isPresented: $showDeleteAlert) {
+            Button("Delete", role: .destructive) {
+                modelContext.delete(exercise)
+                try? modelContext.save()
+                dismiss()
             }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Are you sure you want to delete this exercise? This action cannot be undone.")
         }
     }
-        func fetchPurchases() async throws {
-            for await entitlement in Transaction.currentEntitlements {
-                do {
-                    let verifiedPurchase = try verifyPurchase(entitlement)
-                    
-                    switch verifiedPurchase.productType {
-                    case .nonConsumable:
-                        isSubscribed = true
-                    case .autoRenewable:
-                        isSubscribed = true
-                    default:
-                        break
+    
+    enum MyError: Error {
+        case runtimeError(String)
+    }
+}
+
+struct NotesEditorView: View {
+    enum FocusedField {
+        case active, inactive
+    }
+    
+    @Environment(\.dismiss) var dismiss
+    @Binding var notes: String
+    @FocusState private var focusedField: FocusedField?
+    
+    var body: some View {
+        NavigationStack {
+            VStack {
+                TextEditor(text: $notes)
+                    .padding()
+                    .focused($focusedField, equals: .active)
+                    .onAppear {
+                        focusedField = .active
                     }
-                } catch {
-                    throw error
-                }
             }
-        }
-    
-        private func verifyPurchase<T>(_ result: VerificationResult<T>) throws -> T {
-            switch result {
-            case .unverified:
-                throw MyError.runtimeError("error")
-            case .verified(let safe):
-                return safe
-            }
-        }
-        
-        enum MyError: Error {
-            case runtimeError(String)
-        }
-    }
-    
-    struct NotesEditorView: View {
-        enum FocusedField {
-            case active, inactive
-        }
-        
-        @Environment(\.dismiss) var dismiss
-        @Binding var notes: String
-        @FocusState private var focusedField: FocusedField?
-        
-        var body: some View {
-            NavigationStack {
-                VStack {
-                    TextEditor(text: $notes)
-                        .padding()
-                        .focused($focusedField, equals: .active)
-                        .onAppear {
-                            focusedField = .active
-                        }
-                }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Done") {
-                            dismiss()
-                        }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
                     }
                 }
             }
         }
     }
+}

@@ -25,7 +25,6 @@
 		C0589F242BE6725400F19B7B /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0589F232BE6725400F19B7B /* DefaultsManager.swift */; };
 		C05E06AD2C44A5D200189CE6 /* ExerciseHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */; };
 		C065345B2A9E6AAF001DFA7B /* CalisthenicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */; };
-		C07BAC012C76A66F00E34669 /* UpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BAC002C76A66F00E34669 /* UpgradeView.swift */; };
 		C08DFAD72C8E263C00F7EBCD /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08DFAD62C8E263C00F7EBCD /* Colors.swift */; };
 		C08DFAD92C8E288300F7EBCD /* BackgroundPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08DFAD82C8E288300F7EBCD /* BackgroundPicker.swift */; };
 		C08FA4FB29CB96C2002CA6AF /* RepertoireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08FA4FA29CB96C2002CA6AF /* RepertoireView.swift */; };
@@ -106,8 +105,6 @@
 		C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryView.swift; sourceTree = "<group>"; };
 		C06534582A9E6AAF001DFA7B /* CalisthenicsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalisthenicsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C065345A2A9E6AAF001DFA7B /* CalisthenicsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalisthenicsTests.swift; sourceTree = "<group>"; };
-		C07BAC002C76A66F00E34669 /* UpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeView.swift; sourceTree = "<group>"; };
-		C07BAC062C76AE4C00E34669 /* Store.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Store.storekit; sourceTree = "<group>"; };
 		C08DFAD62C8E263C00F7EBCD /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		C08DFAD82C8E288300F7EBCD /* BackgroundPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundPicker.swift; sourceTree = "<group>"; };
 		C08FA4F629CB9545002CA6AF /* Calisthenics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calisthenics.entitlements; sourceTree = "<group>"; };
@@ -201,8 +198,6 @@
 			children = (
 				C0360AE12A2DFA5A00E8CA37 /* SettingsView.swift */,
 				C08DFAD82C8E288300F7EBCD /* BackgroundPicker.swift */,
-				C07BAC002C76A66F00E34669 /* UpgradeView.swift */,
-				C07BAC062C76AE4C00E34669 /* Store.storekit */,
 				C05E06AC2C44A5D200189CE6 /* ExerciseHistoryView.swift */,
 				C0E00A1C2C8CB11F005C0AE3 /* StatsElement.swift */,
 				C029BCA32BF151B400113844 /* TutorialView.swift */,
@@ -503,7 +498,6 @@
 				C00ECE4D2B9669C300A2CD21 /* Log.swift in Sources */,
 				C0E00A1D2C8CB11F005C0AE3 /* StatsElement.swift in Sources */,
 				C0A9A4FA29CF4623000CD191 /* StopwatchView.swift in Sources */,
-				C07BAC012C76A66F00E34669 /* UpgradeView.swift in Sources */,
 				C0589F1B2BE5844900F19B7B /* StashedExereciseView.swift in Sources */,
 				C0C7579F2D77AC8600FA0968 /* ShareExerciseProportionsElement.swift in Sources */,
 				C08DFAD92C8E288300F7EBCD /* BackgroundPicker.swift in Sources */,
@@ -594,7 +588,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = CalisthenicsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisthenicsWidget/Info.plist;
@@ -627,7 +621,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = CalisthenicsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisthenicsWidget/Info.plist;
@@ -781,7 +775,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				ENABLE_PREVIEWS = YES;
@@ -821,7 +815,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				ENABLE_PREVIEWS = YES;

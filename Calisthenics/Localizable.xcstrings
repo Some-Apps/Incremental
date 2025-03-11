@@ -259,6 +259,7 @@
       }
     },
     " and " : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -321,6 +322,9 @@
           }
         }
       }
+    },
+    "%.2f" : {
+
     },
     "%.2f minutes" : {
       "localizations" : {
@@ -648,6 +652,9 @@
           }
         }
       }
+    },
+    "%@ seconds" : {
+
     },
     "%@%@" : {
       "localizations" : {
@@ -3221,7 +3228,11 @@
         }
       }
     },
+    "All Time Change:" : {
+
+    },
     "All Time Change: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3414,6 +3425,7 @@
       }
     },
     "Are you sure you want to delete this exercise?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3476,6 +3488,9 @@
           }
         }
       }
+    },
+    "Are you sure you want to delete this exercise? This action cannot be undone." : {
+
     },
     "At least 2 exercises required" : {
       "localizations" : {
@@ -3670,7 +3685,14 @@
         }
       }
     },
+    "Available in %lld days" : {
+
+    },
+    "Average Time Per Rep:" : {
+
+    },
     "Average Time Per Rep: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3735,6 +3757,7 @@
       }
     },
     "Average Time Per Rep: %.2f seconds" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4247,7 +4270,11 @@
         }
       }
     },
+    "Current Duration:" : {
+
+    },
     "Current Duration: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4311,7 +4338,11 @@
         }
       }
     },
+    "Current Reps:" : {
+
+    },
     "Current Reps: %.2f" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4438,6 +4469,9 @@
           }
         }
       }
+    },
+    "Data" : {
+
     },
     "Date" : {
       "localizations" : {
@@ -4630,6 +4664,9 @@
           }
         }
       }
+    },
+    "Delete Exercise" : {
+
     },
     "Didn't have to pause" : {
       "localizations" : {
@@ -5469,6 +5506,7 @@
       }
     },
     "Get access to additional features like exercise stats, graphs, exercise history and support future development." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -6304,6 +6342,7 @@
       }
     },
     "Incremental Pro" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -6495,7 +6534,11 @@
         }
       }
     },
+    "Last Increment:" : {
+
+    },
     "Last Increment: %.2f" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -6560,6 +6603,7 @@
       }
     },
     "Last Increment: %@ seconds" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7009,6 +7053,7 @@
       }
     },
     "Month Change: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7073,6 +7118,7 @@
       }
     },
     "Month Change: Available in %lld days" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7136,7 +7182,11 @@
         }
       }
     },
+    "Month:" : {
+
+    },
     "Month: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7201,6 +7251,7 @@
       }
     },
     "Month: Available in %lld days" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -9254,6 +9305,7 @@
       }
     },
     "Terms of Service" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -10219,7 +10271,11 @@
         }
       }
     },
+    "Total Duration:" : {
+
+    },
     "Total Duration: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -10284,6 +10340,7 @@
       }
     },
     "Total Duration: %.2f minutes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -10347,7 +10404,11 @@
         }
       }
     },
+    "Total Reps:" : {
+
+    },
     "Total Reps: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -10412,6 +10473,7 @@
       }
     },
     "Total Reps: %lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -10797,6 +10859,7 @@
       }
     },
     "Upgrade" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -10861,6 +10924,7 @@
       }
     },
     "Upgrade to Incremental Pro" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -11633,6 +11697,7 @@
 
     },
     "Year Change: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -11697,6 +11762,7 @@
       }
     },
     "Year Change: Available in %lld days" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -11760,7 +11826,11 @@
         }
       }
     },
+    "Year:" : {
+
+    },
     "Year: " : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -11825,6 +11895,7 @@
       }
     },
     "Year: Available in %lld days" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

@@ -19,8 +19,6 @@ struct RepertoireView: View {
     }, sort: \.title) var inactiveExercises: [Exercise]
 
     @Environment(\.editMode) private var editMode
-    @State private var confirmDelete = false
-    @State private var indexSetToDelete: IndexSet?
     @AppStorage("randomExercise") var randomExercise: String = ""
 
     let addExerciseTip = AddExerciseTip()
@@ -53,10 +51,6 @@ struct RepertoireView: View {
 
                         }
                     }
-                    .onDelete(perform: { indexSet in
-                        indexSetToDelete = indexSet
-                        confirmDelete = true
-                    })
                 } header: {
                     HStack {
                         Text("Active")
@@ -98,10 +92,6 @@ struct RepertoireView: View {
                         }
                     }
                     // Assuming you want the same delete behavior for inactive exercises
-                    .onDelete(perform: { indexSet in
-                        indexSetToDelete = indexSet
-                        confirmDelete = true
-                    })
                 } header: {
                     Text("Inactive")
                         .foregroundStyle(colorScheme.current.secondaryText)
@@ -114,14 +104,6 @@ struct RepertoireView: View {
             .scrollContentBackground(.hidden)
             .background(colorScheme.current.primaryBackground)
             .foregroundStyle(colorScheme.current.primaryText, colorScheme.current.secondaryText)
-            .confirmationDialog("Are you sure you want to delete this exercise?", isPresented: $confirmDelete, titleVisibility: .visible) {
-                Button("Delete", role: .destructive) {
-                    if let indexSet = indexSetToDelete {
-                        deleteExercise(at: indexSet)
-                    }
-                }
-                Button("Cancel", role: .cancel) { }
-            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
@@ -133,9 +115,6 @@ struct RepertoireView: View {
                     .onTapGesture {
                         addExerciseTip.invalidate(reason: .actionPerformed)
                     }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
                 }
             }
         }
@@ -182,21 +161,4 @@ struct RepertoireView: View {
 
 
 
-    private func deleteExercise(at offsets: IndexSet) {
-        for index in offsets {
-            let exercise = activeExercises[index]
-            if exercise.id?.uuidString == randomExercise {
-                randomExercise = ""
-                defaultsManager.saveDataToiCloud(key: "randomExercise", value: randomExercise)
-            }
-            modelContext.delete(exercise)
-        }
-        
-        do {
-            try modelContext.save()
-            indexSetToDelete = nil
-        } catch {
-            print("Failed to save context after deleting exercise: \(error)")
-        }
-    }
 }

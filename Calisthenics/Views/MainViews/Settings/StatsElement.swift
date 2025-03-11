@@ -67,7 +67,7 @@ struct StatsElement: View {
     
     // Show or hide chart based on available data
     private var showChart: Bool {
-        timeSpentPerDay().count > 4
+        timeSpentPerDay().count > 0
     }
 
     var body: some View {
@@ -86,11 +86,9 @@ struct StatsElement: View {
                     )
                 }
             }
-            .chartXAxisLabel("Date")
-            .chartYAxisLabel("Total Duration (Minutes)")
+//            .chartXAxisLabel("Date")
+//            .chartYAxisLabel("Total Duration (Minutes)")
             .frame(height: 300)
-        } else {
-//            Text("No data available")
         }
 
         Text("Total Time: ") +

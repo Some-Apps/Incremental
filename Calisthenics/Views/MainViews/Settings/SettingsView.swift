@@ -16,8 +16,6 @@ struct SettingsView: View {
     @Query(filter: #Predicate<Log> { item in
         true
     }, sort: \.timestamp) var logs: [Log]
-    @State private var showUpgrade = false
-    @AppStorage("isSubscribed") private var isSubscribed: Bool = false
     @State private var showLoading = false
     @State private var shareItems: [Any] = []
     @State private var showShareSheet = false
@@ -103,18 +101,11 @@ struct SettingsView: View {
 
             Section {
                     NavigationLink("Exercise History", destination: ExerciseHistoryView())
-                        .disabled(!isSubscribed)
                     Button("Export All Data") {
                         fetchAllData()
                     }
-                    .disabled(!isSubscribed)
-                    .foregroundStyle(isSubscribed ? colorScheme.current.primaryText : colorScheme.current.secondaryText)
-//                    Button("Share Exercise Proportions") {
-//                        let exerciseProportionsView = ExerciseProportionsView(exercises: exercises)
-//                        let image = exerciseProportionsView.asImage()
-//                        shareItems = [image]
-//                        showShareSheet = true
-//                    }
+                    .foregroundStyle(colorScheme.current.primaryText)
+
                 NavigationLink("Exercise Proportions", destination: ExerciseProportionsView(exercises: exercises))
 //                    NavigationLink(destination: ColorSchemePickerView()) {
 //                        HStack {
@@ -124,26 +115,8 @@ struct SettingsView: View {
 //                                .foregroundStyle(colorScheme.current.secondaryText)
 //                        }
 //                    }
-//                    .disabled(!isSubscribed)
-//
-                
-                if isSubscribed {
-//                    HStack {
-//                        Text("Incremental Pro")
-//                        Spacer()
-//                        Text("Subscribed")
-//                            .foregroundStyle(colorScheme.current.secondaryText)
-//                    }
-                } else {
-                    Button {
-                        showUpgrade.toggle()
-                    } label: {
-                        Text("Upgrade to Incremental Pro")
-                            .foregroundStyle(Color.accentColor)
-                    }
-                }
             } header: {
-                Text("Incremental Pro")
+                Text("Data")
                     .foregroundStyle(colorScheme.current.secondaryText)
             }
             .listRowBackground(colorScheme.current.secondaryBackground)
@@ -173,30 +146,11 @@ struct SettingsView: View {
         .scrollContentBackground(.hidden)
         .background(colorScheme.current.primaryBackground)
         .foregroundStyle(colorScheme.current.primaryText, colorScheme.current.secondaryText)
-        .sheet(isPresented: $showUpgrade) {
-            UpgradeView()
-                .onDisappear {
-                    Task {
-                        do {
-                            try await fetchPurchases()
-                        } catch {
-                            print("Error fetching purchases: \(error)")
-                        }
-                    }
-                }
-        }
+        
         .toast(isPresenting: $showLoading) {
             AlertToast(displayMode: .alert, type: .loading, title: "Loading...")
         }
-        .onAppear {
-            Task {
-                do {
-                    try await fetchPurchases()
-                } catch {
-                    print("Error fetching purchases: \(error)")
-                }
-            }
-        }
+
 
     }
 
@@ -261,34 +215,6 @@ struct SettingsView: View {
                 }
             }
         }
-
-    func fetchPurchases() async throws {
-        for await entitlement in Transaction.currentEntitlements {
-            do {
-                let verifiedPurchase = try verifyPurchase(entitlement)
-                
-                switch verifiedPurchase.productType {
-                case .nonConsumable:
-                    isSubscribed = true
-                case .autoRenewable:
-                    isSubscribed = true
-                default:
-                    break
-                }
-            } catch {
-                throw error
-            }
-        }
-    }
-    
-    private func verifyPurchase<T>(_ result: VerificationResult<T>) throws -> T {
-        switch result {
-        case .unverified:
-            throw MyError.runtimeError("error")
-        case .verified(let safe):
-            return safe
-        }
-    }
     
     enum MyError: Error {
         case runtimeError(String)
