@@ -11,7 +11,6 @@ struct CurrentExerciseView: View {
 
     @Environment(\.modelContext) private var modelContext
     @Environment(\.requestReview) var requestReview
-    @AppStorage("isSubscribed") private var isSubscribed: Bool = false
 
     @ObservedObject private var defaultsManager = DefaultsManager()
 
@@ -60,8 +59,7 @@ struct CurrentExerciseView: View {
                         Spacer()
                     }
                     .onChange(of: logs) {
-                        print("[LOG] LOGS: \(logs.count)")
-                        if isSubscribed && logs.count % 250 == 0 || (logs.count % 500 == 0) {
+                        if logs.count % 250 == 0 {
                             requestReview()
                         }
                     }
@@ -208,17 +206,17 @@ struct CurrentExerciseView: View {
 
         print("[LOG] \(lastExercise.title ?? "Unknown")")
         
-        // Fetch the last 10 logs for this exercise
+        // Fetch the last 50 logs for this exercise
         var lastLogs = logs.filter { $0.exercise?.id == lastExercise.id }
             .sorted(by: { $0.timestamp! > $1.timestamp! })
-            .prefix(99)
+            .prefix(50)
         lastLogs.insert(newLog, at: 0)
         
         let lastEasyLog = lastLogs.first { $0.difficulty == Difficulty.easy.rawValue }
 
         print("[LOG] # of logs: \(lastLogs.count)")
 
-        let effectiveLogCount = min(lastLogs.count, 100)
+        let effectiveLogCount = min(lastLogs.count, 50)
         
         print("[LOG] effective log count: \(effectiveLogCount)")
         
@@ -237,11 +235,11 @@ struct CurrentExerciseView: View {
         if let currentIncrementIncrement = lastExercise.incrementIncrement {
             var newIncrementIncrement = currentIncrementIncrement
             
-            if totalWeight <= 0.5 {
+            if totalWeight <= 0.25 {
                 newIncrementIncrement += 0.020
-            } else if totalWeight <= 1 {
+            } else if totalWeight <= 0.75 {
                 newIncrementIncrement += 0.01
-            } else if totalWeight <= 1.75 {
+            } else if totalWeight <= 1.5 {
                 newIncrementIncrement += 0.005
             } else if totalWeight <= 2.25 {
                 newIncrementIncrement -= 0.01

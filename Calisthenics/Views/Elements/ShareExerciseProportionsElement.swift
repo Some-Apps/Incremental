@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import AlertToast
 
 struct ExerciseProportionsView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -45,21 +46,9 @@ struct ExerciseProportionsView: View {
                     Image(systemName: "square.and.arrow.up")
                 }
             )
-            .overlay(
-                Group {
-                    if isLoading {
-                        VStack {
-                            Spacer()
-                            Text("Loading...")
-                                .padding()
-                                .cornerRadius(10)
-                            Spacer()
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(colorScheme == .dark ? Color.white.opacity(0.4) : Color.black.opacity(0.4))
-                    }
-                }
-            )
+            .toast(isPresenting: $isLoading) {
+                AlertToast(type: .loading, title: "Loading...")
+            }
         }
         .sheet(isPresented: $isShareSheetPresented, content: {
             if let shareImage = shareImage {

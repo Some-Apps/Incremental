@@ -8984,6 +8984,9 @@
         }
       }
     },
+    "Status" : {
+
+    },
     "Stop" : {
       "localizations" : {
         "de" : {
@@ -10600,6 +10603,9 @@
           }
         }
       }
+    },
+    "Total Sets:" : {
+
     },
     "Total Time (min)" : {
       "localizations" : {

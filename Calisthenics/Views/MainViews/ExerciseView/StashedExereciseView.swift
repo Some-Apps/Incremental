@@ -25,7 +25,7 @@ struct StashedExereciseView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if let currentExercise = exerciseViewModel.exercise, exercises.count > 0 {
+                if (exerciseViewModel.exercise != nil), exercises.count > 0 {
                     VStack {
                         Text(totalDurationToday())
                             .foregroundStyle(colorScheme.current.primaryText)
@@ -219,7 +219,6 @@ struct StashedExereciseView: View {
 
         // Log and workout saving functions.
         createLog(difficulty: difficulty, lastExercise: currentExercise)
-        let exerciseType = HKWorkoutActivityType.coreTraining
         let startDate = Date()
         let duration = TimeInterval(stopwatchViewModel.seconds)
         let endDate = startDate.addingTimeInterval(duration)

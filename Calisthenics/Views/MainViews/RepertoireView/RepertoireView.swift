@@ -4,7 +4,6 @@ import TipKit
 
 struct RepertoireView: View {
     @EnvironmentObject var colorScheme: ColorSchemeState
-    @AppStorage("isSubscribed") private var isSubscribed: Bool = false
 
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
@@ -32,7 +31,6 @@ struct RepertoireView: View {
                             HStack {
                                 Text(exercise.title ?? "Unknown")
                                 Spacer()
-                                if isSubscribed {
                                     if let change = oneYearChange(exercise: exercise), change.percentage != 0 {
                                         HStack(spacing: 2) {
                                             Image(systemName: change.percentage >= 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
@@ -45,7 +43,7 @@ struct RepertoireView: View {
                                     }
 
 
-                                }
+                                
                                 
                             }
 
@@ -57,10 +55,9 @@ struct RepertoireView: View {
                             .foregroundStyle(colorScheme.current.secondaryText)
                         Spacer()
 
-                        if isSubscribed {
                             Text("Year Change")
                                 .foregroundStyle(colorScheme.current.secondaryText)
-                        }
+                        
                         
                     }
                     
@@ -73,7 +70,6 @@ struct RepertoireView: View {
                             HStack {
                                 Text(exercise.title ?? "Unknown")
                                 Spacer()
-                                if isSubscribed {
                                     if let change = oneYearChange(exercise: exercise), change.percentage != 0 {
                                         HStack(spacing: 2) {
                                             Image(systemName: change.percentage >= 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
@@ -86,7 +82,7 @@ struct RepertoireView: View {
                                     }
 
 
-                                }
+                                
                                 
                             }
                         }

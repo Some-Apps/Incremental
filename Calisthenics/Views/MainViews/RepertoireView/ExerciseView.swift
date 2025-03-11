@@ -175,6 +175,9 @@ struct ExerciseView: View {
                         }
                     }
                     
+                } header: {
+                    Text("Status")
+                        .foregroundStyle(colorScheme.current.secondaryText)
                 }
                 .listRowBackground(colorScheme.current.secondaryBackground)
                 
@@ -221,6 +224,12 @@ struct ExerciseView: View {
                             Spacer()
                             Text("\(totalDuration / 60, specifier: "%.2f") minutes")
                         }
+                    }
+                    // Total Sets
+                    HStack {
+                        Text("Total Sets:")
+                        Spacer()
+                        Text(sortedLogs.count.description)
                     }
                     
                     // All Time Change
