@@ -8,7 +8,7 @@ struct ExerciseProportionsView: View {
     @State private var isShareSheetPresented = false
     @State private var shareImage: UIImage?
     @State private var isLoading = false
-
+    
     var body: some View {
         NavigationView {
             List {
@@ -35,26 +35,28 @@ struct ExerciseProportionsView: View {
             .navigationTitle("Exercise Proportions")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing:
-                Button(action: {
-                    self.isLoading = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self.shareImage = generateShareImage()
-                        self.isLoading = false
-                        self.isShareSheetPresented = true
-                    }
-                }) {
-                    Image(systemName: "square.and.arrow.up")
+                                    Button(action: {
+                self.isLoading = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.shareImage = generateShareImage()
+                    self.isLoading = false
+                    self.isShareSheetPresented = true
                 }
+            }) {
+                Image(systemName: "square.and.arrow.up")
+            }
             )
             .toast(isPresenting: $isLoading) {
                 AlertToast(type: .loading, title: "Loading...")
             }
         }
-        .sheet(isPresented: $isShareSheetPresented, content: {
-            if let shareImage = shareImage {
-                ShareSheet(activityItems: [shareImage])
-            }
-        })
+        .sheet(isPresented: Binding(
+            get: { isShareSheetPresented },
+            set: { isShareSheetPresented = $0 }
+                    )) {
+                        ShareSheet(activityItems: [shareImage as Any])
+                    }
+
     }
     
     /// Generates a custom share image containing the app logo, app name, and exercise details.
@@ -131,11 +133,13 @@ struct ExerciseProportionsView: View {
                 if exercise.leftRight ?? false {
                     let iconSpacing: CGFloat = 4
                     leftX += iconSpacing
-                    if let iconImage = UIImage(systemName: "arrow.left.arrow.right.square") {
-                        let iconSize = CGSize(width: 16, height: 16)
-                        let iconY = currentY + (lineHeight - iconSize.height) / 2
+                    if let originalIconImage = UIImage(systemName: "arrow.left.arrow.right.square") {
+                        let tintColor = colorScheme == .dark ? UIColor.gray : UIColor.gray
+                        let iconImage = originalIconImage.withTintColor(tintColor, renderingMode: .alwaysOriginal)
+                        let iconSize = CGSize(width: 16, height: 15)
+                        let iconY = currentY + (lineHeight - iconSize.height) / 2 - 3
                         let iconRect = CGRect(x: leftX, y: iconY, width: iconSize.width, height: iconSize.height)
-                        iconImage.draw(in: iconRect, blendMode: .normal, alpha: 0.5)
+                        iconImage.draw(in: iconRect)
                         leftX += iconSize.width
                     }
                 }
@@ -166,7 +170,7 @@ struct ExerciseProportionsView: View {
 struct ShareSheet: UIViewControllerRepresentable {
     var activityItems: [Any]
     var applicationActivities: [UIActivity]? = nil
-
+    
     func makeUIViewController(context: Context) -> UIActivityViewController {
         UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
     }

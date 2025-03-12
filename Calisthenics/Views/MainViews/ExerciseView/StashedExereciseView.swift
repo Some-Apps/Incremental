@@ -183,7 +183,7 @@ struct StashedExereciseView: View {
     
     func createLog(difficulty: Difficulty, lastExercise: StashedExercise) {
         print("LOG: creating log")
-        let exercise = fetchExerciseById(id: lastExercise.id!, exercises: originalExercises)
+//        let exercise = fetchExerciseById(id: lastExercise.id!, exercises: originalExercises)
         let newLog = Log(backingData: Log.createBackingData())
         newLog.title = lastExercise.title ?? "Unknown"
         newLog.id = UUID()
