@@ -36,7 +36,7 @@ struct ContentView: View {
                     .tabItem {
                         Label("Stashed", systemImage: "clock.arrow.circlepath")
                     }
-                    .badge("\(stashedExercises.count)/10")
+                    .badge("\(stashedExercises.count)/15")
                     .tag(1)
             } else {
                 StashedExereciseView()

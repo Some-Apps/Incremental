@@ -793,7 +793,7 @@
     "%lld reps" : {
 
     },
-    "%lld/10" : {
+    "%lld/15" : {
 
     },
     "• **Cancellation:** You may cancel your subscription at any time through your App Store account settings. No refunds will be provided for unused portions of a subscription period." : {
@@ -9951,6 +9951,7 @@
       }
     },
     "This is where exercises go when you tap \"Stash Exercise\". You can complete them just as you would in the \"Exercise\" tab. You can have a maximum of 10 stashed exercises at a time." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -10013,6 +10014,9 @@
           }
         }
       }
+    },
+    "This is where exercises go when you tap \"Stash Exercise\". You can complete them just as you would in the \"Exercise\" tab. You can have a maximum of 15 stashed exercises at a time." : {
+
     },
     "This is where exercises go when you tap \\\"Stash Exercise\\\". You can complete them just as you would in the \\\"Exercise\\\" tab. You can have a maximum of 10 stashed exercises at a time." : {
       "extractionState" : "manual",

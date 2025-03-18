@@ -111,7 +111,7 @@ struct ExerciseCardView: View {
                     .tint(.green)
                     .font(.title)
                     .disabled(stopwatchViewModel.seconds < 3 || stopwatchViewModel.isRunning)
-                    if stashedExercises.count < 10 {
+                    if stashedExercises.count < 15 {
                         Button("Stash Exercise") {
                             if let exercise = exerciseViewModel.exercise {
                                 let tempExercise = StashedExercise(currentReps: exercise.currentReps!, difficulty: exercise.difficulty!, id: exercise.id!, isActive: exercise.isActive!, notes: exercise.notes!, title: exercise.title!, units: exercise.units!, increment: exercise.increment ?? 0, incrementIncrement: exercise.incrementIncrement ?? 0, leftRight: exercise.leftRight ?? false, leftSide: exercise.leftSide ?? true)
