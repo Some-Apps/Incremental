@@ -24,6 +24,7 @@ struct CurrentExerciseView: View {
 
     @AppStorage("randomExercise") var randomExercise: String = ""
     @AppStorage("healthActivityCategory") var healthActivityCategory: String = "Functional Strength Training"
+    @AppStorage("widgetTimeframe", store: UserDefaults(suiteName: "group.me.jareddanieljones.calisthenics")) var widgetTimeframe: String = "Day"
     @StateObject var stopwatchViewModel = StopwatchViewModel.shared
     @StateObject var exerciseViewModel = ExerciseViewModel.shared
 
@@ -39,8 +40,11 @@ struct CurrentExerciseView: View {
             VStack {
                 if exerciseViewModel.exercise != nil && randomExercise != "" && exercises.count > 1 {
                     VStack {
-                        Text(totalDurationToday())
+                        Text("\(totalDurationForSelectedTimeframe().0)")
                             .foregroundStyle(colorScheme.current.primaryText)
+                        Text(totalDurationForSelectedTimeframe().1)
+                            .foregroundStyle(colorScheme.current.secondaryText)
+                            .font(.subheadline)
                         ExerciseCardView(finishedTapped: $finishedTapped, stashedExercise: $stashedExercise, tempDifficulty: $difficulty)
                             .onChange(of: finishedTapped) {
                                 if finishedTapped {
@@ -97,12 +101,40 @@ struct CurrentExerciseView: View {
         }
     }
 
-    func totalDurationToday() -> String {
-        let newLogs = logs.filter { Calendar.autoupdatingCurrent.isDateInToday($0.timestamp!) }
-        let totalDuration = newLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
+//    func totalDurationToday() -> String {
+//        let newLogs = logs.filter { Calendar.autoupdatingCurrent.isDateInToday($0.timestamp!) }
+//        let totalDuration = newLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
+//        let minutes = Int(totalDuration) / 60
+//        let seconds = Int(totalDuration) % 60
+//        return String(format: "%02d:%02d", minutes, seconds)
+//    }
+//    
+    func totalDurationForSelectedTimeframe() -> (String, String) {
+        let calendar = Calendar.autoupdatingCurrent
+        let now = Date()
+        var filteredLogs = logs
+        var timeframeLabel = "today"
+
+        switch widgetTimeframe {
+        case "Day":
+            filteredLogs = logs.filter { calendar.isDateInToday($0.timestamp!) }
+            timeframeLabel = "today"
+        case "Week":
+            filteredLogs = logs.filter { calendar.isDate($0.timestamp!, equalTo: now, toGranularity: .weekOfYear) }
+            timeframeLabel = "this week"
+        case "Month":
+            filteredLogs = logs.filter { calendar.isDate($0.timestamp!, equalTo: now, toGranularity: .month) }
+            timeframeLabel = "this month"
+        default:
+            filteredLogs = logs.filter { calendar.isDateInToday($0.timestamp!) }
+        }
+
+        let totalDuration = filteredLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
         let minutes = Int(totalDuration) / 60
         let seconds = Int(totalDuration) % 60
-        return String(format: "%02d:%02d", minutes, seconds)
+
+        // Return both a time string and the timeframe label
+        return (String(format: "%02d:%02d", minutes, seconds), timeframeLabel)
     }
 
     func requestAuthorization() {

@@ -38,24 +38,59 @@ struct SimpleEntry: TimelineEntry {
 
 struct CalisthenicsWidgetEntryView : View {
     @Query var logs: [Log]
-
-    func totalDurationToday() -> String {
-        print(logs)
-        let newLogs = logs.filter( { Calendar.autoupdatingCurrent.isDateInToday($0.timestamp!) } )
-        
-        let totalDuration = newLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
-        let minutes = Int(totalDuration) / 60
-//        let seconds = Int(totalDuration) % 60
-        return "\(minutes) \(minutes == 1 ? "minute" : "minutes")"
-    }
+    @AppStorage("widgetTimeframe", store: UserDefaults(suiteName: "group.me.jareddanieljones.calisthenics")) var widgetTimeframe: String = "Day"
     var entry: Provider.Entry
 
+    func totalDurationText() -> (duration: String, label: String) {
+        let (duration, timeframeLabel) = totalDurationForSelectedTimeframe(logs: logs)
+        return (duration + " minutes", timeframeLabel)
+    }
+    
+    func totalDurationForSelectedTimeframe(logs: [Log]) -> (String, String) {
+        let calendar = Calendar.autoupdatingCurrent
+        let now = Date()
+        var filteredLogs: [Log] = []
+        var timeframeLabel = "today"
+
+        switch widgetTimeframe {
+        case "Day":
+            filteredLogs = logs.filter { calendar.isDateInToday($0.timestamp!) }
+            timeframeLabel = "today"
+        case "Week":
+            filteredLogs = logs.filter { calendar.isDate($0.timestamp!, equalTo: now, toGranularity: .weekOfYear) }
+            timeframeLabel = "this week"
+        case "Month":
+            filteredLogs = logs.filter { calendar.isDate($0.timestamp!, equalTo: now, toGranularity: .month) }
+            timeframeLabel = "this month"
+        default:
+            filteredLogs = logs.filter { calendar.isDateInToday($0.timestamp!) }
+        }
+
+        let totalDuration = filteredLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
+        let minutes = Int(totalDuration) / 60
+        let seconds = Int(totalDuration) % 60
+
+        // Return both a time string and the timeframe label
+        return ("\(minutes)", timeframeLabel)
+//        return (String(format: "%02d:%02d", minutes, seconds), timeframeLabel)
+    }
+    
+    
+    
     var body: some View {
-        Text(totalDurationToday())
-            .fontWeight(.bold)
-            .font(.title)
-            .multilineTextAlignment(.center)
-            .containerBackground(.clear, for: .widget)
+        let result = totalDurationText()
+        VStack {
+            Spacer()
+            Text(result.duration)
+                .font(.title)
+                .fontWeight(.bold)
+            Spacer()
+            Text(result.label)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        }
+        .multilineTextAlignment(.center)
+        .containerBackground(.clear, for: .widget)
     }
 }
 

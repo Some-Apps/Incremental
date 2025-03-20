@@ -4537,6 +4537,9 @@
         }
       }
     },
+    "Day" : {
+
+    },
     "Delete" : {
       "localizations" : {
         "de" : {
@@ -7051,6 +7054,9 @@
           }
         }
       }
+    },
+    "Month" : {
+
     },
     "Month Change: " : {
       "extractionState" : "stale",
@@ -11510,6 +11516,9 @@
         }
       }
     },
+    "Week" : {
+
+    },
     "Welcome" : {
       "localizations" : {
         "de" : {
@@ -11702,6 +11711,9 @@
           }
         }
       }
+    },
+    "Widget Timeframe" : {
+
     },
     "Year Change" : {
 

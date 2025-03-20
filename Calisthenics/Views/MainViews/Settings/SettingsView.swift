@@ -5,6 +5,7 @@ import AlertToast
 import SwiftData
 import CloudKit
 import Translation
+import WidgetKit
 
 struct SettingsView: View {
     @Environment(\.modelContext) var modelContext
@@ -20,7 +21,7 @@ struct SettingsView: View {
     @State private var shareItems: [Any] = []
     @State private var showShareSheet = false
     @AppStorage("healthActivityCategory") var healthActivityCategory: String = "Functional Strength Training"
-    
+    @AppStorage("widgetTimeframe", store: UserDefaults(suiteName: "group.me.jareddanieljones.calisthenics")) var widgetTimeframe: String = "Day"
     // New state variables for delete confirmation
     @State private var showDeleteConfirmation = false
     @State private var showDeleteSuccess = false
@@ -93,6 +94,15 @@ struct SettingsView: View {
                     }
                 }
                 .pickerStyle(.menu)
+                Picker("Widget Timeframe", selection: $widgetTimeframe) {
+                    Text("Day").tag("Day")
+                    Text("Week").tag("Week")
+                    Text("Month").tag("Month")
+                }
+                .pickerStyle(.menu)
+                .onChange(of: widgetTimeframe) {
+                    WidgetCenter.shared.reloadAllTimelines()
+                }
             } header: {
                 Text("Setup")
                     .foregroundStyle(colorScheme.current.secondaryText)
