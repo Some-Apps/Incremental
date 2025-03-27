@@ -17,6 +17,12 @@
 		C0360AE82A2E2BA800E8CA37 /* ExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0360AE72A2E2BA800E8CA37 /* ExerciseView.swift */; };
 		C03C8E112CE3C1B2006D2A16 /* GymExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C8E102CE3C1B2006D2A16 /* GymExercise.swift */; };
 		C03C8E122CE3C1B2006D2A16 /* GymExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C8E102CE3C1B2006D2A16 /* GymExercise.swift */; };
+		C03ECC662D95F3FD00EA4351 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C03ECC652D95F3FD00EA4351 /* GoogleService-Info.plist */; };
+		C03ECC672D95F3FD00EA4351 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C03ECC652D95F3FD00EA4351 /* GoogleService-Info.plist */; };
+		C03ECC682D95F3FD00EA4351 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C03ECC652D95F3FD00EA4351 /* GoogleService-Info.plist */; };
+		C03ECC6B2D95F46900EA4351 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C03ECC6A2D95F46900EA4351 /* FirebaseAnalytics */; };
+		C03ECC6D2D95F46900EA4351 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = C03ECC6C2D95F46900EA4351 /* FirebaseAnalyticsOnDeviceConversion */; };
+		C03ECC6F2D95F46900EA4351 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = C03ECC6E2D95F46900EA4351 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		C03FE2082A2FB5A500C9FD3D /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = C03FE2072A2FB5A500C9FD3D /* AlertToast */; };
 		C03FE20A2A2FB6C500C9FD3D /* ExerciseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03FE2092A2FB6C500C9FD3D /* ExerciseViewModel.swift */; };
 		C04C438B2A2E830B00B48413 /* ExerciseCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04C438A2A2E830B00B48413 /* ExerciseCardView.swift */; };
@@ -97,6 +103,7 @@
 		C0360AE52A2E0F8500E8CA37 /* CurrentExerciseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentExerciseView.swift; sourceTree = "<group>"; };
 		C0360AE72A2E2BA800E8CA37 /* ExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseView.swift; sourceTree = "<group>"; };
 		C03C8E102CE3C1B2006D2A16 /* GymExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymExercise.swift; sourceTree = "<group>"; };
+		C03ECC652D95F3FD00EA4351 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C03FE2092A2FB6C500C9FD3D /* ExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewModel.swift; sourceTree = "<group>"; };
 		C04C438A2A2E830B00B48413 /* ExerciseCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCardView.swift; sourceTree = "<group>"; };
 		C0589F1A2BE5844900F19B7B /* StashedExereciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StashedExereciseView.swift; sourceTree = "<group>"; };
@@ -159,7 +166,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C03ECC6B2D95F46900EA4351 /* FirebaseAnalytics in Frameworks */,
+				C03ECC6D2D95F46900EA4351 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				C03FE2082A2FB5A500C9FD3D /* AlertToast in Frameworks */,
+				C03ECC6F2D95F46900EA4351 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +267,7 @@
 				C06534592A9E6AAF001DFA7B /* CalisthenicsTests */,
 				C08FA50929CF33DF002CA6AF /* Frameworks */,
 				C0CB957829C6445A0099974B /* Products */,
+				C03ECC652D95F3FD00EA4351 /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -387,6 +398,9 @@
 			name = Calisthenics;
 			packageProductDependencies = (
 				C03FE2072A2FB5A500C9FD3D /* AlertToast */,
+				C03ECC6A2D95F46900EA4351 /* FirebaseAnalytics */,
+				C03ECC6C2D95F46900EA4351 /* FirebaseAnalyticsOnDeviceConversion */,
+				C03ECC6E2D95F46900EA4351 /* FirebaseAnalyticsWithoutAdIdSupport */,
 			);
 			productName = Calisthenics;
 			productReference = C0CB957729C6445A0099974B /* Calisthenics.app */;
@@ -426,6 +440,7 @@
 			mainGroup = C0CB956E29C6445A0099974B;
 			packageReferences = (
 				C03FE2062A2FB5A500C9FD3D /* XCRemoteSwiftPackageReference "AlertToast" */,
+				C03ECC692D95F46900EA4351 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = C0CB957829C6445A0099974B /* Products */;
 			projectDirPath = "";
@@ -443,6 +458,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C03ECC672D95F3FD00EA4351 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,6 +468,7 @@
 			files = (
 				C0E00A222C975118005C0AE3 /* Localizable.xcstrings in Resources */,
 				C0BDACAB29CF3ECE006B19F9 /* Assets.xcassets in Resources */,
+				C03ECC662D95F3FD00EA4351 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0CB958229C6445B0099974B /* Preview Assets.xcassets in Resources */,
+				C03ECC682D95F3FD00EA4351 /* GoogleService-Info.plist in Resources */,
 				C0CB957F29C6445B0099974B /* Assets.xcassets in Resources */,
 				C0E00A212C975118005C0AE3 /* Localizable.xcstrings in Resources */,
 			);
@@ -588,7 +606,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = CalisthenicsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisthenicsWidget/Info.plist;
@@ -601,7 +619,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.16;
+				MARKETING_VERSION = 1.1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = me.jareddanieljones.Calisthenics.CalisthenicsWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -621,7 +639,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = CalisthenicsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisthenicsWidget/Info.plist;
@@ -634,7 +652,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.16;
+				MARKETING_VERSION = 1.1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = me.jareddanieljones.Calisthenics.CalisthenicsWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -775,7 +793,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				ENABLE_PREVIEWS = YES;
@@ -796,7 +814,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.16;
+				MARKETING_VERSION = 1.1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = me.jareddanieljones.Calisthenics;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -815,7 +833,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Calisthenics/Calisthenics.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Calisthenics/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 5SGZH379X4;
 				ENABLE_PREVIEWS = YES;
@@ -836,7 +854,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.16;
+				MARKETING_VERSION = 1.1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = me.jareddanieljones.Calisthenics;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -890,6 +908,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C03ECC692D95F46900EA4351 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.10.0;
+			};
+		};
 		C03FE2062A2FB5A500C9FD3D /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
@@ -901,6 +927,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C03ECC6A2D95F46900EA4351 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C03ECC692D95F46900EA4351 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		C03ECC6C2D95F46900EA4351 /* FirebaseAnalyticsOnDeviceConversion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C03ECC692D95F46900EA4351 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsOnDeviceConversion;
+		};
+		C03ECC6E2D95F46900EA4351 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C03ECC692D95F46900EA4351 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
 		C03FE2072A2FB5A500C9FD3D /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C03FE2062A2FB5A500C9FD3D /* XCRemoteSwiftPackageReference "AlertToast" */;

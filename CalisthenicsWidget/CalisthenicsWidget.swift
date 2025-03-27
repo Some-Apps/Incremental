@@ -68,7 +68,6 @@ struct CalisthenicsWidgetEntryView : View {
 
         let totalDuration = filteredLogs.reduce(0) { $0 + TimeInterval($1.duration!) }
         let minutes = Int(totalDuration) / 60
-        let seconds = Int(totalDuration) % 60
 
         // Return both a time string and the timeframe label
         return ("\(minutes)", timeframeLabel)

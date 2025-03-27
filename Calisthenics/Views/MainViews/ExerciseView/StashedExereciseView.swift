@@ -3,6 +3,7 @@ import SwiftUI
 import HealthKit
 import WidgetKit
 import SwiftData
+import FirebaseAnalytics
 
 struct StashedExereciseView: View {
     @EnvironmentObject var colorScheme: ColorSchemeState
@@ -260,6 +261,7 @@ struct StashedExereciseView: View {
 
         // Notify system to update widgets.
         WidgetCenter.shared.reloadAllTimelines()
+        Analytics.logEvent("stashed_exercise_completed", parameters: nil)
     }
 
     func fetchNextAvailableExercise() -> StashedExercise? {

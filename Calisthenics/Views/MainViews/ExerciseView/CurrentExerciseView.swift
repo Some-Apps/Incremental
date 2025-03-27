@@ -5,6 +5,7 @@ import WidgetKit
 import StoreKit
 import SwiftData
 import TipKit
+import FirebaseAnalytics
 
 struct CurrentExerciseView: View {
     @EnvironmentObject var colorScheme: ColorSchemeState
@@ -394,6 +395,7 @@ struct CurrentExerciseView: View {
         saveWorkout(startDate: startDate, endDate: endDate, duration: duration)
         generateRandomExercise(exercises: Array(exercises))
         stopwatchViewModel.reset()
+        Analytics.logEvent("exercise_completed", parameters: nil)
     }
 }
 
