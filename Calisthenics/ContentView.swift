@@ -2,6 +2,7 @@ import SwiftData
 import SwiftUI
 import WidgetKit
 import TipKit
+import FirebaseAnalytics
 
 struct ContentView: View {
     @EnvironmentObject var colorScheme: ColorSchemeState
@@ -10,6 +11,7 @@ struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Query var stashedExercises: [StashedExercise]
     @Query var allExercises: [Exercise]
+    @Query var logs: [Log]
     
     @State private var showInstructions: Bool = false
     @AppStorage("SelectedColorScheme") var selectedColorScheme = ""
@@ -67,7 +69,11 @@ struct ContentView: View {
             currentTab = 0
             
             defaultsManager.loadSettings()
-            
+            let totalSets = logs.count
+            let totalTime = logs.reduce(0.0) { $0 + Double($1.duration ?? 0) } / 60.0
+            Analytics.setUserProperty("\(allExercises.count)", forName: "repertoire_count")
+            Analytics.setUserProperty("\(totalSets)", forName: "sets_completed")
+            Analytics.setUserProperty("\(totalTime)", forName: "total_time_minutes")
             
             if let randomExerciseUUID = UUID(uuidString: defaultsManager.getDataFromiCloud(key: "randomExercise") as? String ?? ""),
                let newExercise = fetchExerciseById(id: randomExerciseUUID, exercises: allExercises) {
