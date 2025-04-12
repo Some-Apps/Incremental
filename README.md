@@ -1,7 +1,7 @@
 # Welcome To [Incremental Calisthenics](https://apps.apple.com/us/app/incremental-calisthenics/id6448679255)!
 
 ## How To Contribute On GitHub
-1. Create an issue in the Some-Apps/Incremental repository or select an existing issue. Issues with "Bounty" labels are available to work on if not already assigned to someone.
+1. Create an issue in this repository or select an existing issue. Issues with "Bounty" labels are available to work on if not already assigned to someone.
 2. Comment on the issue that you would like to work on it
 3. Once you have been assigned the issue, fork to the repository into a branch containing the issue number
 4. When you are ready, submit a pull request from this branch
