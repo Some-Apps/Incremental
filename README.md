@@ -1,7 +1,7 @@
 # Welcome To [Incremental Calisthenics](https://apps.apple.com/us/app/incremental-calisthenics/id6448679255)!
 
 ## Setup
-1. Add your own GoogleService-Info.plist file or just comment out the analytics parts
+1. Add your own GoogleService-Info.plist file or just comment out the firebase analytics parts
 
 ## How To Contribute On GitHub
 1. Create an issue in this repository or select an existing issue. Issues with "Bounty" labels are available to work on if not already assigned to someone.
