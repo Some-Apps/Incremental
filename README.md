@@ -16,7 +16,7 @@ Feel free to use your issue thread to communicate. Contributors will only be ass
 
 ### Other Repositories You Can Contribute To
 - [Shelter Partner](https://github.com/Some-Apps/ShelterPartner)
-
+- [Tipsy Tongue](https://github.come/Some-Apps/TipsyTongue)
 
 ## How Bounties Work
 
