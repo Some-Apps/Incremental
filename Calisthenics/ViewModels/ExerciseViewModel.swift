@@ -1,7 +1,6 @@
 import AlertToast
 import CoreData
 import SwiftUI
-import HealthKit
 import WidgetKit
 import SwiftData
 

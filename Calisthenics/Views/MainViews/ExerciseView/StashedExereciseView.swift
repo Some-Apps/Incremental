@@ -120,7 +120,7 @@ struct StashedExereciseView: View {
     func requestAuthorization() {
         let healthStore = HKHealthStore()
         let typesToShare: Set<HKSampleType> = [HKObjectType.workoutType()]
-        let typesToRead: Set<HKObjectType> = [HKObjectType.workoutType(), HKObjectType.quantityType(forIdentifier: .appleExerciseTime)!]
+        let typesToRead: Set<HKObjectType> = []
 
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
             if let error = error {

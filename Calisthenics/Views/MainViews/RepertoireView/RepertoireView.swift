@@ -150,7 +150,6 @@ struct RepertoireView: View {
         return (percentage: percentage, change: Int(change))
     }
 
-
     func oneYearChange(exercise: Exercise) -> (percentage: Double, change: Int)? {
         return calculateChange(exercise: exercise)
     }
